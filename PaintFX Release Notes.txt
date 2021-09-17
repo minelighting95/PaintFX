@@ -1,5 +1,35 @@
 PaintFX Release Notes:
 
+Release Version 1.1.0 - 9/16/2021
+
+	New Features:
+		-Clipping Issue Fixed
+		-Added Help Tab with Help and About Options
+		-Added Help Screen
+		-Added About Screen
+		-Added Canvas Layer Above Image
+		-Canvas Layer Resizes with image
+		-Added Draw tab with Toolbar Toggle and Canvas Clear Options
+		-Added Toolbar with Shape selector, Color Selector, and Width Selector
+		-Added Ability to draw a line on the image
+		-Added Save Feature to Overwrite existing image
+		-Removed Auto Image resizing
+		-Added Snap to Window feature for large images
+		-Added Save As feature that allows user to specify file name and extension and save the current image and canvas
+		-Save formats include PNG, JPG, and BMP
+		-Added Scrollbars for an image that is too large for the given screen
+		
+	Known Issues:
+		-When saving as a JPG or BMP, any transparent pixels will save as white
+		
+	Next to be Implemented:
+		-Allow user to zoom in on picture
+		-Allow user to draw a curve
+		-Pull Help screen text from a text file
+		
+	GitHub Link:
+		https://github.com/minelighting95/PaintFX
+
 Release Version 1.0.1 - 9/6/2021
 
 	New Features:
@@ -11,11 +41,9 @@ Release Version 1.0.1 - 9/6/2021
 	Known Issues:
 		-Clean and Build breaks application icon loader
 		-Some tall images clip slightly
-		-When minimizing, window holds previous minimized size, regardless of image
 		
 	Next to be Implemented:
 		-Fix for clipping issue
-		-Fux fir minimized size issue
 		-Allow user to use scroll wheel to zoom in on picture
 
 Release Version 1.0.0 - 9/5/2021
