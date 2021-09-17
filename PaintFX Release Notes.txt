@@ -1,0 +1,16 @@
+PaintFX Release Notes:
+
+Release Version 1.0.0 - 9/5/2021
+	New Features:
+		-Prompt user to select and open initial image
+		-Resize window to fit initial selected image
+		-Added Menubar with file option to open new image or exit program
+		-File and Application Icons
+		-Supported image formats: PNG, JPG, BMP, GIF
+		-Limits user to selecting given image formats
+		-Closes without breaks or IDE commands
+	Known Issues:
+		-Clean and Build breaks application icon loader
+	Next to be Implemented:
+		-Allow user to use scroll wheel to zoom in on picture
+		-Resize window when new image is loaded when minimized
