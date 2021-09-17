@@ -1,6 +1,25 @@
 PaintFX Release Notes:
 
+Release Version 1.0.1 - 9/6/2021
+
+	New Features:
+		-Resize minizied window when new image is loaded
+		-Keep window maximized when loading new image
+		-If image dimension is larger than screen, image is resized to fit
+		-If minimized, resized image is locked to slightly larger than monitor resolution
+		
+	Known Issues:
+		-Clean and Build breaks application icon loader
+		-Some tall images clip slightly
+		-When minimizing, window holds previous minimized size, regardless of image
+		
+	Next to be Implemented:
+		-Fix for clipping issue
+		-Fux fir minimized size issue
+		-Allow user to use scroll wheel to zoom in on picture
+
 Release Version 1.0.0 - 9/5/2021
+
 	New Features:
 		-Prompt user to select and open initial image
 		-Resize window to fit initial selected image
@@ -9,8 +28,10 @@ Release Version 1.0.0 - 9/5/2021
 		-Supported image formats: PNG, JPG, BMP, GIF
 		-Limits user to selecting given image formats
 		-Closes without breaks or IDE commands
+		
 	Known Issues:
 		-Clean and Build breaks application icon loader
+		
 	Next to be Implemented:
 		-Allow user to use scroll wheel to zoom in on picture
 		-Resize window when new image is loaded when minimized

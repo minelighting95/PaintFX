@@ -3,8 +3,8 @@ package PaintFX;
 import java.io.File;
 import static javafx.application.Application.launch;
 import javafx.geometry.Pos;
-import java.io.IOException;
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /* ******************************************************************** */
@@ -27,19 +28,22 @@ import javafx.stage.Stage;
 /*   Create a JavaFX program to open a user chosen image, have a menu   */
 /*   bar, and close nicely.                                             */
 /*                                                                      */
-/*   Version: 1.0.0                                                     */
+/*   Version: 1.0.1                                                     */
 /*   Notes: See PaintFX_Release_Notes.txt                               */
 /*                                                                      */
 /* ******************************************************************** */
 
 public class PaintFX extends Application {
 
+    volatile double w = 800;                                                    // Create default dimensions
+    volatile double h = 600;
+    
     public static void main(String[] args) {                                    // Main
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) throws IOException{                   // Create Stage
+    public void start(Stage primaryStage) throws Exception{                     // Create Stage
         
         int hold = 1;                                                           // Create Hold Variable
         
@@ -77,12 +81,22 @@ public class PaintFX extends Application {
                 cool.setPreserveRatio(true);                                    // Preserve Image Ratio
         
                 stack.getChildren().addAll(cool, vBox);                         // Create stack with image and menu
-                double w = crab.getWidth();                                     // Get dimensions of image
-                double h = crab.getHeight();
-            
+                
+                w = (crab.getWidth()+50);                                       // Create window dimensions slightly
+                h = (crab.getHeight()+50);                                      // larger than image
+                
+                Rectangle2D screenBounds = Screen.getPrimary().getBounds();     // Read monitor dimensions, and if image is larger,
+                if((screenBounds.getWidth() < w) || (screenBounds.getHeight() < h)){
+                    cool.setFitWidth(screenBounds.getWidth()-50);                  // Set image dimensions to monitor size
+                    cool.setFitHeight(screenBounds.getHeight()-50);
+                    w = screenBounds.getWidth();                                // Set Screen dimensions to image
+                    h = screenBounds.getHeight();
+                }
+
                 Scene scene = new Scene(stack, w+50, h+50);                     // Create scene
                 primaryStage.setScene(scene);                                   // Set scene as primary scene
                 primaryStage.show();                                            // Show scene
+                
                 hold = 0;                                                       // Remove hold
             }
             catch(Exception e){                                                 // If fail,
@@ -104,13 +118,31 @@ public class PaintFX extends Application {
                 );
                 File selectedFile = fileChooser.showOpenDialog(primaryStage);   // Grab user selected file
             
-                Image crab = new Image(selectedFile.toURI().toString());        // Open user image
+                Image crab1 = new Image(selectedFile.toURI().toString());       // Open user image
                 ImageView coolCrab = new ImageView();                           // Create new image view
-                coolCrab.setImage(crab);                                        // Set Image
+                coolCrab.setImage(crab1);                                       // Set Image
                 coolCrab.setPreserveRatio(true);                                // Preserve Image Ratio
-
+                
                 stack.getChildren().clear();                                    // Remove previous image
                 stack.getChildren().addAll(coolCrab, vBox);                     // Display new image
+                
+                w = (crab1.getWidth()+50);                                      // Create window dimensions slightly
+                h = (crab1.getHeight()+50);                                     // larger than image
+                
+                Rectangle2D screenBounds = Screen.getPrimary().getBounds();     // Read monitor dimensions, and if image is larger,
+                if((screenBounds.getWidth() < w) || (screenBounds.getHeight() < h)){
+                    coolCrab.setFitWidth(screenBounds.getWidth()-50);              // Set image dimensions to monitor size
+                    coolCrab.setFitHeight(screenBounds.getHeight()-50);
+                    w = screenBounds.getWidth();                                // Set Screen dimensions to image
+                    h = screenBounds.getHeight();
+                }
+                
+                if(primaryStage.isMaximized()){}                                // If window is minimized
+                else{
+                    primaryStage.setWidth(w+50);                                // Set window to slightly larger than image
+                    primaryStage.setHeight(h+50);
+                }
+
             }
             catch(Exception f){}                                                // If invalid image or closed explorer
         });
