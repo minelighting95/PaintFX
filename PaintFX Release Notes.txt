@@ -1,5 +1,36 @@
 PaintFX Release Notes:
 
+Release Version 1.2.0 - 9/24/2021
+
+	New Features:
+		-Added support for drawing Curves, Squares, Rectangles, Ellipses, and Circles
+		-Add option to allow user to set the color of and fill Squares, Rectangles, Ellipses, and Circles
+		-Added color droppers to both color selctors to allow user to grab colors from the canvas
+		-Added the ability for users to edit three images at once using tabs
+		-Added Smart save when exiting or opening a new image
+		-Indicates on tab names which tab has been altered
+		-Added Text Placement option with color and font size control
+		-Added Keyboard UI shortcuts
+		-Added ability to resize the canvas
+		-Added ability to zoom in and out using the Plus and Minus keys
+		
+	Known Issues:
+		-When saving as a JPG or BMP, any transparent pixels will save as white
+			-May be related to the JDK 8 JPG bug
+		-When opening an image, image only occupies half the screen
+			-This can be fixed by zooming out and back in, or Snapping an image that is too large for the screen
+		-Zoom wrongly alters drawn content
+		
+	Next to be Implemented:
+		-Improve Smart Save
+		-Add ability for user to see where text is placed
+		-Update Help File
+		-Fix for image cropping issue
+		-Pull Help screen text from a text file
+		
+	GitHub Link:
+		https://github.com/minelighting95/PaintFX
+
 Release Version 1.1.0 - 9/16/2021
 
 	New Features:
