@@ -59,16 +59,16 @@ public class exitHandler implements EventHandler<WindowEvent> {
                     saveWarn.setVgap(10);
                     saveWarn.setPadding(new Insets(25, 25, 25, 25));            // Set border padding to 25
                     
-                    Text warn = new Text("Would you like to save your changes?");                               
+                    Text warn = new Text("Would you like to save all your changes?");                               
                     warn.setFont(new Font("Arial", 18));                        // Set Font and Size
                     warn.setTextAlignment(TextAlignment.CENTER);                // Align text to center
                     saveWarn.add(warn, 1, 0);                                   // Add label to right top box
                     
-                    Scene saveWarnScene = new Scene(saveWarn, 500, 100);        // Create a 500 by 100 window
+                    Scene saveWarnScene = new Scene(saveWarn, 530, 100);        // Create a 500 by 100 window
                     saveWarnWindow.setScene(saveWarnScene);                     // Place the scene on the main stage
                     saveWarnWindow.show();                                      // Show main stage
             
-                    Button yesBtn = new Button("Save");                         // Create a button saying "Save"
+                    Button yesBtn = new Button("Save All");                         // Create a button saying "Save"
                     HBox yBtn = new HBox(yesBtn);                               // Create a horizontal box for button
                     yBtn.setAlignment(Pos.CENTER);                              // Align horizontal box to bottom center
                     saveWarn.add(yBtn, 0, 1);                                   // Place the horizontal box

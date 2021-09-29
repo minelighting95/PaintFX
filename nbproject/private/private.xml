@@ -3,19 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/openHandler.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/PaintFX.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/exitHandler.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/ovalHandler.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/circleHandler.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/squareHandler.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/textHandler.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/curveHandler.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/helpHandler.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/lineHandler.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/saveAsHandler.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/rectangleHandler.java</file>
-            <file>file:/F:/Java%20Programs/PaintFX/src/paintfx/saveHandler.java</file>
+            <file>file:/C:/Users/alex4/Desktop/Programs/Java/PaintFX/src/paintfx/saveAsHandler.java</file>
+            <file>file:/C:/Users/alex4/Desktop/Programs/Java/PaintFX/src/paintfx/PaintFX.java</file>
+            <file>file:/C:/Users/alex4/Desktop/Programs/Java/PaintFX/src/paintfx/aboutHandler.java</file>
+            <file>file:/C:/Users/alex4/Desktop/Programs/Java/PaintFX/src/paintfx/saveHandler.java</file>
+            <file>file:/C:/Users/alex4/Desktop/Programs/Java/PaintFX/src/paintfx/exitHandler.java</file>
+            <file>file:/C:/Users/alex4/Desktop/Programs/Java/PaintFX/src/paintfx/openHandler.java</file>
+            <file>file:/C:/Users/alex4/Desktop/Programs/Java/PaintFX/src/paintfx/helpHandler.java</file>
         </group>
     </open-files>
 </project-private>

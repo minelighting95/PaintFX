@@ -1,5 +1,25 @@
 PaintFX Release Notes:
 
+Release Version 1.2.1 - 9//2021
+
+	New Features:
+		-Fixed smart-save save all
+		-Fixed viewport save bug on multiple tabs
+		-Fixed tab name issue when saving
+		
+	Known Issues:
+		-When saving as a JPG or BMP, any transparent pixels will save as white
+			-Related to the JDK 8 JPG bug
+		-Zoom wrongly alters drawn content
+		
+	Next to be Implemented:
+		-Add ability for user to see where text is placed
+		-Update Help File
+		-Pull Help screen text from a text file
+		
+	GitHub Link:
+		https://github.com/minelighting95/PaintFX
+
 Release Version 1.2.0 - 9/24/2021
 
 	New Features:

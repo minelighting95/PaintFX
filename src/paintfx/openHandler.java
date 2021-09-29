@@ -36,7 +36,6 @@ public class openHandler implements EventHandler<ActionEvent> {
     public Canvas canvas;
     public Canvas canvas1;
     public Canvas canvas2;
-    public String fileName;
     public double w;
     public double h;
     public VBox vBox;
@@ -58,12 +57,12 @@ public class openHandler implements EventHandler<ActionEvent> {
                 ,new FileChooser.ExtensionFilter("GIF File", "*.gif")
             );
             File selectedFile = fileChooser.showOpenDialog(primaryStage);       // Grab user selected file
-            fileName = selectedFile.toURI().toString().substring(6);            // Save file name as string
             PaintFX.setName(selectedFile.getName());
             
             Image crab = new Image(selectedFile.toURI().toString());            // Open user image
             
             if(PaintFX.getSelec() == 0){
+                PaintFX.setFileName(selectedFile.toURI().toString().substring(6));            // Save file name as string
                 PaintFX.setChange(0);
                 tabPane.getTabs().get(0).setText(selectedFile.getName());       // Set Tab Name
                 cool.setFitHeight(0);
@@ -73,6 +72,7 @@ public class openHandler implements EventHandler<ActionEvent> {
                 cool.setPreserveRatio(true);                                    // Preserve Image Ratio
             }
             else if(PaintFX.getSelec() == 1){
+                PaintFX.setFileName1(selectedFile.toURI().toString().substring(6));            // Save file name as string
                 PaintFX.setChange1(0);
                 tabPane.getTabs().get(1).setText(selectedFile.getName());       // Set Tab Name
                 cool1.setFitHeight(0);
@@ -82,6 +82,7 @@ public class openHandler implements EventHandler<ActionEvent> {
                 cool1.setPreserveRatio(true);                                   // Preserve Image Ratio
             }
             else if(PaintFX.getSelec() == 2){
+                PaintFX.setFileName2(selectedFile.toURI().toString().substring(6));            // Save file name as string
                 PaintFX.setChange2(0);
                 tabPane.getTabs().get(2).setText(selectedFile.getName());       // Set Tab Name
                 cool2.setFitHeight(0);
@@ -137,12 +138,7 @@ public class openHandler implements EventHandler<ActionEvent> {
             
             sp.setContent(coolCrab);                                            // Place stack on ScrollPane
 
-            if(primaryStage.isMaximized()){}                                    // If window is minimized
-            else{
-                primaryStage.setWidth(w+200);                                   // Set window to slightly larger than image
-                primaryStage.setHeight(h+200);
-            }
-            PaintFX.setVariables(w, h, fileName);
+            PaintFX.setVariables(w, h);
         }
         catch(Exception f){}                                                    // If invalid image or closed explorer
     }
@@ -213,7 +209,7 @@ public class openHandler implements EventHandler<ActionEvent> {
 
                 @Override
                 public void handle(ActionEvent a) {
-                    saveHandler.finalSave(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
+                    saveHandler.save(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
                     saveWarnWindow.close();                                     // Save and Exit window
                     open();
                     }
@@ -274,7 +270,7 @@ public class openHandler implements EventHandler<ActionEvent> {
 
                 @Override
                 public void handle(ActionEvent a) {
-                    saveHandler.finalSave(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
+                    saveHandler.save(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
                     saveWarnWindow.close();                                     // Save Exit window
                     open();
                     }
@@ -335,7 +331,7 @@ public class openHandler implements EventHandler<ActionEvent> {
 
                 @Override
                 public void handle(ActionEvent a) {
-                    saveHandler.finalSave(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
+                    saveHandler.save(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
                     saveWarnWindow.close();                                     // Save and Exit window
                     open();
                     }

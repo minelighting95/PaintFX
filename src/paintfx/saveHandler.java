@@ -44,7 +44,7 @@ public class saveHandler implements EventHandler<ActionEvent>{
         
     }
     
-    public static void finalSave(ImageView cool, ImageView cool1, ImageView cool2, StackPane coolCrab, Canvas canvas, Canvas canvas1, Canvas canvas2, Stage primaryStage, TabPane tabPane){
+    public static void save(ImageView cool, ImageView cool1, ImageView cool2, StackPane coolCrab, Canvas canvas, Canvas canvas1, Canvas canvas2, Stage primaryStage, TabPane tabPane){
         if(PaintFX.getSelec() == 0){
             Bounds bnd = cool.getBoundsInParent();                              // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
             WritableImage wim = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
@@ -79,7 +79,7 @@ public class saveHandler implements EventHandler<ActionEvent>{
             sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
             try {
-                File saveFile = new File(PaintFX.getFileName());                // Grab original user file
+                File saveFile = new File(PaintFX.getFileName1());                // Grab original user file
                 String file = saveFile.toURI().toString();                      // Grab file extension
                 String fileExt = file.substring(file.length()-3);
                 if(fileExt.equals("png")){                                      // If the image was a PNG
@@ -106,7 +106,7 @@ public class saveHandler implements EventHandler<ActionEvent>{
             sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
             try {
-                File saveFile = new File(PaintFX.getFileName());                // Grab original user file
+                File saveFile = new File(PaintFX.getFileName2());                // Grab original user file
                 String file = saveFile.toURI().toString();                      // Grab file extension
                 String fileExt = file.substring(file.length()-3);
                 if(fileExt.equals("png")){                                      // If the image was a PNG
@@ -128,6 +128,90 @@ public class saveHandler implements EventHandler<ActionEvent>{
         }
         else{
             System.out.println("Save Error 0");
+        }
+    }
+    
+    public static void finalSave(ImageView cool, ImageView cool1, ImageView cool2, StackPane coolCrab, Canvas canvas, Canvas canvas1, Canvas canvas2, Stage primaryStage, TabPane tabPane){
+        if(PaintFX.getChange() == 1){
+            coolCrab.getChildren().clear();                                     // Remove previous image
+            coolCrab.getChildren().addAll(cool, canvas);
+            Bounds bnd = cool.getBoundsInParent();                              // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
+            SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
+            sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
+            
+            try {
+                File saveFile = new File(PaintFX.getFileName());                // Grab original user file
+                String file = saveFile.toURI().toString();                      // Grab file extension
+                String fileExt = file.substring(file.length()-3);
+                if(fileExt.equals("png")){                                      // If the image was a PNG
+                    sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
+                    coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
+                    ImageIO.write(SwingFXUtils.fromFXImage(wim, null), fileExt, saveFile);
+                }
+                else{                                                           // If the image was JPG or BMP
+                    coolCrab.snapshot(sP, wim);                                 // Take snapshot
+                    BufferedImage bufARGB = SwingFXUtils.fromFXImage(wim, null);// Convert from ARGB image to RGB image to fix colors
+                    BufferedImage bufRGB = new BufferedImage(bufARGB.getWidth(), bufARGB.getHeight(), BufferedImage.OPAQUE);
+                    Graphics2D graphics = bufRGB.createGraphics();              // Create graphics from picture
+                    graphics.drawImage(bufARGB, 0, 0, null);                    // Draw image to RGB image
+                    ImageIO.write(bufRGB, fileExt, saveFile);                   // Save RGB image
+                }
+            } catch (Exception s) {}
+        }
+        if(PaintFX.getChange1() == 1){
+            coolCrab.getChildren().clear();                                     // Remove previous image
+            coolCrab.getChildren().addAll(cool1, canvas1);
+            Bounds bnd = cool1.getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)canvas1.getWidth(), (int)canvas1.getHeight());
+            SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
+            sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
+            
+            try {
+                File saveFile = new File(PaintFX.getFileName1());                // Grab original user file
+                String file = saveFile.toURI().toString();                      // Grab file extension
+                String fileExt = file.substring(file.length()-3);
+                if(fileExt.equals("png")){                                      // If the image was a PNG
+                    sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
+                    coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
+                    ImageIO.write(SwingFXUtils.fromFXImage(wim, null), fileExt, saveFile);
+                }
+                else{                                                           // If the image was JPG or BMP
+                    coolCrab.snapshot(sP, wim);                                 // Take snapshot
+                    BufferedImage bufARGB = SwingFXUtils.fromFXImage(wim, null);// Convert from ARGB image to RGB image to fix colors
+                    BufferedImage bufRGB = new BufferedImage(bufARGB.getWidth(), bufARGB.getHeight(), BufferedImage.OPAQUE);
+                    Graphics2D graphics = bufRGB.createGraphics();              // Create graphics from picture
+                    graphics.drawImage(bufARGB, 0, 0, null);                    // Draw image to RGB image
+                    ImageIO.write(bufRGB, fileExt, saveFile);                   // Save RGB image
+                }
+            } catch (Exception s) {}
+        }
+        if(PaintFX.getChange2() == 1){
+            coolCrab.getChildren().clear();                                     // Remove previous image
+            coolCrab.getChildren().addAll(cool2, canvas2);
+            Bounds bnd = cool2.getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)canvas2.getWidth(), (int)canvas2.getHeight());
+            SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
+            sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
+            
+            try {
+                File saveFile = new File(PaintFX.getFileName2());                // Grab original user file
+                String file = saveFile.toURI().toString();                      // Grab file extension
+                String fileExt = file.substring(file.length()-3);
+                if(fileExt.equals("png")){                                      // If the image was a PNG
+                    sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
+                    coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
+                    ImageIO.write(SwingFXUtils.fromFXImage(wim, null), fileExt, saveFile);
+                }
+                else{                                                           // If the image was JPG or BMP
+                    coolCrab.snapshot(sP, wim);                                 // Take snapshot
+                    BufferedImage bufARGB = SwingFXUtils.fromFXImage(wim, null);// Convert from ARGB image to RGB image to fix colors
+                    BufferedImage bufRGB = new BufferedImage(bufARGB.getWidth(), bufARGB.getHeight(), BufferedImage.OPAQUE);
+                    Graphics2D graphics = bufRGB.createGraphics();              // Create graphics from picture
+                    graphics.drawImage(bufARGB, 0, 0, null);                    // Draw image to RGB image
+                    ImageIO.write(bufRGB, fileExt, saveFile);                   // Save RGB image
+                }
+            } catch (Exception s) {}
         }
     }
     
@@ -168,7 +252,7 @@ public class saveHandler implements EventHandler<ActionEvent>{
                 sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
                 try {
-                    File saveFile = new File(PaintFX.getFileName());            // Grab original user file
+                    File saveFile = new File(PaintFX.getFileName1());            // Grab original user file
                     String file = saveFile.toURI().toString();                  // Grab file extension
                     String fileExt = file.substring(file.length()-3);
                     if(fileExt.equals("png")){                                  // If the image was a PNG
@@ -195,7 +279,7 @@ public class saveHandler implements EventHandler<ActionEvent>{
                 sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
                 try {
-                    File saveFile = new File(PaintFX.getFileName());            // Grab original user file
+                    File saveFile = new File(PaintFX.getFileName2());            // Grab original user file
                     String file = saveFile.toURI().toString();                  // Grab file extension
                     String fileExt = file.substring(file.length()-3);
                     if(fileExt.equals("png")){                                  // If the image was a PNG

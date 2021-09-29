@@ -2,10 +2,8 @@ package PaintFX;
 
 import static javafx.application.Application.launch;
 import javafx.application.Application;
-import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -23,8 +21,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -48,29 +44,40 @@ import javafx.stage.Stage;
 /*   Purpose:                                                           */
 /*   Create a Microsoft Paint-like JavaFX program.                      */
 /*                                                                      */
-/*   Version: 1.2.0                                                     */
+/*   Version: 1.2.1                                                     */
 /*   Notes: See PaintFX_Release_Notes.txt                               */
 /*                                                                      */
 /* ******************************************************************** */
 
 public class PaintFX extends Application {
 
-    volatile static double w = 800;                                             // Create default variables
-    volatile static double h = 600;
-    volatile static String fileName;
-    volatile static int change;
-    volatile static int change1;
-    volatile static int change2;
-    volatile int hold = 0;
-    volatile int hold1 = 0;
-    volatile int hold2 = 0;
-    volatile static int selec = 0;
-    volatile static Image crab;
-    volatile static Image crab1;
-    volatile static Image crab2;
-    volatile static String name;
-    volatile static Color argb;
-    volatile static Color argb1;
+    volatile private static double w = 800;                                             // Create default variables
+    volatile private static double h = 600;
+    volatile private static String fileName;
+    volatile private static String fileName1;
+    volatile private static String fileName2;
+    volatile private static int change;
+    volatile private static int change1;
+    volatile private static int change2;
+    volatile private int hold = 0;
+    volatile private int hold1 = 0;
+    volatile private int hold2 = 0;
+    volatile private static int selec = 0;
+    volatile private static Image crab;
+    volatile private static Image crab1;
+    volatile private static Image crab2;
+    volatile private static String name;
+    volatile private static Color argb;
+    volatile private static Color argb1;
+    volatile private static ToggleButton lineBtn;
+    volatile private static ToggleButton curveBtn;
+    volatile private static ToggleButton rectBtn;
+    volatile private static ToggleButton squBtn;
+    volatile private static ToggleButton ovalBtn;
+    volatile private static ToggleButton cirBtn;
+    volatile private static ToggleButton textBtn;
+    volatile private static ToggleButton dropBtn;
+    volatile private static ToggleButton dropBtn1;
     
     public static Image getImage(){return crab;}                                // Create Get and Set Methods
     public static void setImage(Image c){crab = c;}
@@ -78,30 +85,52 @@ public class PaintFX extends Application {
     public static void setImage1(Image c){crab1 = c;}
     public static Image getImage2(){return crab2;}
     public static void setImage2(Image c){crab2 = c;}
+    
     public static int getChange(){return change;}
     public static void setChange(int c){change = c;}
     public static int getChange1(){return change1;}
     public static void setChange1(int c){change1 = c;}
     public static int getChange2(){return change2;}
     public static void setChange2(int c){change2 = c;}
+    
     public static int getSelec(){return selec;}
+    public static void setSelec(int c){selec = c;}
+    
     public static String getFileName(){return fileName;}
     public static void setFileName(String c){fileName = c;}
+    public static String getFileName1(){return fileName1;}
+    public static void setFileName1(String c){fileName1 = c;}
+    public static String getFileName2(){return fileName2;}
+    public static void setFileName2(String c){fileName2 = c;}
+    
     public static String getName(){return name;}
     public static void setName(String c){name = c;}
     public static Color getColor(){return argb;}
+    public static void setColor(Color c){argb = c;}
     public static Color getColor1(){return argb1;}
+    public static void setColor1(Color c){argb1 = c;}
     
-    public static void setVariables(double wtemp, double htemp, String fileNameTemp){
+    public static void setVariables(double wtemp, double htemp){
         w = wtemp;
         h = htemp;
-        fileName = fileNameTemp;
     }
     
     public static void main(String[] args) {                                    // Main
         launch(args);
     }
 
+    public static void setButtonSelects(){
+        lineBtn.setSelected(false);                                     // Untoggle button
+        curveBtn.setSelected(false);                                    // Untoggle button
+        rectBtn.setSelected(false);                                     // Untoggle button
+        squBtn.setSelected(false);                                      // Untoggle button
+        ovalBtn.setSelected(false);                                     // Untoggle button
+        cirBtn.setSelected(false);                                      // Untoggle button
+        textBtn.setSelected(false);                                     // Untoggle button
+        dropBtn.setSelected(false);                                     // Untoggle button
+        dropBtn1.setSelected(false);                                    // Untoggle button   
+    }
+    
     @Override
     public void start(Stage primaryStage) throws Exception{                     // Create Stage
         
@@ -173,6 +202,20 @@ public class PaintFX extends Application {
         GraphicsContext gc2 = canvas2.getGraphicsContext2D();                   // Allow graphics on canvas
         ImageView cool2 = new ImageView();                                      // Create new image view
         
+        Image defImg = new Image("default.png");                                // Open user image
+        cool.setFitHeight(0);
+        cool.setFitWidth(0);
+        cool.setImage(defImg);
+        cool.setPreserveRatio(true);                                    // Preserve Image Ratio
+        cool1.setFitHeight(0);
+        cool1.setFitWidth(0);
+        cool1.setImage(defImg);
+        cool1.setPreserveRatio(true);                                    // Preserve Image Ratio
+        cool2.setFitHeight(0);
+        cool2.setFitWidth(0);
+        cool2.setImage(defImg);
+        cool2.setPreserveRatio(true);                                    // Preserve Image Ratio
+        
         TabPane tabPane = new TabPane();                                        // Create Tab Pane
         Tab tab1 = new Tab("Image 1", sp);                                      // Create 3 Tabs
         Tab tab2 = new Tab("Image 2");
@@ -182,7 +225,6 @@ public class PaintFX extends Application {
         tab3.setClosable(false);
         tabPane.getTabs().addAll(tab1, tab2, tab3);                             // Add Tabs to pane
         VBox tabBox = new VBox(tabPane);
-        
         
         ColorPicker colorPicker = new ColorPicker(Color.BLACK);                 // Create a color picker
         HBox hColor = new HBox(colorPicker);
@@ -198,54 +240,56 @@ public class PaintFX extends Application {
         
         CheckBox fillBox = new CheckBox("Fill Shape");                          // Create CheckBox
         
-        ToggleButton lineBtn = new ToggleButton("Line");                        // Create Line toggle button
+        lineBtn = new ToggleButton("Line");                        // Create Line toggle button
         HBox hLine = new HBox(lineBtn);
         Image lineImg = new Image("line.png");
         ImageView lineView = new ImageView(lineImg);
         lineBtn.setGraphic(lineView);
         
-        ToggleButton curveBtn = new ToggleButton("Curve");                      // Create Curve Toggle Button
+        curveBtn = new ToggleButton("Curve");                      // Create Curve Toggle Button
         HBox hCurve = new HBox(curveBtn);
         Image curveImg = new Image("curve.png");
         ImageView curveView = new ImageView(curveImg);
         curveBtn.setGraphic(curveView);
         
-        ToggleButton rectBtn = new ToggleButton("Rectangle");                   // Create Rectangle Toggle Button
+        rectBtn = new ToggleButton("Rectangle");                   // Create Rectangle Toggle Button
         HBox hRect = new HBox(rectBtn);
         Image rectImg = new Image("rectangle.png");
         ImageView rectView = new ImageView(rectImg);
         rectBtn.setGraphic(rectView);
         
-        ToggleButton squBtn = new ToggleButton("Square");                       // Create Square Toggle Button
+        squBtn = new ToggleButton("Square");                       // Create Square Toggle Button
         HBox hSqu = new HBox(squBtn);
         Image squImg = new Image("square.png");
         ImageView squView = new ImageView(squImg);
         squBtn.setGraphic(squView);
         
-        ToggleButton ovalBtn = new ToggleButton("Ellipse");                     // Create Ellipse Toggle Button
+        ovalBtn = new ToggleButton("Ellipse");                     // Create Ellipse Toggle Button
         HBox hOval = new HBox(ovalBtn);
         Image ovalImg = new Image("oval.png");
         ImageView ovalView = new ImageView(ovalImg);
         ovalBtn.setGraphic(ovalView);
         
-        ToggleButton cirBtn = new ToggleButton("Circle");                       // Create Circle Toggle Button
+        cirBtn = new ToggleButton("Circle");                       // Create Circle Toggle Button
         HBox hCir = new HBox(cirBtn);
         Image cirImg = new Image("circle.png");
         ImageView cirView = new ImageView(cirImg);
         cirBtn.setGraphic(cirView);
         
-        ToggleButton textBtn = new ToggleButton("Text");                        // Create Text Toggle Button
+        textBtn = new ToggleButton("Text");                        // Create Text Toggle Button
         HBox hText = new HBox(textBtn);
         
-        ToggleButton dropBtn = new ToggleButton("Color Dropper");               // Create Main Dropper toggle button
+        dropBtn = new ToggleButton("Color Dropper");               // Create Main Dropper toggle button
         HBox hDrop = new HBox(dropBtn);
         Image dropImg = new Image("dropper.png");
         ImageView dropView = new ImageView(dropImg);
         dropBtn.setGraphic(dropView);
         
-        ToggleButton dropBtn1 = new ToggleButton("Color Dropper");              // Create Fill Dropper toggle button
+        dropBtn1 = new ToggleButton("Color Dropper");              // Create Fill Dropper toggle button
         HBox hDrop1 = new HBox(dropBtn1);
-        dropBtn1.setGraphic(dropView);
+        Image dropImg1 = new Image("dropper1.png");
+        ImageView dropView1 = new ImageView(dropImg1);
+        dropBtn1.setGraphic(dropView1);
         
         Button canvasBtn = new Button("Set Size");                              // Create Resize Button
         HBox hCanvas = new HBox(canvasBtn);
@@ -296,7 +340,7 @@ public class PaintFX extends Application {
        
         border.setTop(vBox);                                                    // Set the menu bar at the top of the screen
                
-        coolCrab.getChildren().addAll(canvas);                                  // Add canvas and image to initial screen
+        coolCrab.getChildren().addAll(cool, canvas);                            // Add canvas and image to initial screen
         
         sp.setContent(coolCrab);                                                // Plae in scrollpane
         
@@ -314,84 +358,27 @@ public class PaintFX extends Application {
             ov.setContent(null);                                                // Switch Tab Contents
             coolCrab.getChildren().clear();
             nv.setContent(sp);
-            
-            if(ov == tab1 && nv == tab2){
-                lineBtn.setSelected(false);                                     // Untoggle button
-                curveBtn.setSelected(false);                                    // Untoggle button
-                rectBtn.setSelected(false);                                     // Untoggle button
-                squBtn.setSelected(false);                                      // Untoggle button
-                ovalBtn.setSelected(false);                                     // Untoggle button
-                cirBtn.setSelected(false);                                      // Untoggle button
-                textBtn.setSelected(false);                                     // Untoggle button
-                dropBtn.setSelected(false);                                     // Untoggle button
-                dropBtn1.setSelected(false);                                    // Untoggle button
-                selec = 1;
+
+            if(nv == tab2){
+                setButtonSelects();
+                setVariables(canvas1.getWidth(), canvas1.getHeight());
+                setName(tab2.getText());
+                setSelec(1);
                 coolCrab.getChildren().addAll(cool1, canvas1);
             }
-            else if(ov == tab1 && nv == tab3){
-                lineBtn.setSelected(false);                                     // Untoggle button
-                curveBtn.setSelected(false);                                    // Untoggle button
-                rectBtn.setSelected(false);                                     // Untoggle button
-                squBtn.setSelected(false);                                      // Untoggle button
-                ovalBtn.setSelected(false);                                     // Untoggle button
-                cirBtn.setSelected(false);                                      // Untoggle button
-                textBtn.setSelected(false);                                     // Untoggle button
-                dropBtn.setSelected(false);                                     // Untoggle button
-                dropBtn1.setSelected(false);                                    // Untoggle button
-                selec = 2;
+            else if(nv == tab3){
+                setButtonSelects();
+                setVariables(canvas2.getWidth(), canvas2.getHeight());
+                setName(tab3.getText());
+                setSelec(2);
                 coolCrab.getChildren().addAll(cool2, canvas2);
             }
-            else if(ov == tab2 && nv == tab1){
-                lineBtn.setSelected(false);                                     // Untoggle button
-                curveBtn.setSelected(false);                                    // Untoggle button
-                rectBtn.setSelected(false);                                     // Untoggle button
-                squBtn.setSelected(false);                                      // Untoggle button
-                ovalBtn.setSelected(false);                                     // Untoggle button
-                cirBtn.setSelected(false);                                      // Untoggle button
-                textBtn.setSelected(false);                                     // Untoggle button
-                dropBtn.setSelected(false);                                     // Untoggle button
-                dropBtn1.setSelected(false);                                    // Untoggle button
-                selec = 0;
+            else if(nv == tab1){
+                setButtonSelects();
+                setVariables(canvas.getWidth(), canvas.getHeight());
+                setName(tab1.getText());
+                setSelec(0);
                 coolCrab.getChildren().addAll(cool, canvas);
-            }
-            else if(ov == tab2 && nv == tab3){
-                lineBtn.setSelected(false);                                     // Untoggle button
-                curveBtn.setSelected(false);                                    // Untoggle button
-                rectBtn.setSelected(false);                                     // Untoggle button
-                squBtn.setSelected(false);                                      // Untoggle button
-                ovalBtn.setSelected(false);                                     // Untoggle button
-                cirBtn.setSelected(false);                                      // Untoggle button
-                textBtn.setSelected(false);                                     // Untoggle button
-                dropBtn.setSelected(false);                                     // Untoggle button
-                dropBtn1.setSelected(false);                                    // Untoggle button
-                selec = 2;
-                coolCrab.getChildren().addAll(cool2, canvas2);
-            }
-            else if(ov == tab3 && nv == tab1){
-                lineBtn.setSelected(false);                                     // Untoggle button
-                curveBtn.setSelected(false);                                    // Untoggle button
-                rectBtn.setSelected(false);                                     // Untoggle button
-                squBtn.setSelected(false);                                      // Untoggle button
-                ovalBtn.setSelected(false);                                     // Untoggle button
-                cirBtn.setSelected(false);                                      // Untoggle button
-                textBtn.setSelected(false);                                     // Untoggle button
-                dropBtn.setSelected(false);                                     // Untoggle button
-                dropBtn1.setSelected(false);                                    // Untoggle button
-                selec = 0;
-                coolCrab.getChildren().addAll(cool, canvas);
-            }
-            else if(ov == tab3 && nv == tab2){
-                lineBtn.setSelected(false);                                     // Untoggle button
-                curveBtn.setSelected(false);                                    // Untoggle button
-                rectBtn.setSelected(false);                                     // Untoggle button
-                squBtn.setSelected(false);                                      // Untoggle button
-                ovalBtn.setSelected(false);                                     // Untoggle button
-                cirBtn.setSelected(false);                                      // Untoggle button
-                textBtn.setSelected(false);                                     // Untoggle button
-                dropBtn.setSelected(false);                                     // Untoggle button
-                dropBtn1.setSelected(false);                                    // Untoggle button
-                selec = 1;
-                coolCrab.getChildren().addAll(cool1, canvas1);
             }
             else{
                 System.out.println("Tab Error");
@@ -408,16 +395,7 @@ public class PaintFX extends Application {
                 hold1 = 1;
             }
             else{                                                               // If shown, hide
-                lineBtn.setSelected(false);                                     // Untoggle button
-                curveBtn.setSelected(false);                                    // Untoggle button
-                rectBtn.setSelected(false);                                     // Untoggle button
-                squBtn.setSelected(false);                                      // Untoggle button
-                ovalBtn.setSelected(false);                                     // Untoggle button
-                cirBtn.setSelected(false);                                      // Untoggle button
-                textBtn.setSelected(false);                                     // Untoggle button
-                dropBtn.setSelected(false);                                     // Untoggle button
-                dropBtn1.setSelected(false);                                    // Untoggle button
-                lineHandler.setHold(2);                                         // Break out of tools
+                setButtonSelects();
                 curveHandler.setHold(1);
                 rectangleHandler.setHold(2);
                 squareHandler.setHold(2);
@@ -508,12 +486,6 @@ public class PaintFX extends Application {
             
                 canvas.setWidth(w);                                             // Set Canvas to new Size
                 canvas.setHeight(h);
-
-                if(primaryStage.isMaximized()){}                                // If window is minimized
-                else{
-                    primaryStage.setWidth(w+200);                               // Set window to slightly larger than image
-                    primaryStage.setHeight(h+200);
-                }
             }
             else if(selec == 1){
                 cool1.setFitWidth(Integer.parseInt(canW.getText()));            // Set image dimensions entered size
@@ -525,12 +497,6 @@ public class PaintFX extends Application {
             
                 canvas1.setWidth(w);                                            // Set Canvas to new Size
                 canvas1.setHeight(h);
-
-                if(primaryStage.isMaximized()){}                                // If window is minimized
-                else{
-                    primaryStage.setWidth(w+200);                               // Set window to slightly larger than image
-                    primaryStage.setHeight(h+200);
-                }
             }
             else if(selec == 2){
                 cool2.setFitWidth(Integer.parseInt(canW.getText()));            // Set image dimensions entered size
@@ -542,12 +508,6 @@ public class PaintFX extends Application {
             
                 canvas2.setWidth(w);                                            // Set Canvas to new Size
                 canvas2.setHeight(h);
-
-                if(primaryStage.isMaximized()){}                                // If window is minimized
-                else{
-                    primaryStage.setWidth(w+200);                               // Set window to slightly larger than image
-                    primaryStage.setHeight(h+200);
-                }
             }
         });
         
@@ -563,151 +523,17 @@ public class PaintFX extends Application {
                 hold2 = 0;
             }
         });
+                                                                                // Create Handers for Color Droppers
+        dropBtn.setOnAction(new dropBtnHandler(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2));
+        dropBtn1.setOnAction(new dropBtn1Handler(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2));
         
-        dropBtn.setOnAction(e -> {                                              // If main dropper button pushed
-            if(selec == 0){                                                     
-                canvas.setOnMouseClicked((event) ->{                            // When mouse clicked
-                    Bounds bnd = cool.getBoundsInParent();                      // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-                    WritableImage wim = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
-                    SnapshotParameters sP = new SnapshotParameters();           // Set the snapshot viewport and set to coordinates of image
-                    sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
-                    sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
-                    coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
-                    
-                    double x = event.getX();                                    // Record Coordinates
-                    double y = event.getY();
-                    if((wim.getPixelReader().getColor((int)x, (int)y)) == Color.TRANSPARENT){
-                        PixelReader r = crab.getPixelReader();                  // If canvas transparent, grab image color
-                        argb = r.getColor((int)x, (int)y);
-                    }
-                    else{
-                        argb = wim.getPixelReader().getColor((int)x, (int)y);   // If not, grab canvas color
-                    }
-                });
-            }
-            else if(selec == 1){                                                
-                canvas1.setOnMouseClicked((event) ->{                           // When mouse clicked
-                    Bounds bnd = cool1.getBoundsInParent();                     // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-                    WritableImage wim = new WritableImage((int)canvas1.getWidth(), (int)canvas1.getHeight());
-                    SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
-                    sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
-                    sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
-                    coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
-                    
-                    double x = event.getX();                                    // Record Coordinates
-                    double y = event.getY();
-                    if((wim.getPixelReader().getColor((int)x, (int)y)) == Color.TRANSPARENT){
-                        PixelReader r = crab1.getPixelReader();                 // If canvas transparent, grab image color
-                        argb = r.getColor((int)x, (int)y);
-                    }
-                    else{
-                        argb = wim.getPixelReader().getColor((int)x, (int)y);   // If not, grab canvas color
-                    }
-                });
-            }
-            else if(selec == 2){                                                
-                canvas2.setOnMouseClicked((event) ->{                           // When mouse clicked
-                    Bounds bnd = cool2.getBoundsInParent();                     // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-                    WritableImage wim = new WritableImage((int)canvas2.getWidth(), (int)canvas2.getHeight());
-                    SnapshotParameters sP = new SnapshotParameters();           // Set the snapshot viewport and set to coordinates of image
-                    sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
-                    sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
-                    coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
-                    
-                    double x = event.getX();                                    // Record Coordinates
-                    double y = event.getY();
-                    if((wim.getPixelReader().getColor((int)x, (int)y)) == Color.TRANSPARENT){
-                        PixelReader r = crab2.getPixelReader();                 // If canvas transparent, grab image color
-                        argb = r.getColor((int)x, (int)y);
-                    }
-                    else{
-                        argb = wim.getPixelReader().getColor((int)x, (int)y);   // If not, grab canvas color
-                    }
-                });
-            }
-            else{                                                               
-                System.out.println("Dropper Button Error");
-            }
-        });
-        
-        dropBtn1.setOnAction(e -> {                                             // If fill dropper button pushed
-            if(selec == 0){                                                     
-                canvas.setOnMouseClicked((event) ->{                            // When mouse clicked
-                    Bounds bnd = cool.getBoundsInParent();                      // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-                    WritableImage wim = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
-                    SnapshotParameters sP = new SnapshotParameters();           // Set the snapshot viewport and set to coordinates of image
-                    sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
-                    sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
-                    coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
-                    
-                    double x = event.getX();                                    // Record Coordinates
-                    double y = event.getY();
-                    if((wim.getPixelReader().getColor((int)x, (int)y)) == Color.TRANSPARENT){
-                        PixelReader r = crab.getPixelReader();                  // If canvas transparent, grab image color
-                        argb1 = r.getColor((int)x, (int)y);
-                    }
-                    else{
-                        argb1 = wim.getPixelReader().getColor((int)x, (int)y);  // If not, grab canvas color
-                    }
-                });
-            }
-            else if(selec == 1){                                                
-                canvas1.setOnMouseClicked((event) ->{                           // When mouse clicked
-                    Bounds bnd = cool1.getBoundsInParent();                     // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-                    WritableImage wim = new WritableImage((int)canvas1.getWidth(), (int)canvas1.getHeight());
-                    SnapshotParameters sP = new SnapshotParameters();           // Set the snapshot viewport and set to coordinates of image
-                    sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
-                    sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
-                    coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
-                    
-                    double x = event.getX();                                    // Record Coordinates
-                    double y = event.getY();
-                    if((wim.getPixelReader().getColor((int)x, (int)y)) == Color.TRANSPARENT){
-                        PixelReader r = crab1.getPixelReader();                 // If canvas transparent, grab image color
-                        argb1 = r.getColor((int)x, (int)y);
-                    }
-                    else{
-                        argb1 = wim.getPixelReader().getColor((int)x, (int)y);  // If not, grab canvas color
-                    }
-                });
-            }
-            else if(selec == 2){                                                
-                canvas2.setOnMouseClicked((event) ->{                           // When mouse clicked
-                    Bounds bnd = cool2.getBoundsInParent();                     // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-                    WritableImage wim = new WritableImage((int)canvas2.getWidth(), (int)canvas2.getHeight());
-                    SnapshotParameters sP = new SnapshotParameters();           // Set the snapshot viewport and set to coordinates of image
-                    sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
-                    sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
-                    coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
-                    
-                    double x = event.getX();                                    // Record Coordinates
-                    double y = event.getY();
-                    if((wim.getPixelReader().getColor((int)x, (int)y)) == Color.TRANSPARENT){
-                        PixelReader r = crab2.getPixelReader();                 // If canvas transparent, grab image color
-                        argb1 = r.getColor((int)x, (int)y);
-                    }
-                    else{
-                        argb1 = wim.getPixelReader().getColor((int)x, (int)y);  // If not, grab canvas color
-                    }
-                });
-            }
-            else{                                                               
-                System.out.println("Dropper Button Error");
-            }
-        });
                                                                                 // Create Event Handlers for tools
         lineBtn.setOnAction(new lineHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, widthText, lineBtn, primaryStage, tabPane, dropBtn));
-        
         curveBtn.setOnAction(new curveHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, widthText, curveBtn, primaryStage, tabPane, dropBtn));
-        
         rectBtn.setOnAction(new rectangleHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, fillPick, widthText, rectBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
-        
         squBtn.setOnAction(new squareHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, fillPick, widthText, squBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
-        
         ovalBtn.setOnAction(new ovalHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, fillPick, widthText, ovalBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
-        
         cirBtn.setOnAction(new circleHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, fillPick, widthText, cirBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
-        
         textBtn.setOnAction(new textHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, widthText, textBtn, primaryStage, tabPane, dropBtn, enteredText));
         
         menuClear.setOnAction(e -> {                                            // If Clear Canvas button is pushed
@@ -726,9 +552,7 @@ public class PaintFX extends Application {
         });
                                                                                 // Create Menu Action Handlers
         menuSave.setOnAction(new saveHandler(cool, cool1, cool2 , coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane)); 
-        
         menuSaveAs.setOnAction(new saveAsHandler(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane)); 
-        
         primaryStage.setOnCloseRequest(new exitHandler(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane));
         
         menuExit.setOnAction(e -> {                                             // If exit button is pushed
