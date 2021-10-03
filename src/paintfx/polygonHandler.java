@@ -15,12 +15,13 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class circleHandler implements EventHandler<ActionEvent> {
+public class polygonHandler implements EventHandler<ActionEvent> {
 
     public StackPane coolCrab;
     public ColorPicker colorPicker;
     public ColorPicker fillPick;
     public TextField widthText;
+    public TextField pointText;
     public ToggleButton rectBtn;
     public ToggleButton dropBtn;
     public ToggleButton dropBtn1;
@@ -40,12 +41,13 @@ public class circleHandler implements EventHandler<ActionEvent> {
         hold = h;
     }
     
-    public circleHandler(StackPane coolCrab, ColorPicker colorPicker, ColorPicker fillPick, TextField widthText, ToggleButton rectBtn, Stage primaryStage, TabPane tabPane, CheckBox fillBox, ToggleButton dropBtn, ToggleButton dropBtn1){
+    public polygonHandler(StackPane coolCrab, ColorPicker colorPicker, ColorPicker fillPick, TextField widthText, TextField pointText, ToggleButton rectBtn, Stage primaryStage, TabPane tabPane, CheckBox fillBox, ToggleButton dropBtn, ToggleButton dropBtn1){
 
         this.coolCrab = coolCrab;
         this.colorPicker = colorPicker;
         this.fillPick = fillPick;
         this.widthText = widthText;
+        this.pointText = pointText;
         this.rectBtn = rectBtn;
         this.primaryStage = primaryStage;
         this.tabPane = tabPane;
@@ -67,7 +69,6 @@ public class circleHandler implements EventHandler<ActionEvent> {
         eraserHandler.setHold(2);
         rRectangleHandler.setHold(2);
         textHandler.setHold(1);
-        polygonHandler.setHold(2);
         
         Canvas canTemp = new Canvas(PaintFX.getW(), PaintFX.getH());                                       // Create Canvas
         GraphicsContext gcTemp = canTemp.getGraphicsContext2D();
@@ -123,14 +124,30 @@ public class circleHandler implements EventHandler<ActionEvent> {
                 }
                 gcTemp.setLineWidth(lineWidth);                                     // Set circle to desired width
                 
+                int n = Integer.parseInt(pointText.getText());          // Convert width text to integer
+                if(n < 3){
+                    pointText.setText("3");
+                    n = 3;
+                }
+                
                 if((x2 < x1) && (y2 < y1)){
                     width = x1-x2;
                     height = y1-y2;
                     if(width < height){height = width;}
                     else{width = height;}
-                    gcTemp.strokeOval(x2, y2, width, height);                       // Create circle between user selected points
+                    
+                    double[] x = new double[n];
+                    double[] y = new double[n];
+                    double r = width/2;
+                    
+                    for (int i = 0; i < n; i++) {
+                        x[i] = x2 + r * Math.cos(2 * Math.PI * i / n);
+                        y[i] = y2 + r * Math.sin(2 * Math.PI * i / n);
+                    }
+                    
+                    gcTemp.strokePolygon(x, y, n);                       // Create circle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x2, y2, width, height);                     // Create circle between user selected points
+                        gcTemp.fillPolygon(x, y, n);                     // Create circle between user selected points
                     }
                 }
                 else if(y2 < y1){
@@ -138,19 +155,39 @@ public class circleHandler implements EventHandler<ActionEvent> {
                     height = y1-y2;
                     if(width < height){height = width;}
                     else{width = height;}
-                    gcTemp.strokeOval(x1, y2, width, height);                       // Create circle between user selected points
+                    
+                    double[] x = new double[n];
+                    double[] y = new double[n];
+                    double r = width/2;
+                    
+                    for (int i = 0; i < n; i++) {
+                        x[i] = x1 + r * Math.cos(2 * Math.PI * i / n);
+                        y[i] = y2 + r * Math.sin(2 * Math.PI * i / n);
+                    }
+                    
+                    gcTemp.strokePolygon(x, y, n);                       // Create circle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x1, y2, width, height);                     // Create circle between user selected points
-                    }  
+                        gcTemp.fillPolygon(x, y, n);                     // Create circle between user selected points
+                    }
                 }
                 else if(x2 < x1){
                     width = x1-x2;
                     height = y2-y1;
                     if(width < height){height = width;}
                     else{width = height;}
-                    gcTemp.strokeOval(x2, y1, width, height);                       // Create circle between user selected points
+                    
+                    double[] x = new double[n];
+                    double[] y = new double[n];
+                    double r = width/2;
+                    
+                    for (int i = 0; i < n; i++) {
+                        x[i] = x2 + r * Math.cos(2 * Math.PI * i / n);
+                        y[i] = y1 + r * Math.sin(2 * Math.PI * i / n);
+                    }
+                    
+                    gcTemp.strokePolygon(x, y, n);                       // Create circle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x2, y1, width, height);
+                        gcTemp.fillPolygon(x, y, n);                     // Create circle between user selected points
                     }
                 }
                 else{
@@ -158,16 +195,28 @@ public class circleHandler implements EventHandler<ActionEvent> {
                     height = y2-y1;
                     if(width < height){height = width;}
                     else{width = height;}
-                    gcTemp.strokeOval(x1, y1, width, height);                       // Create circle between user selected points
+                    
+                    double[] x = new double[n];
+                    double[] y = new double[n];
+                    double r = width/2;
+                    
+                    for (int i = 0; i < n; i++) {
+                        x[i] = x1 + r * Math.cos(2 * Math.PI * i / n);
+                        y[i] = y1 + r * Math.sin(2 * Math.PI * i / n);
+                    }
+                    
+                    gcTemp.strokePolygon(x, y, n);                       // Create circle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x1, y1, width, height);
+                        gcTemp.fillPolygon(x, y, n);                     // Create circle between user selected points
                     }
                 }
             }
         });
         
         canTemp.setOnMouseReleased((event) ->{
-            if(hold == 0){
+           if(hold == 0){                                                 // 2nd time
+                gcTemp.clearRect(canTemp.getLayoutBounds().getMinX(), canTemp.getLayoutBounds().getMinY(), canTemp.getWidth(), canTemp.getHeight());
+                gcTemp.drawImage(image, 0, 0);
                 x2 = event.getX();                                              // Record Coordinates
                 y2 = event.getY();
                 hold = 2;
@@ -189,15 +238,31 @@ public class circleHandler implements EventHandler<ActionEvent> {
                     widthText.setText("1");
                 }
                 gcTemp.setLineWidth(lineWidth);                                     // Set circle to desired width
-
+                
+                int n = Integer.parseInt(pointText.getText());          // Convert width text to integer
+                if(n < 3){
+                    pointText.setText("3");
+                    n = 3;
+                }
+                
                 if((x2 < x1) && (y2 < y1)){
                     width = x1-x2;
                     height = y1-y2;
                     if(width < height){height = width;}
                     else{width = height;}
-                    gcTemp.strokeOval(x2, y2, width, height);                       // Create circle between user selected points
+                    
+                    double[] x = new double[n];
+                    double[] y = new double[n];
+                    double r = width/2;
+                    
+                    for (int i = 0; i < n; i++) {
+                        x[i] = x2 + r * Math.cos(2 * Math.PI * i / n);
+                        y[i] = y2 + r * Math.sin(2 * Math.PI * i / n);
+                    }
+                    
+                    gcTemp.strokePolygon(x, y, n);                       // Create circle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x2, y2, width, height);                     // Create circle between user selected points
+                        gcTemp.fillPolygon(x, y, n);                     // Create circle between user selected points
                     }
                 }
                 else if(y2 < y1){
@@ -205,19 +270,39 @@ public class circleHandler implements EventHandler<ActionEvent> {
                     height = y1-y2;
                     if(width < height){height = width;}
                     else{width = height;}
-                    gcTemp.strokeOval(x1, y2, width, height);                       // Create circle between user selected points
+                    
+                    double[] x = new double[n];
+                    double[] y = new double[n];
+                    double r = width/2;
+                    
+                    for (int i = 0; i < n; i++) {
+                        x[i] = x1 + r * Math.cos(2 * Math.PI * i / n);
+                        y[i] = y2 + r * Math.sin(2 * Math.PI * i / n);
+                    }
+                    
+                    gcTemp.strokePolygon(x, y, n);                       // Create circle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x1, y2, width, height);                     // Create circle between user selected points
-                    }  
+                        gcTemp.fillPolygon(x, y, n);                     // Create circle between user selected points
+                    }
                 }
                 else if(x2 < x1){
                     width = x1-x2;
                     height = y2-y1;
                     if(width < height){height = width;}
                     else{width = height;}
-                    gcTemp.strokeOval(x2, y1, width, height);                       // Create circle between user selected points
+                    
+                    double[] x = new double[n];
+                    double[] y = new double[n];
+                    double r = width/2;
+                    
+                    for (int i = 0; i < n; i++) {
+                        x[i] = x2 + r * Math.cos(2 * Math.PI * i / n);
+                        y[i] = y1 + r * Math.sin(2 * Math.PI * i / n);
+                    }
+                    
+                    gcTemp.strokePolygon(x, y, n);                       // Create circle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x2, y1, width, height);
+                        gcTemp.fillPolygon(x, y, n);                     // Create circle between user selected points
                     }
                 }
                 else{
@@ -225,9 +310,19 @@ public class circleHandler implements EventHandler<ActionEvent> {
                     height = y2-y1;
                     if(width < height){height = width;}
                     else{width = height;}
-                    gcTemp.strokeOval(x1, y1, width, height);                       // Create circle between user selected points
+                    
+                    double[] x = new double[n];
+                    double[] y = new double[n];
+                    double r = width/2;
+                    
+                    for (int i = 0; i < n; i++) {
+                        x[i] = x1 + r * Math.cos(2 * Math.PI * i / n);
+                        y[i] = y1 + r * Math.sin(2 * Math.PI * i / n);
+                    }
+                    
+                    gcTemp.strokePolygon(x, y, n);                       // Create circle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x1, y1, width, height);
+                        gcTemp.fillPolygon(x, y, n);                     // Create circle between user selected points
                     }
                 }
 
@@ -256,7 +351,7 @@ public class circleHandler implements EventHandler<ActionEvent> {
                     }
                     PaintFX.canvas2Push(canTemp);
                 }
-            }
+            } 
         });
     }
 }

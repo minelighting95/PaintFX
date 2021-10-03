@@ -124,12 +124,30 @@ public class openHandler implements EventHandler<ActionEvent> {
             coolCrab.getChildren().clear();                                     // Remove previous image
             
             if(PaintFX.getSelec() == 0){
+                PaintFX.canvasClear();
+                PaintFX.redoClear();
+                PaintFX.coolClear();
+                PaintFX.recoolClear();
+                PaintFX.canvasPush(canvas);
+                PaintFX.coolPush(cool);
                 coolCrab.getChildren().addAll(cool, canvas);                    // Add new image
             }
             else if(PaintFX.getSelec() == 1){
+                PaintFX.canvas1Clear();
+                PaintFX.redo1Clear();
+                PaintFX.recool1Clear();
+                PaintFX.cool1Clear();
+                PaintFX.canvas1Push(canvas1);
+                PaintFX.cool1Push(cool1);
                 coolCrab.getChildren().addAll(cool1, canvas1);                  // Add new image
             }
             else if(PaintFX.getSelec() == 2){
+                PaintFX.canvas2Clear();
+                PaintFX.redo2Clear();
+                PaintFX.recool2Clear();
+                PaintFX.cool2Clear();
+                PaintFX.canvas2Push(canvas2);
+                PaintFX.cool2Push(cool2);
                 coolCrab.getChildren().addAll(cool2, canvas2);                  // Add new image
             }
             else{
@@ -209,7 +227,7 @@ public class openHandler implements EventHandler<ActionEvent> {
 
                 @Override
                 public void handle(ActionEvent a) {
-                    saveHandler.save(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
+                    saveHandler.save(coolCrab, primaryStage, tabPane);
                     saveWarnWindow.close();                                     // Save and Exit window
                     open();
                     }
@@ -270,7 +288,7 @@ public class openHandler implements EventHandler<ActionEvent> {
 
                 @Override
                 public void handle(ActionEvent a) {
-                    saveHandler.save(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
+                    saveHandler.save(coolCrab, primaryStage, tabPane);
                     saveWarnWindow.close();                                     // Save Exit window
                     open();
                     }
@@ -331,7 +349,7 @@ public class openHandler implements EventHandler<ActionEvent> {
 
                 @Override
                 public void handle(ActionEvent a) {
-                    saveHandler.save(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
+                    saveHandler.save(coolCrab, primaryStage, tabPane);
                     saveWarnWindow.close();                                     // Save and Exit window
                     open();
                     }

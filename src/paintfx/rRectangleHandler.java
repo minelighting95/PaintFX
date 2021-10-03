@@ -15,7 +15,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class ovalHandler implements EventHandler<ActionEvent> {
+public class rRectangleHandler implements EventHandler<ActionEvent> {
 
     public StackPane coolCrab;
     public ColorPicker colorPicker;
@@ -38,7 +38,7 @@ public class ovalHandler implements EventHandler<ActionEvent> {
         hold = h;
     }
     
-    public ovalHandler(StackPane coolCrab, ColorPicker colorPicker, ColorPicker fillPick, TextField widthText, ToggleButton rectBtn, Stage primaryStage, TabPane tabPane, CheckBox fillBox, ToggleButton dropBtn, ToggleButton dropBtn1){
+    public rRectangleHandler(StackPane coolCrab, ColorPicker colorPicker, ColorPicker fillPick, TextField widthText, ToggleButton rectBtn, Stage primaryStage, TabPane tabPane, CheckBox fillBox, ToggleButton dropBtn, ToggleButton dropBtn1){
 
         this.coolCrab = coolCrab;
         this.colorPicker = colorPicker;
@@ -56,14 +56,13 @@ public class ovalHandler implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent a) {
           
-        hold = 0;                                                               // Set Holds
+        hold = 0;
         lineHandler.setHold(2);
         curveHandler.setHold(1);
         squareHandler.setHold(2);
-        rectangleHandler.setHold(2);
+        ovalHandler.setHold(2);
         circleHandler.setHold(2);
         eraserHandler.setHold(2);
-        rRectangleHandler.setHold(2);
         textHandler.setHold(1);
         polygonHandler.setHold(2);
         
@@ -106,94 +105,93 @@ public class ovalHandler implements EventHandler<ActionEvent> {
                     gcTemp.setStroke(PaintFX.getColor());
                 }
                 else{
-                    gcTemp.setStroke(colorPicker.getValue());                       // Set Ellipse Color to selected value
+                    gcTemp.setStroke(colorPicker.getValue());                       // Set Rectangle Color to selected value
                 }
                 if(dropBtn1.isSelected()){                                      // Get Fill Color
                     gcTemp.setFill(PaintFX.getColor1());
                 }
                 else{
-                    gcTemp.setFill(fillPick.getValue());                            // Set Ellipse Color to selected value
+                    gcTemp.setFill(fillPick.getValue());                            // Set Line Color to selected value
                 }
                 int lineWidth = Integer.parseInt(widthText.getText());          // Convert width text to integer
                 if(lineWidth <= 0){                                             // If invalid value,
                     lineWidth = 1;                                              // Set to width = 1
                     widthText.setText("1");
                 }
-                gcTemp.setLineWidth(lineWidth);                                     // Set line to desired width
+                gcTemp.setLineWidth(lineWidth);                                     // Set rectangle to desired width
                 
                 if((x2 < x1) && (y2 < y1)){
-                    gcTemp.strokeOval(x2, y2, x1-x2, y1-y2);                        // Create ellipse between user selected points
+                    gcTemp.strokeRoundRect(x2, y2, x1-x2, y1-y2, 20, 20);                        // Create rectangle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x2, y2, x1-x2, y1-y2);                      // Create ellipse between user selected points
+                        gcTemp.fillRoundRect(x2, y2, x1-x2, y1-y2, 20, 20);                      // Create rectangle between user selected points
                     }
                 }
                 else if(y2 < y1){
-                    gcTemp.strokeOval(x1, y2, x2-x1, y1-y2);                        // Create ellipse between user selected points
+                    gcTemp.strokeRoundRect(x1, y2, x2-x1, y1-y2, 20, 20);                        // Create rectangle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x1, y2, x2-x1, y1-y2);                      // Create ellipse between user selected points
+                        gcTemp.fillRoundRect(x1, y2, x2-x1, y1-y2, 20, 20);                      // Create rectangle between user selected points
                     }  
                 }
                 else if(x2 < x1){
-                    gcTemp.strokeOval(x2, y1, x1-x2, y2-y1);                        // Create ellipse between user selected points
+                    gcTemp.strokeRoundRect(x2, y1, x1-x2, y2-y1, 20, 20);                        // Create rectangle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x2, y1, x1-x2, y2-y1);
+                        gcTemp.fillRoundRect(x2, y1, x1-x2, y2-y1, 20, 20);
                     }
                 }
                 else{
-                    gcTemp.strokeOval(x1, y1, x2-x1, y2-y1);                        // Create ellipse between user selected points
+                    gcTemp.strokeRoundRect(x1, y1, x2-x1, y2-y1, 20, 20);                        // Create rectangle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x1, y1, x2-x1, y2-y1);
+                        gcTemp.fillRoundRect(x1, y1, x2-x1, y2-y1, 20, 20);
                     }
                 }
             }
         });
         
         canTemp.setOnMouseReleased((event) ->{
-           if(hold == 0){                                                 // 2nd time
+            if(hold == 0){                                                 // 2nd time
                 x2 = event.getX();                                              // Record Coordinates
                 y2 = event.getY();
-                hold = 2;
                 if(dropBtn.isSelected()){                                       // Get Color
                     gcTemp.setStroke(PaintFX.getColor());
                 }
                 else{
-                    gcTemp.setStroke(colorPicker.getValue());                       // Set Ellipse Color to selected value
+                    gcTemp.setStroke(colorPicker.getValue());                       // Set Rectangle Color to selected value
                 }
                 if(dropBtn1.isSelected()){                                      // Get Fill Color
                     gcTemp.setFill(PaintFX.getColor1());
                 }
                 else{
-                    gcTemp.setFill(fillPick.getValue());                            // Set Ellipse Color to selected value
+                    gcTemp.setFill(fillPick.getValue());                            // Set Line Color to selected value
                 }
                 int lineWidth = Integer.parseInt(widthText.getText());          // Convert width text to integer
                 if(lineWidth <= 0){                                             // If invalid value,
                     lineWidth = 1;                                              // Set to width = 1
                     widthText.setText("1");
                 }
-                gcTemp.setLineWidth(lineWidth);                                     // Set line to desired width
+                gcTemp.setLineWidth(lineWidth);                                     // Set rectangle to desired width
                 
                 if((x2 < x1) && (y2 < y1)){
-                    gcTemp.strokeOval(x2, y2, x1-x2, y1-y2);                        // Create ellipse between user selected points
+                    gcTemp.strokeRoundRect(x2, y2, x1-x2, y1-y2, 20, 20);                        // Create rectangle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x2, y2, x1-x2, y1-y2);                      // Create ellipse between user selected points
+                        gcTemp.fillRoundRect(x2, y2, x1-x2, y1-y2, 20, 20);                      // Create rectangle between user selected points
                     }
                 }
                 else if(y2 < y1){
-                    gcTemp.strokeOval(x1, y2, x2-x1, y1-y2);                        // Create ellipse between user selected points
+                    gcTemp.strokeRoundRect(x1, y2, x2-x1, y1-y2, 20, 20);                        // Create rectangle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x1, y2, x2-x1, y1-y2);                      // Create ellipse between user selected points
+                        gcTemp.fillRoundRect(x1, y2, x2-x1, y1-y2, 20, 20);                      // Create rectangle between user selected points
                     }  
                 }
                 else if(x2 < x1){
-                    gcTemp.strokeOval(x2, y1, x1-x2, y2-y1);                        // Create ellipse between user selected points
+                    gcTemp.strokeRoundRect(x2, y1, x1-x2, y2-y1, 20, 20);                        // Create rectangle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x2, y1, x1-x2, y2-y1);
+                        gcTemp.fillRoundRect(x2, y1, x1-x2, y2-y1, 20, 20);
                     }
                 }
                 else{
-                    gcTemp.strokeOval(x1, y1, x2-x1, y2-y1);                        // Create ellipse between user selected points
+                    gcTemp.strokeRoundRect(x1, y1, x2-x1, y2-y1, 20, 20);                        // Create rectangle between user selected points
                     if(fillBox.isSelected()){
-                        gcTemp.fillOval(x1, y1, x2-x1, y2-y1);
+                        gcTemp.fillRoundRect(x1, y1, x2-x1, y2-y1, 20, 20);
                     }
                 }
 
@@ -222,7 +220,7 @@ public class ovalHandler implements EventHandler<ActionEvent> {
                     }
                     PaintFX.canvas2Push(canTemp);
                 }
-            } 
+            }
         });
     }
 }

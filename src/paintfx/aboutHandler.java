@@ -39,7 +39,7 @@ public class aboutHandler implements EventHandler<ActionEvent> {
             
             about.add(logoIm, 0, 1);                                            // Add Image to left box
             
-            Text info = new Text("PaintFX v1.2.0\n"                             // Create about text
+            Text info = new Text("PaintFX v1.3.0\n"                             // Create about text
                     + "Sept. 18, 2021\n\n"
                     + "Programmed by Alex Appel\n"
                     + "CS 250 Paint Project\n");                               

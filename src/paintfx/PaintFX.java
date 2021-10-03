@@ -1,5 +1,6 @@
 package PaintFX;
 
+import java.util.Stack;
 import static javafx.application.Application.launch;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -44,15 +45,15 @@ import javafx.stage.Stage;
 /*   Purpose:                                                           */
 /*   Create a Microsoft Paint-like JavaFX program.                      */
 /*                                                                      */
-/*   Version: 1.2.1                                                     */
+/*   Version: 1.3.0                                                     */
 /*   Notes: See PaintFX_Release_Notes.txt                               */
 /*                                                                      */
 /* ******************************************************************** */
 
 public class PaintFX extends Application {
 
-    volatile private static double w = 800;                                             // Create default variables
-    volatile private static double h = 600;
+    volatile private static double w = 1000;                                             // Create default variables
+    volatile private static double h = 800;
     volatile private static String fileName;
     volatile private static String fileName1;
     volatile private static String fileName2;
@@ -69,6 +70,14 @@ public class PaintFX extends Application {
     volatile private static String name;
     volatile private static Color argb;
     volatile private static Color argb1;
+    volatile private static Canvas canvas;
+    volatile private static Canvas canvas1;
+    volatile private static Canvas canvas2;
+    volatile private static ImageView cool;
+    volatile private static ImageView cool1;
+    volatile private static ImageView cool2;
+    volatile private static TabPane tabPane;
+    volatile private static StackPane coolCrab;
     volatile private static ToggleButton lineBtn;
     volatile private static ToggleButton curveBtn;
     volatile private static ToggleButton rectBtn;
@@ -78,6 +87,21 @@ public class PaintFX extends Application {
     volatile private static ToggleButton textBtn;
     volatile private static ToggleButton dropBtn;
     volatile private static ToggleButton dropBtn1;
+    volatile private static ToggleButton eraserBtn;
+    volatile private static ToggleButton rRectBtn;
+    volatile private static ToggleButton polyBtn;
+    volatile private static Stack<Canvas> canvasStack;
+    volatile private static Stack<Canvas> canvas1Stack;
+    volatile private static Stack<Canvas> canvas2Stack;
+    volatile private static Stack<Canvas> redoStack;
+    volatile private static Stack<Canvas> redo1Stack;
+    volatile private static Stack<Canvas> redo2Stack;
+    volatile private static Stack<ImageView> coolStack;
+    volatile private static Stack<ImageView> cool1Stack;
+    volatile private static Stack<ImageView> cool2Stack;
+    volatile private static Stack<ImageView> recoolStack;
+    volatile private static Stack<ImageView> recool1Stack;
+    volatile private static Stack<ImageView> recool2Stack;
     
     public static Image getImage(){return crab;}                                // Create Get and Set Methods
     public static void setImage(Image c){crab = c;}
@@ -85,6 +109,9 @@ public class PaintFX extends Application {
     public static void setImage1(Image c){crab1 = c;}
     public static Image getImage2(){return crab2;}
     public static void setImage2(Image c){crab2 = c;}
+    
+    public static double getW(){return w;}
+    public static double getH(){return h;}
     
     public static int getChange(){return change;}
     public static void setChange(int c){change = c;}
@@ -110,6 +137,66 @@ public class PaintFX extends Application {
     public static Color getColor1(){return argb1;}
     public static void setColor1(Color c){argb1 = c;}
     
+    public static Canvas canvasPeek(){return canvasStack.peek();}
+    public static void canvasPush(Canvas g){canvasStack.push(g);}
+    public static void canvasPop(){canvasStack.pop();}
+    public static void canvasClear(){canvasStack.clear();}
+    
+    public static Canvas canvas1Peek(){return canvas1Stack.peek();}
+    public static void canvas1Push(Canvas g){canvas1Stack.push(g);}
+    public static void canvas1Pop(){canvas1Stack.pop();}
+    public static void canvas1Clear(){canvas1Stack.clear();}
+    
+    public static Canvas canvas2Peek(){return canvas2Stack.peek();}
+    public static void canvas2Push(Canvas g){canvas2Stack.push(g);}
+    public static void canvas2Pop(){canvas2Stack.pop();}
+    public static void canvas2Clear(){canvas2Stack.clear();}
+    
+    public static Canvas redoPeek(){return redoStack.peek();}
+    public static void redoPush(Canvas g){redoStack.push(g);}
+    public static void redoPop(){redoStack.pop();}
+    public static void redoClear(){redoStack.clear();}
+    
+    public static Canvas redo1Peek(){return redo1Stack.peek();}
+    public static void redo1Push(Canvas g){redo1Stack.push(g);}
+    public static void redo1Pop(){redo1Stack.pop();}
+    public static void redo1Clear(){redo1Stack.clear();}
+    
+    public static Canvas redo2Peek(){return redo2Stack.peek();}
+    public static void redo2Push(Canvas g){redo2Stack.push(g);}
+    public static void redo2Pop(){redo2Stack.pop();}
+    public static void redo2Clear(){redo2Stack.clear();}
+    
+    public static ImageView coolPeek(){return coolStack.peek();}
+    public static void coolPush(ImageView g){coolStack.push(g);}
+    public static void coolPop(){coolStack.pop();}
+    public static void coolClear(){coolStack.clear();}
+    
+    public static ImageView cool1Peek(){return cool1Stack.peek();}
+    public static void cool1Push(ImageView g){cool1Stack.push(g);}
+    public static void cool1Pop(){cool1Stack.pop();}
+    public static void cool1Clear(){cool1Stack.clear();}
+    
+    public static ImageView cool2Peek(){return cool2Stack.peek();}
+    public static void cool2Push(ImageView g){cool2Stack.push(g);}
+    public static void cool2Pop(){cool2Stack.pop();}
+    public static void cool2Clear(){cool2Stack.clear();}
+    
+    public static ImageView recoolPeek(){return recoolStack.peek();}
+    public static void recoolPush(ImageView g){recoolStack.push(g);}
+    public static void recoolPop(){recoolStack.pop();}
+    public static void recoolClear(){recoolStack.clear();}
+    
+    public static ImageView recool1Peek(){return recool1Stack.peek();}
+    public static void recool1Push(ImageView g){recool1Stack.push(g);}
+    public static void recool1Pop(){recool1Stack.pop();}
+    public static void recool1Clear(){recool1Stack.clear();}
+    
+    public static ImageView recool2Peek(){return recool2Stack.peek();}
+    public static void recool2Push(ImageView g){recool2Stack.push(g);}
+    public static void recool2Pop(){recool2Stack.pop();}
+    public static void recool2Clear(){recool2Stack.clear();}
+    
     public static void setVariables(double wtemp, double htemp){
         w = wtemp;
         h = htemp;
@@ -128,7 +215,160 @@ public class PaintFX extends Application {
         cirBtn.setSelected(false);                                      // Untoggle button
         textBtn.setSelected(false);                                     // Untoggle button
         dropBtn.setSelected(false);                                     // Untoggle button
-        dropBtn1.setSelected(false);                                    // Untoggle button   
+        dropBtn1.setSelected(false);                                    // Untoggle button
+        eraserBtn.setSelected(false);
+        rRectBtn.setSelected(false);
+        polyBtn.setSelected(false);
+    }
+    
+    public static void undo(){
+        if(selec == 0){
+            if(canvasStack.peek().equals(canvas)){}
+            else{
+                redoPush(canvasPeek());
+                canvasPop();
+                if(change == 0){
+                    tabPane.getTabs().get(0).setText(tabPane.getTabs().get(0).getText() + "*");
+                    PaintFX.setChange(1);
+                }
+                coolCrab.getChildren().remove(1);
+                coolCrab.getChildren().add(1, canvasPeek());
+            }
+            if(coolStack.peek().equals(cool)){}
+            else{
+                recoolPush(coolPeek());
+                coolPop();
+                if(change == 0){
+                    tabPane.getTabs().get(0).setText(tabPane.getTabs().get(0).getText() + "*");
+                    PaintFX.setChange(1);
+                }
+                coolCrab.getChildren().remove(0);
+                coolCrab.getChildren().add(0, coolPeek());
+            }
+        }
+        else if(selec == 1){
+            if(canvas1Stack.peek().equals(canvas1)){}
+            else{
+                redo1Push(canvas1Peek());
+                canvas1Pop();
+                if(change1 == 0){
+                    tabPane.getTabs().get(1).setText(tabPane.getTabs().get(1).getText() + "*");
+                    PaintFX.setChange1(1);
+                }
+                coolCrab.getChildren().remove(1);
+                coolCrab.getChildren().add(1, canvas1Peek());
+            }
+            if(cool1Stack.peek().equals(cool1)){}
+            else{
+                recool1Push(cool1Peek());
+                cool1Pop();
+                if(change1 == 0){
+                    tabPane.getTabs().get(1).setText(tabPane.getTabs().get(1).getText() + "*");
+                    PaintFX.setChange1(1);
+                }
+                coolCrab.getChildren().remove(0);
+                coolCrab.getChildren().add(0, cool1Peek());
+            }
+        }
+        else if(selec == 2){
+            if(canvas2Stack.peek().equals(canvas2)){}
+            else{
+                redo2Push(canvas2Peek());
+                canvas2Pop();
+                if(change2 == 0){
+                    tabPane.getTabs().get(2).setText(tabPane.getTabs().get(2).getText() + "*");
+                    PaintFX.setChange2(1);
+                }
+                coolCrab.getChildren().remove(1);
+                coolCrab.getChildren().add(1, canvas2Peek());
+            }
+            if(cool2Stack.peek().equals(cool2)){}
+            else{
+                recool2Push(cool2Peek());
+                cool2Pop();
+                if(change2 == 0){
+                    tabPane.getTabs().get(2).setText(tabPane.getTabs().get(2).getText() + "*");
+                    PaintFX.setChange2(1);
+                }
+                coolCrab.getChildren().remove(0);
+                coolCrab.getChildren().add(0, cool2Peek());
+            }
+        }
+    }
+    
+    public static void redo(){
+        if(selec == 0){
+            if(redoStack.empty()){}
+            else{
+                canvasPush(redoPeek());
+                redoPop();
+                if(change == 0){
+                    tabPane.getTabs().get(0).setText(tabPane.getTabs().get(0).getText() + "*");
+                    PaintFX.setChange(1);
+                }
+                coolCrab.getChildren().remove(1);
+                coolCrab.getChildren().add(1, canvasPeek());
+            }
+            if(recoolStack.empty()){}
+            else{
+                coolPush(recoolPeek());
+                recoolPop();
+                if(change == 0){
+                    tabPane.getTabs().get(0).setText(tabPane.getTabs().get(0).getText() + "*");
+                    PaintFX.setChange(1);
+                }
+                coolCrab.getChildren().remove(0);
+                coolCrab.getChildren().add(0, coolPeek());
+            }
+        }
+        else if(selec == 1){
+            if(redo1Stack.empty()){}
+            else{
+                canvas1Push(redo1Peek());
+                redo1Pop();
+                if(change1 == 0){
+                    tabPane.getTabs().get(1).setText(tabPane.getTabs().get(1).getText() + "*");
+                    PaintFX.setChange1(1);
+                }
+                coolCrab.getChildren().remove(1);
+                coolCrab.getChildren().add(1, canvas1Peek());
+            }
+            if(recool1Stack.empty()){}
+            else{
+                cool1Push(recool1Peek());
+                recool1Pop();
+                if(change1 == 0){
+                    tabPane.getTabs().get(1).setText(tabPane.getTabs().get(1).getText() + "*");
+                    PaintFX.setChange1(1);
+                }
+                coolCrab.getChildren().remove(0);
+                coolCrab.getChildren().add(0, cool1Peek());
+            }
+        }
+        else if(selec == 2){
+            if(redo2Stack.empty()){}
+            else{
+                canvas2Push(redo2Peek());
+                redo2Pop();
+                if(change2 == 0){
+                    tabPane.getTabs().get(2).setText(tabPane.getTabs().get(2).getText() + "*");
+                    PaintFX.setChange2(1);
+                }
+                coolCrab.getChildren().remove(1);
+                coolCrab.getChildren().add(1, canvas2Peek());
+            }
+            if(recool2Stack.empty()){}
+            else{
+                cool2Push(recool2Peek());
+                recool2Pop();
+                if(change2 == 0){
+                    tabPane.getTabs().get(2).setText(tabPane.getTabs().get(2).getText() + "*");
+                    PaintFX.setChange2(1);
+                }
+                coolCrab.getChildren().remove(0);
+                coolCrab.getChildren().add(0, cool2Peek());
+            }
+        }
     }
     
     @Override
@@ -159,18 +399,24 @@ public class PaintFX extends Application {
         menuSaveAs.setAccelerator(new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN));
         menuExit.setAccelerator(new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN));
         
+        MenuItem menuUndo = new MenuItem("Undo");                        // Create "Snap to Fit" item
+        MenuItem menuRedo = new MenuItem("Redo");                        // Create "Snap to Fit" item
         MenuItem menuSnap = new MenuItem("Snap to Fit");                        // Create "Snap to Fit" item
         MenuItem menuCanvas = new MenuItem("Resize Canvas");                    // Create "Resize Canvas" item
         MenuItem menuZoomIn = new MenuItem("Zoom In");                          // Create "Zoom In" item
         MenuItem menuZoomOut = new MenuItem("Zoom Out");                        // Create "Zoom Out" item
         MenuItem menuTools = new MenuItem("Toggle Tools");                      // Create "Toggle Tools" item
+        MenuItem menuMove = new MenuItem("Cut and Paste");                      // Create "Toggle Tools" item
         MenuItem menuClear = new MenuItem("Clear Canvas");                      // Create "Clear Canvas" item
                                                                                 // Create Key Commands
+        menuUndo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
+        menuRedo.setAccelerator(new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN));
         menuSnap.setAccelerator(new KeyCodeCombination(KeyCode.F, KeyCombination.CONTROL_DOWN));
         menuCanvas.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
         menuZoomIn.setAccelerator(new KeyCodeCombination(KeyCode.ADD, KeyCombination.CONTROL_DOWN));
         menuZoomOut.setAccelerator(new KeyCodeCombination(KeyCode.SUBTRACT, KeyCombination.CONTROL_DOWN));
         menuTools.setAccelerator(new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN));
+        menuMove.setAccelerator(new KeyCodeCombination(KeyCode.M, KeyCombination.CONTROL_DOWN));
         menuClear.setAccelerator(new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN));
         
         MenuItem menuHelp = new MenuItem("Help");                               // Create "Help" item
@@ -180,27 +426,47 @@ public class PaintFX extends Application {
         menuAbout.setAccelerator(new KeyCodeCombination(KeyCode.B, KeyCombination.CONTROL_DOWN));
         
         menu.getItems().addAll(menuOpen, menuSave, menuSaveAs, menuExit);       // Add items to "File"
-        menu3.getItems().addAll(menuSnap, menuCanvas, menuZoomIn, menuZoomOut); // Add items to "Edit"
-        menu2.getItems().addAll(menuTools, menuClear);                          // Add items to "Draw"
+        menu3.getItems().addAll(menuUndo, menuRedo, menuSnap,
+                menuCanvas, menuZoomIn, menuZoomOut);                           // Add items to "Edit"
+        menu2.getItems().addAll(menuTools, menuMove, menuClear);                          // Add items to "Draw"
         menu1.getItems().addAll(menuHelp, menuAbout);                           // Add items to "Help"
         menu.setGraphic(new ImageView("icon.png"));                             // Set menu graphic
         
+        canvasStack = new Stack<Canvas>();
+        canvas1Stack = new Stack<Canvas>();
+        canvas2Stack = new Stack<Canvas>();
+        
+        redoStack = new Stack<Canvas>();
+        redo1Stack = new Stack<Canvas>();
+        redo2Stack = new Stack<Canvas>();
+        
+        coolStack = new Stack<ImageView>();
+        cool1Stack = new Stack<ImageView>();
+        cool2Stack = new Stack<ImageView>();
+        
+        recoolStack = new Stack<ImageView>();
+        recool1Stack = new Stack<ImageView>();
+        recool2Stack = new Stack<ImageView>();
+        
         FileChooser fileChooser = new FileChooser();                            // Create file chooser
-        Canvas canvas = new Canvas(w, h);                                       // Create Canvas
+        canvas = new Canvas(w, h);                                       // Create Canvas
         GraphicsContext gc = canvas.getGraphicsContext2D();                     // Allow graphics on canvas
-        StackPane coolCrab = new StackPane();                                   // Create Node for image and canvas
-        ImageView cool = new ImageView();                                       // Create new image view
+        canvasPush(canvas);
+        coolCrab = new StackPane();                                   // Create Node for image and canvas
+        cool = new ImageView();                                       // Create new image view
         ScrollPane sp = new ScrollPane();                                       // Create ScrollPance
         sp.setFitToWidth(true);                                                 // Fit Pane Window
         sp.setFitToHeight(true);
         
-        Canvas canvas1 = new Canvas(w, h);                                      // Create Canvas
+        canvas1 = new Canvas(w, h);                                      // Create Canvas
         GraphicsContext gc1 = canvas1.getGraphicsContext2D();                   // Allow graphics on canvas
-        ImageView cool1 = new ImageView();                                      // Create new image view
+        canvas1Push(canvas1);
+        cool1 = new ImageView();                                      // Create new image view
         
-        Canvas canvas2 = new Canvas(w, h);                                      // Create Canvas
+        canvas2 = new Canvas(w, h);                                      // Create Canvas
         GraphicsContext gc2 = canvas2.getGraphicsContext2D();                   // Allow graphics on canvas
-        ImageView cool2 = new ImageView();                                      // Create new image view
+        canvas2Push(canvas2);
+        cool2 = new ImageView();                                      // Create new image view
         
         Image defImg = new Image("default.png");                                // Open user image
         cool.setFitHeight(0);
@@ -216,7 +482,11 @@ public class PaintFX extends Application {
         cool2.setImage(defImg);
         cool2.setPreserveRatio(true);                                    // Preserve Image Ratio
         
-        TabPane tabPane = new TabPane();                                        // Create Tab Pane
+        coolPush(cool);
+        cool1Push(cool1);
+        cool2Push(cool2);
+        
+        tabPane = new TabPane();                                        // Create Tab Pane
         Tab tab1 = new Tab("Image 1", sp);                                      // Create 3 Tabs
         Tab tab2 = new Tab("Image 2");
         Tab tab3 = new Tab("Image 3");
@@ -239,6 +509,7 @@ public class PaintFX extends Application {
         ToggleGroup toggleGroup = new ToggleGroup();                            // Create ToggleGroup
         
         CheckBox fillBox = new CheckBox("Fill Shape");                          // Create CheckBox
+        CheckBox eraseBox = new CheckBox("Transparent Erase");                          // Create CheckBox
         
         lineBtn = new ToggleButton("Line");                        // Create Line toggle button
         HBox hLine = new HBox(lineBtn);
@@ -291,6 +562,24 @@ public class PaintFX extends Application {
         ImageView dropView1 = new ImageView(dropImg1);
         dropBtn1.setGraphic(dropView1);
         
+        eraserBtn = new ToggleButton("Eraser");              // Create Fill Dropper toggle button
+        HBox hEraser = new HBox(eraserBtn);
+        Image eraserImg = new Image("eraser.png");
+        ImageView eraserView = new ImageView(eraserImg);
+        eraserBtn.setGraphic(eraserView);
+        
+        polyBtn = new ToggleButton("Polygon");                                  // Create Polygon Toggle Button
+        HBox hPoly = new HBox(polyBtn);
+        Image polyImg = new Image("polygon.png");
+        ImageView polyView = new ImageView(polyImg);
+        polyBtn.setGraphic(polyView);
+        
+        rRectBtn = new ToggleButton("Rounded Rectangle");              // Create Fill Dropper toggle button
+        HBox hRRect = new HBox(rRectBtn);
+        Image rRectImg = new Image("rRectangle.png");
+        ImageView rRectView = new ImageView(rRectImg);
+        rRectBtn.setGraphic(rRectView);
+        
         Button canvasBtn = new Button("Set Size");                              // Create Resize Button
         HBox hCanvas = new HBox(canvasBtn);
         
@@ -301,8 +590,12 @@ public class PaintFX extends Application {
         ovalBtn.setToggleGroup(toggleGroup);
         cirBtn.setToggleGroup(toggleGroup);
         textBtn.setToggleGroup(toggleGroup);
+        eraserBtn.setToggleGroup(toggleGroup);
+        rRectBtn.setToggleGroup(toggleGroup);
+        polyBtn.setToggleGroup(toggleGroup);
         
         Label widLabel = new Label("Enter Width:");                             // Create width label
+        Label sideLabel = new Label("Enter Number of Sides:");                             // Create width label
         Label shapeLabel = new Label("Choose Shape:");                          // Create height label
         Label colorLabel = new Label("Choose Color:");                          // Create color label
         Label textLabel = new Label("Enter Text:");                             // Create text label
@@ -311,6 +604,8 @@ public class PaintFX extends Application {
 
         TextField widthText = new TextField();                                  // Create a width text field
         widthText.setText("1");                                                 // Set default value to 1
+        TextField pointText = new TextField();                                  // Create a width text field
+        pointText.setText("3");                                                 // Set default value to 1
         TextField enteredText = new TextField();                                // Create a user text field
         TextField canW = new TextField();                                       // Create can width text field
         TextField canH = new TextField();                                       // Create can height text field
@@ -320,17 +615,23 @@ public class PaintFX extends Application {
         gP.add(hDrop, 0, 2);
         gP.add(widLabel, 0, 3);
         gP.add(widthText, 0, 4);
-        gP.add(shapeLabel, 0, 5);                                               
-        gP.add(hLine, 0, 6);
-        gP.add(hCurve, 0, 7);
-        gP.add(hRect, 0, 8);
-        gP.add(hSqu, 0, 9);
-        gP.add(hOval, 0, 10);
-        gP.add(hCir, 0, 11);
-        gP.add(fillBox, 0, 12);
-        gP.add(textLabel, 0, 15);
-        gP.add(enteredText, 0, 16);
-        gP.add(hText, 0, 17);
+        gP.add(shapeLabel, 0, 5);
+        gP.add(hEraser, 0, 6);
+        gP.add(eraseBox, 0, 7);
+        gP.add(hLine, 0, 8);
+        gP.add(hCurve, 0, 9);
+        gP.add(hRect, 0, 10);
+        gP.add(hRRect, 0, 11);
+        gP.add(hSqu, 0, 12);
+        gP.add(hOval, 0, 13);
+        gP.add(hCir, 0, 14);
+        gP.add(hPoly, 0, 15);
+        gP.add(sideLabel, 0, 16);
+        gP.add(pointText, 0, 17);
+        gP.add(fillBox, 0, 18);
+        gP.add(textLabel, 0, 21);
+        gP.add(enteredText, 0, 22);
+        gP.add(hText, 0, 23);
         
         gPLeft.add(canWidth, 0, 0);                                             // Assemble sidebar canvas grid
         gPLeft.add(canW, 0, 1);
@@ -361,24 +662,24 @@ public class PaintFX extends Application {
 
             if(nv == tab2){
                 setButtonSelects();
-                setVariables(canvas1.getWidth(), canvas1.getHeight());
+                setVariables(canvas1Peek().getWidth(), canvas1Peek().getHeight());
                 setName(tab2.getText());
                 setSelec(1);
-                coolCrab.getChildren().addAll(cool1, canvas1);
+                coolCrab.getChildren().addAll(cool1Peek(), canvas1Peek());
             }
             else if(nv == tab3){
                 setButtonSelects();
-                setVariables(canvas2.getWidth(), canvas2.getHeight());
+                setVariables(canvas2Peek().getWidth(), canvas2Peek().getHeight());
                 setName(tab3.getText());
                 setSelec(2);
-                coolCrab.getChildren().addAll(cool2, canvas2);
+                coolCrab.getChildren().addAll(cool2Peek(), canvas2Peek());
             }
             else if(nv == tab1){
                 setButtonSelects();
-                setVariables(canvas.getWidth(), canvas.getHeight());
+                setVariables(canvasPeek().getWidth(), canvasPeek().getHeight());
                 setName(tab1.getText());
                 setSelec(0);
-                coolCrab.getChildren().addAll(cool, canvas);
+                coolCrab.getChildren().addAll(coolPeek(), canvasPeek());
             }
             else{
                 System.out.println("Tab Error");
@@ -419,28 +720,32 @@ public class PaintFX extends Application {
             }
         });
         
+        menuUndo.setOnAction(e -> {undo();});                                           // If resize canvas button pushed
+        
+        menuRedo.setOnAction(e -> {redo();});                                           // If resize canvas button pushed
+        
         menuZoomIn.setOnAction(e -> {                                           // If Zoom In triggered
             if(selec == 0){
-                cool.setFitWidth(w + 10);                                       // Adjust dimensions
-                cool.setFitHeight(h + 10);
-                w = cool.getFitWidth();                                         // Set screen dimensions to image
-                h = cool.getFitHeight();
+                coolPeek().setFitWidth(w + 10);                                       // Adjust dimensions
+                coolPeek().setFitHeight(h + 10);
+                w = coolPeek().getFitWidth();                                         // Set screen dimensions to image
+                h = coolPeek().getFitHeight();
                 canvas.setWidth(w);                                             // Set Canvas to new Size
                 canvas.setHeight(h);
             }
             else if(selec == 1){
-                cool1.setFitWidth(w + 10);                                      // Set adjust dimensions
-                cool1.setFitHeight(h + 10);
-                w = cool1.getFitWidth();                                        // Set Screen dimensions to image
-                h = cool1.getFitHeight();
+                cool1Peek().setFitWidth(w + 10);                                      // Set adjust dimensions
+                cool1Peek().setFitHeight(h + 10);
+                w = cool1Peek().getFitWidth();                                        // Set Screen dimensions to image
+                h = cool1Peek().getFitHeight();
                 canvas1.setWidth(w);                                            // Set Canvas to new Size
                 canvas1.setHeight(h);
             }
             else if(selec == 2){
-                cool2.setFitWidth(w + 10);                                      // Ajust dimensions
-                cool2.setFitHeight(h + 10);
-                w = cool2.getFitWidth();                                        // Set Screen dimensions to image
-                h = cool2.getFitHeight();
+                cool2Peek().setFitWidth(w + 10);                                      // Ajust dimensions
+                cool2Peek().setFitHeight(h + 10);
+                w = cool2Peek().getFitWidth();                                        // Set Screen dimensions to image
+                h = cool2Peek().getFitHeight();
                 canvas2.setWidth(w);                                            // Set Canvas to new Size
                 canvas2.setHeight(h);
             }
@@ -449,26 +754,26 @@ public class PaintFX extends Application {
         
         menuZoomOut.setOnAction(e -> {                                           // If resize canvas button pushed
             if(selec == 0){
-                cool.setFitWidth(w - 10);                                       // Adjust dimensions
-                cool.setFitHeight(h - 10);
-                w = cool.getFitWidth();                                         // Set screen dimensions to image
-                h = cool.getFitHeight();
+                coolPeek().setFitWidth(w - 10);                                       // Adjust dimensions
+                coolPeek().setFitHeight(h - 10);
+                w = coolPeek().getFitWidth();                                         // Set screen dimensions to image
+                h = coolPeek().getFitHeight();
                 canvas.setWidth(w);                                             // Set Canvas to new Size
                 canvas.setHeight(h);
             }
             else if(selec == 1){
-                cool1.setFitWidth(w - 10);                                      // Set adjust dimensions
-                cool1.setFitHeight(h - 10);
-                w = cool1.getFitWidth();                                        // Set Screen dimensions to image
-                h = cool1.getFitHeight();
+                cool1Peek().setFitWidth(w - 10);                                      // Set adjust dimensions
+                cool1Peek().setFitHeight(h - 10);
+                w = cool1Peek().getFitWidth();                                        // Set Screen dimensions to image
+                h = cool1Peek().getFitHeight();
                 canvas1.setWidth(w);                                            // Set Canvas to new Size
                 canvas1.setHeight(h);
             }
             else if(selec == 2){
-                cool2.setFitWidth(w - 10);                                      // Ajust dimensions
-                cool2.setFitHeight(h - 10);
-                w = cool2.getFitWidth();                                        // Set Screen dimensions to image
-                h = cool2.getFitHeight();
+                cool2Peek().setFitWidth(w - 10);                                      // Ajust dimensions
+                cool2Peek().setFitHeight(h - 10);
+                w = cool2Peek().getFitWidth();                                        // Set Screen dimensions to image
+                h = cool2Peek().getFitHeight();
                 canvas2.setWidth(w);                                            // Set Canvas to new Size
                 canvas2.setHeight(h);
             }
@@ -477,10 +782,10 @@ public class PaintFX extends Application {
         
         canvasBtn.setOnAction(e -> {                                            // If canvas toggle button pushed
             if(selec == 0){
-                cool.setFitWidth(Integer.parseInt(canW.getText()));             // Set image dimensions entered size
-                cool.setFitHeight(Integer.parseInt(canH.getText()));
-                w = cool.getFitWidth();                                         // Set Screen dimensions to image
-                h = cool.getFitHeight();
+                coolPeek().setFitWidth(Integer.parseInt(canW.getText()));             // Set image dimensions entered size
+                coolPeek().setFitHeight(Integer.parseInt(canH.getText()));
+                w = coolPeek().getFitWidth();                                         // Set Screen dimensions to image
+                h = coolPeek().getFitHeight();
                 if(change == 0){tab1.setText(tab1.getText() + "*");}            // Update save
                 change = 1;
             
@@ -488,10 +793,10 @@ public class PaintFX extends Application {
                 canvas.setHeight(h);
             }
             else if(selec == 1){
-                cool1.setFitWidth(Integer.parseInt(canW.getText()));            // Set image dimensions entered size
-                cool1.setFitHeight(Integer.parseInt(canH.getText()));
-                w = cool1.getFitWidth();                                        // Set Screen dimensions to image
-                h = cool1.getFitHeight();
+                cool1Peek().setFitWidth(Integer.parseInt(canW.getText()));            // Set image dimensions entered size
+                cool1Peek().setFitHeight(Integer.parseInt(canH.getText()));
+                w = cool1Peek().getFitWidth();                                        // Set Screen dimensions to image
+                h = cool1Peek().getFitHeight();
                 if(change1 == 0){tab2.setText(tab2.getText() + "*");}           // Update save
                 change1 = 1;
             
@@ -499,10 +804,10 @@ public class PaintFX extends Application {
                 canvas1.setHeight(h);
             }
             else if(selec == 2){
-                cool2.setFitWidth(Integer.parseInt(canW.getText()));            // Set image dimensions entered size
-                cool2.setFitHeight(Integer.parseInt(canH.getText()));
-                w = cool2.getFitWidth();                                        // Set Screen dimensions to image
-                h = cool2.getFitHeight();
+                cool2Peek().setFitWidth(Integer.parseInt(canW.getText()));            // Set image dimensions entered size
+                cool2Peek().setFitHeight(Integer.parseInt(canH.getText()));
+                w = cool2Peek().getFitWidth();                                        // Set Screen dimensions to image
+                h = cool2Peek().getFitHeight();
                 if(change2 == 0){tab3.setText(tab3.getText() + "*");}           // Update save
                 change2 = 1;
             
@@ -513,8 +818,8 @@ public class PaintFX extends Application {
         
         fillBox.setOnAction(e -> {                                              // If fill box checked
             if(hold2 == 0){                                                     // If hidden, show
-                gP.add(hFill, 0, 13);
-                gP.add(hDrop1, 0, 14);
+                gP.add(hFill, 0, 19);
+                gP.add(hDrop1, 0, 20);
                 hold2 = 1;
             }
             else{                                                               // If shown, hide
@@ -524,39 +829,49 @@ public class PaintFX extends Application {
             }
         });
                                                                                 // Create Handers for Color Droppers
-        dropBtn.setOnAction(new dropBtnHandler(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2));
-        dropBtn1.setOnAction(new dropBtn1Handler(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2));
+        dropBtn.setOnAction(new dropBtnHandler(coolCrab));
+        dropBtn1.setOnAction(new dropBtn1Handler(coolCrab));
         
                                                                                 // Create Event Handlers for tools
-        lineBtn.setOnAction(new lineHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, widthText, lineBtn, primaryStage, tabPane, dropBtn));
-        curveBtn.setOnAction(new curveHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, widthText, curveBtn, primaryStage, tabPane, dropBtn));
-        rectBtn.setOnAction(new rectangleHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, fillPick, widthText, rectBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
-        squBtn.setOnAction(new squareHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, fillPick, widthText, squBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
-        ovalBtn.setOnAction(new ovalHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, fillPick, widthText, ovalBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
-        cirBtn.setOnAction(new circleHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, fillPick, widthText, cirBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
-        textBtn.setOnAction(new textHandler(canvas, canvas1, canvas2, gc, gc1, gc2, colorPicker, widthText, textBtn, primaryStage, tabPane, dropBtn, enteredText));
+        lineBtn.setOnAction(new lineHandler(coolCrab, colorPicker, widthText, lineBtn, primaryStage, tabPane, dropBtn));
+        curveBtn.setOnAction(new curveHandler(coolCrab, colorPicker, widthText, curveBtn, primaryStage, tabPane, dropBtn));
+        rectBtn.setOnAction(new rectangleHandler(coolCrab, colorPicker, fillPick, widthText, rectBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
+        squBtn.setOnAction(new squareHandler(coolCrab, colorPicker, fillPick, widthText, squBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
+        ovalBtn.setOnAction(new ovalHandler(coolCrab, colorPicker, fillPick, widthText, ovalBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
+        cirBtn.setOnAction(new circleHandler(coolCrab, colorPicker, fillPick, widthText, cirBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
+        textBtn.setOnAction(new textHandler(coolCrab, colorPicker, widthText, textBtn, primaryStage, tabPane, dropBtn, enteredText));
+        eraserBtn.setOnAction(new eraserHandler(coolCrab, widthText, eraserBtn, primaryStage, tabPane, eraseBox));
+        rRectBtn.setOnAction(new rRectangleHandler(coolCrab, colorPicker, fillPick, widthText, rRectBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
+        polyBtn.setOnAction(new polygonHandler(coolCrab, colorPicker, fillPick, widthText, pointText, polyBtn, primaryStage, tabPane, fillBox, dropBtn, dropBtn1));
+        menuMove.setOnAction(new moveHandler(coolCrab, primaryStage, tabPane, eraseBox));
         
         menuClear.setOnAction(e -> {                                            // If Clear Canvas button is pushed
             if(selec == 0){
-                gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());      // Clear Canvas
+                canvasPush(canvas);
+                coolCrab.getChildren().remove(1);
+                coolCrab.getChildren().add(1, canvasPeek());
             }
             else if (selec == 1){
-                gc1.clearRect(0, 0, canvas1.getWidth(), canvas1.getHeight());   // Clear Canvas
+                canvas1Push(canvas1);
+                coolCrab.getChildren().remove(1);
+                coolCrab.getChildren().add(1, canvas1Peek());
             }
             else if (selec == 2){
-                gc2.clearRect(0, 0, canvas2.getWidth(), canvas2.getHeight());   // Clear Canvas
+                canvas2Push(canvas2);
+                coolCrab.getChildren().remove(1);
+                coolCrab.getChildren().add(1, canvas2Peek());
             }
             else{
                 System.out.println("Canvas Clear Error");
             }
         });
                                                                                 // Create Menu Action Handlers
-        menuSave.setOnAction(new saveHandler(cool, cool1, cool2 , coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane)); 
-        menuSaveAs.setOnAction(new saveAsHandler(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane)); 
-        primaryStage.setOnCloseRequest(new exitHandler(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane));
+        menuSave.setOnAction(new saveHandler(coolCrab, primaryStage, tabPane)); 
+        menuSaveAs.setOnAction(new saveAsHandler(coolCrab, primaryStage, tabPane)); 
+        primaryStage.setOnCloseRequest(new exitHandler(coolCrab, primaryStage, tabPane));
         
         menuExit.setOnAction(e -> {                                             // If exit button is pushed
-            exitHandler.exit(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
+            exitHandler.exit(coolCrab, primaryStage, tabPane);
         });
         
         menuSnap.setOnAction(e -> {                                             // If Snap button is pushed
@@ -564,10 +879,10 @@ public class PaintFX extends Application {
                 Rectangle2D screenBounds = Screen.getPrimary().getBounds();     // Read monitor dimensions, and if image is larger,
                 if((screenBounds.getWidth() < w) || (screenBounds.getHeight() < h)){
                     gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-                    cool.setFitWidth(screenBounds.getWidth()-200);              // Set image dimensions to monitor size
-                    cool.setFitHeight(screenBounds.getHeight()-200);
-                    w = cool.getFitWidth();                                     // Set Screen dimensions to image
-                    h = cool.getFitHeight();
+                    coolPeek().setFitWidth(screenBounds.getWidth()-200);              // Set image dimensions to monitor size
+                    coolPeek().setFitHeight(screenBounds.getHeight()-200);
+                    w = coolPeek().getFitWidth();                                     // Set Screen dimensions to image
+                    h = coolPeek().getFitHeight();
                     if(change == 0){tab1.setText(tab1.getText() + "*");}
                     change = 1;
                 }
@@ -586,10 +901,10 @@ public class PaintFX extends Application {
                 Rectangle2D screenBounds = Screen.getPrimary().getBounds();     // Read monitor dimensions, and if image is larger,
                 if((screenBounds.getWidth() < w) || (screenBounds.getHeight() < h)){
                     gc1.clearRect(0, 0, canvas1.getWidth(), canvas1.getHeight());
-                    cool1.setFitWidth(screenBounds.getWidth()-200);             // Set image dimensions to monitor size
-                    cool1.setFitHeight(screenBounds.getHeight()-200);
-                    w = cool1.getFitWidth();                                    // Set Screen dimensions to image
-                    h = cool1.getFitHeight();
+                    cool1Peek().setFitWidth(screenBounds.getWidth()-200);             // Set image dimensions to monitor size
+                    cool1Peek().setFitHeight(screenBounds.getHeight()-200);
+                    w = cool1Peek().getFitWidth();                                    // Set Screen dimensions to image
+                    h = cool1Peek().getFitHeight();
                     if(change1 == 0){tab2.setText(tab2.getText() + "*");}
                     change1 = 1;
                 }
@@ -608,10 +923,10 @@ public class PaintFX extends Application {
                 Rectangle2D screenBounds = Screen.getPrimary().getBounds();     // Read monitor dimensions, and if image is larger,
                 if((screenBounds.getWidth() < w) || (screenBounds.getHeight() < h)){
                     gc2.clearRect(0, 0, canvas2.getWidth(), canvas2.getHeight());
-                    cool2.setFitWidth(screenBounds.getWidth()-200);             // Set image dimensions to monitor size
-                    cool2.setFitHeight(screenBounds.getHeight()-200);
-                    w = cool2.getFitWidth();                                    // Set Screen dimensions to image
-                    h = cool2.getFitHeight();
+                    cool2Peek().setFitWidth(screenBounds.getWidth()-200);             // Set image dimensions to monitor size
+                    cool2Peek().setFitHeight(screenBounds.getHeight()-200);
+                    w = cool2Peek().getFitWidth();                                    // Set Screen dimensions to image
+                    h = cool2Peek().getFitHeight();
                     if(change2 == 0){tab3.setText(tab3.getText() + "*");}
                     change2 = 1;
                 }

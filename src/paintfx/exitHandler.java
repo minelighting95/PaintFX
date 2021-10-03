@@ -6,7 +6,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
@@ -22,33 +21,20 @@ import javafx.stage.WindowEvent;
 
 public class exitHandler implements EventHandler<WindowEvent> {
 
-    public ImageView cool;
-    public ImageView cool1;
-    public ImageView cool2;
     public StackPane coolCrab;
-    public Canvas canvas;
-    public Canvas canvas1;
-    public Canvas canvas2;
     public Stage primaryStage;
     public TabPane tabPane;
     
-    public exitHandler(ImageView cool, ImageView cool1, ImageView cool2, StackPane coolCrab, Canvas canvas, 
-            Canvas canvas1, Canvas canvas2,Stage primaryStage, TabPane tabPane){
+    public exitHandler(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
         
-        this.cool = cool;
-        this.cool1 = cool1;
-        this.cool2 = cool2;
         this.coolCrab = coolCrab;
-        this.canvas = canvas;
-        this.canvas1 = canvas1;
-        this.canvas2 = canvas2;
         this.primaryStage = primaryStage;
         this.tabPane = tabPane;
         
     }
     
-    public static void exit(ImageView cool, ImageView cool1, ImageView cool2, StackPane coolCrab, Canvas canvas, Canvas canvas1, Canvas canvas2, Stage primaryStage, TabPane tabPane){
-        if(PaintFX.getChange() == 1){
+    public static void exit(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
+        if((PaintFX.getChange() == 1) || (PaintFX.getChange1() == 1) || (PaintFX.getChange2() == 1)){
                     Stage saveWarnWindow = new Stage();                         // Create new stage
                     saveWarnWindow.setTitle("Warning!");                        // Set Title and Logo
                     saveWarnWindow.getIcons().add(new Image(PaintFX.class.getResourceAsStream("logosmall.png")));
@@ -88,10 +74,10 @@ public class exitHandler implements EventHandler<WindowEvent> {
 
                         @Override
                         public void handle(ActionEvent a) {
-                            saveHandler.finalSave(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
+                            saveHandler.finalSave(coolCrab, primaryStage, tabPane);
                             saveWarnWindow.close();                             // Exit window
                             System.exit(0);                                     // Exit
-                            }
+                        }
                     });
                     noBtn.setOnAction(new EventHandler<ActionEvent>() {        // When close button pressed
 
@@ -99,14 +85,14 @@ public class exitHandler implements EventHandler<WindowEvent> {
                         public void handle(ActionEvent a) {
                             saveWarnWindow.close();                             // Exit window
                             System.exit(0);                                     // Exit
-                            }
+                        }
                     });
                     canBtn.setOnAction(new EventHandler<ActionEvent>() {        // When close button pressed
 
                         @Override
                         public void handle(ActionEvent a) {
                             saveWarnWindow.close();                             // Exit window
-                            }
+                        }
                     });
                 }
                 else{
@@ -118,7 +104,7 @@ public class exitHandler implements EventHandler<WindowEvent> {
     public void handle(WindowEvent e){
         
                 e.consume();                                                    // Halt Operations
-                exit(cool, cool1, cool2, coolCrab, canvas, canvas1, canvas2, primaryStage, tabPane);
+                exit(coolCrab, primaryStage, tabPane);
     }
     
 }

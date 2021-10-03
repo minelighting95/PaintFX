@@ -9,9 +9,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.TabPane;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -20,34 +18,23 @@ import javax.imageio.ImageIO;
 
 public class saveHandler implements EventHandler<ActionEvent>{
     
-    public ImageView cool;
-    public ImageView cool1;
-    public ImageView cool2;
     public StackPane coolCrab;
-    public Canvas canvas;
-    public Canvas canvas1;
-    public Canvas canvas2;
     public Stage primaryStage;
     public TabPane tabPane;
     
-    public saveHandler(ImageView cool, ImageView cool1, ImageView cool2 ,StackPane coolCrab, Canvas canvas, Canvas canvas1, Canvas canvas2, Stage primaryStage, TabPane tabPane){
+    public saveHandler(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
         
-        this.cool = cool;
-        this.cool1 = cool1;
-        this.cool2 = cool2;
         this.coolCrab = coolCrab;
-        this.canvas = canvas;
-        this.canvas1 = canvas1;
-        this.canvas2 = canvas2;
         this.primaryStage = primaryStage;
         this.tabPane = tabPane;
         
     }
     
-    public static void save(ImageView cool, ImageView cool1, ImageView cool2, StackPane coolCrab, Canvas canvas, Canvas canvas1, Canvas canvas2, Stage primaryStage, TabPane tabPane){
+    public static void save(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
         if(PaintFX.getSelec() == 0){
-            Bounds bnd = cool.getBoundsInParent();                              // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-            WritableImage wim = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
+            PaintFX.redoClear();
+            Bounds bnd = PaintFX.coolPeek().getBoundsInParent();                              // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)PaintFX.canvasPeek().getWidth(), (int)PaintFX.canvasPeek().getHeight());
             SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
             sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
@@ -73,8 +60,9 @@ public class saveHandler implements EventHandler<ActionEvent>{
             } catch (Exception s) {}
         }
         else if(PaintFX.getSelec() == 1){
-            Bounds bnd = cool1.getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-            WritableImage wim = new WritableImage((int)canvas1.getWidth(), (int)canvas1.getHeight());
+            PaintFX.redo1Clear();
+            Bounds bnd = PaintFX.cool1Peek().getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)PaintFX.canvas1Peek().getWidth(), (int)PaintFX.canvas1Peek().getHeight());
             SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
             sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
@@ -100,8 +88,9 @@ public class saveHandler implements EventHandler<ActionEvent>{
             } catch (Exception s) {}
         }
         else if(PaintFX.getSelec() == 2){
-            Bounds bnd = cool2.getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-            WritableImage wim = new WritableImage((int)canvas2.getWidth(), (int)canvas2.getHeight());
+            PaintFX.redo2Clear();
+            Bounds bnd = PaintFX.cool2Peek().getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)PaintFX.canvas2Peek().getWidth(), (int)PaintFX.canvas2Peek().getHeight());
             SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
             sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
@@ -131,12 +120,13 @@ public class saveHandler implements EventHandler<ActionEvent>{
         }
     }
     
-    public static void finalSave(ImageView cool, ImageView cool1, ImageView cool2, StackPane coolCrab, Canvas canvas, Canvas canvas1, Canvas canvas2, Stage primaryStage, TabPane tabPane){
+    public static void finalSave(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
         if(PaintFX.getChange() == 1){
+            PaintFX.redoClear();
             coolCrab.getChildren().clear();                                     // Remove previous image
-            coolCrab.getChildren().addAll(cool, canvas);
-            Bounds bnd = cool.getBoundsInParent();                              // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-            WritableImage wim = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
+            coolCrab.getChildren().addAll(PaintFX.coolPeek(), PaintFX.canvasPeek());
+            Bounds bnd = PaintFX.coolPeek().getBoundsInParent();                              // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)PaintFX.canvasPeek().getWidth(), (int)PaintFX.canvasPeek().getHeight());
             SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
             sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
@@ -160,10 +150,11 @@ public class saveHandler implements EventHandler<ActionEvent>{
             } catch (Exception s) {}
         }
         if(PaintFX.getChange1() == 1){
+            PaintFX.redo1Clear();
             coolCrab.getChildren().clear();                                     // Remove previous image
-            coolCrab.getChildren().addAll(cool1, canvas1);
-            Bounds bnd = cool1.getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-            WritableImage wim = new WritableImage((int)canvas1.getWidth(), (int)canvas1.getHeight());
+            coolCrab.getChildren().addAll(PaintFX.cool1Peek(), PaintFX.canvas1Peek());
+            Bounds bnd = PaintFX.cool1Peek().getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)PaintFX.canvas1Peek().getWidth(), (int)PaintFX.canvas1Peek().getHeight());
             SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
             sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
@@ -187,10 +178,11 @@ public class saveHandler implements EventHandler<ActionEvent>{
             } catch (Exception s) {}
         }
         if(PaintFX.getChange2() == 1){
+            PaintFX.redo2Clear();
             coolCrab.getChildren().clear();                                     // Remove previous image
-            coolCrab.getChildren().addAll(cool2, canvas2);
-            Bounds bnd = cool2.getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-            WritableImage wim = new WritableImage((int)canvas2.getWidth(), (int)canvas2.getHeight());
+            coolCrab.getChildren().addAll(PaintFX.cool2Peek(), PaintFX.canvas2Peek());
+            Bounds bnd = PaintFX.cool2Peek().getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)PaintFX.canvas2Peek().getWidth(), (int)PaintFX.canvas2Peek().getHeight());
             SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
             sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
@@ -219,8 +211,9 @@ public class saveHandler implements EventHandler<ActionEvent>{
     public void handle(ActionEvent e){
         
             if(PaintFX.getSelec() == 0){
-                Bounds bnd = cool.getBoundsInParent();                          // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-                WritableImage wim = new WritableImage((int)canvas.getWidth(), (int)canvas.getHeight());
+                PaintFX.redoClear();
+                Bounds bnd = PaintFX.coolPeek().getBoundsInParent();                          // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+                WritableImage wim = new WritableImage((int)PaintFX.canvasPeek().getWidth(), (int)PaintFX.canvasPeek().getHeight());
                 SnapshotParameters sP = new SnapshotParameters();               // Set the snapshot viewport and set to coordinates of image
                 sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
@@ -246,8 +239,9 @@ public class saveHandler implements EventHandler<ActionEvent>{
                 } catch (Exception s) {}
             }
             else if(PaintFX.getSelec() == 1){
-                Bounds bnd = cool1.getBoundsInParent();                         // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-                WritableImage wim = new WritableImage((int)canvas1.getWidth(), (int)canvas1.getHeight());
+                PaintFX.redo1Clear();
+                Bounds bnd = PaintFX.cool1Peek().getBoundsInParent();                         // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+                WritableImage wim = new WritableImage((int)PaintFX.canvas1Peek().getWidth(), (int)PaintFX.canvas1Peek().getHeight());
                 SnapshotParameters sP = new SnapshotParameters();               // Set the snapshot viewport and set to coordinates of image
                 sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             
@@ -273,8 +267,9 @@ public class saveHandler implements EventHandler<ActionEvent>{
                 } catch (Exception s) {}
             }
             else if(PaintFX.getSelec() == 2){
-                Bounds bnd = cool2.getBoundsInParent();                         // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
-                WritableImage wim = new WritableImage((int)canvas2.getWidth(), (int)canvas2.getHeight());
+                PaintFX.redo2Clear();
+                Bounds bnd = PaintFX.cool2Peek().getBoundsInParent();                         // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+                WritableImage wim = new WritableImage((int)PaintFX.canvas2Peek().getWidth(), (int)PaintFX.canvas2Peek().getHeight());
                 SnapshotParameters sP = new SnapshotParameters();               // Set the snapshot viewport and set to coordinates of image
                 sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
             

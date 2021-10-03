@@ -2,22 +2,21 @@ package PaintFX;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class curveHandler implements EventHandler<ActionEvent> {
 
-    public Canvas canvas;
-    public Canvas canvas1;
-    public Canvas canvas2;
-    public GraphicsContext gc;
-    public GraphicsContext gc1;
-    public GraphicsContext gc2;
+    public StackPane coolCrab;
     public ColorPicker colorPicker;
     public TextField widthText;
     public ToggleButton curveBtn;
@@ -30,15 +29,9 @@ public class curveHandler implements EventHandler<ActionEvent> {
         hold2 = h;
     }
     
-    public curveHandler(Canvas canvas, Canvas canvas1, Canvas canvas2, GraphicsContext gc, GraphicsContext gc1, GraphicsContext gc2,
-            ColorPicker colorPicker, TextField widthText, ToggleButton curveBtn, Stage primaryStage, TabPane tabPane, ToggleButton dropBtn){
+    public curveHandler(StackPane coolCrab, ColorPicker colorPicker, TextField widthText, ToggleButton curveBtn, Stage primaryStage, TabPane tabPane, ToggleButton dropBtn){
 
-        this.canvas = canvas;
-        this.canvas1 = canvas1;
-        this.canvas2 = canvas2;
-        this.gc = gc;
-        this.gc1 = gc1;
-        this.gc2 = gc2;
+        this.coolCrab = coolCrab;
         this.colorPicker = colorPicker;
         this.widthText = widthText;
         this.curveBtn = curveBtn;
@@ -57,151 +50,99 @@ public class curveHandler implements EventHandler<ActionEvent> {
                 squareHandler.setHold(2);
                 ovalHandler.setHold(2);
                 circleHandler.setHold(2);
-                
+                eraserHandler.setHold(2);
+                rRectangleHandler.setHold(2);
+                textHandler.setHold(1);
+                polygonHandler.setHold(2);
+
+                Canvas canTemp = new Canvas(PaintFX.getW(), PaintFX.getH());                                       // Create Canvas
+                GraphicsContext gcTemp = canTemp.getGraphicsContext2D();
+
+                SnapshotParameters params = new SnapshotParameters();
+                params.setFill(Color.TRANSPARENT);
+
                 if(PaintFX.getSelec() == 0){
-                    gc.beginPath();                                             // Being Curve Path
-                    if(dropBtn.isSelected()){                                   // Get Color
-                        gc.setStroke(PaintFX.getColor());
-                    }
-                    else{
-                        gc.setStroke(colorPicker.getValue());                   // Set Curve Color to selected value
-                    }
-                    int lineWidth = Integer.parseInt(widthText.getText());      // Convert width text to integer
-                    if(lineWidth <= 0){                                         // If invalid value,
-                        lineWidth = 1;                                          // Set to width = 1
-                        widthText.setText("1");
-                    }
-                    gc.setLineWidth(lineWidth);                                 // Set curve to desired width
+                    WritableImage image = PaintFX.canvasPeek().snapshot(params, null);
+                    gcTemp.drawImage(image, 0, 0);
+                }
+                else if(PaintFX.getSelec() == 1){
+                    WritableImage image = PaintFX.canvas1Peek().snapshot(params, null);
+                    gcTemp.drawImage(image, 0, 0);
+                }
+                else if(PaintFX.getSelec() == 2){
+                    WritableImage  image = PaintFX.canvas2Peek().snapshot(params, null);
+                    gcTemp.drawImage(image, 0, 0);
+                }
 
-                    canvas.setOnMouseClicked((event) ->{                        // When mouse clicked
-                        if(hold2 == 0){
-                            gc.beginPath();                                     // Create Path
-                            gc.moveTo(event.getX(), event.getY());
-                            gc.stroke();
-                        }
-                    });
+                coolCrab.getChildren().remove(1);
+                coolCrab.getChildren().add(1, canTemp);
 
-                    canvas.setOnMouseDragged((event) ->{                        // When mouse clicked
-                        if(hold2 == 0){
-                            gc.lineTo(event.getX(), event.getY());              // Follow mouse
-                            gc.stroke();
-                            gc.closePath();
-                            gc.beginPath();
-                            gc.moveTo(event.getX(), event.getY());
-                        }
-                    });
+                gcTemp.beginPath();                                             // Being Curve Path
+                if(dropBtn.isSelected()){                                   // Get Color
+                    gcTemp.setStroke(PaintFX.getColor());
+                }
+                else{
+                    gcTemp.setStroke(colorPicker.getValue());                   // Set Curve Color to selected value
+                }
+                int lineWidth = Integer.parseInt(widthText.getText());      // Convert width text to integer
+                if(lineWidth <= 0){                                         // If invalid value,
+                    lineWidth = 1;                                          // Set to width = 1
+                    widthText.setText("1");
+                }
+                gcTemp.setLineWidth(lineWidth);                                 // Set curve to desired width
 
-                    canvas.setOnMouseReleased((event) ->{                       // When mouse clicked
-                        if(hold2 == 0){
-                            gc.lineTo(event.getX(), event.getY());              // End Path
-                            gc.stroke();
-                            gc.closePath();
-                            curveBtn.setSelected(false);                        // Untoggle button
+                canTemp.setOnMouseClicked((event) ->{                        // When mouse clicked
+                    if(hold2 == 0){
+                        gcTemp.beginPath();                                     // Create Path
+                        gcTemp.moveTo(event.getX(), event.getY());
+                        gcTemp.stroke();
+                    }
+                });
+
+                canTemp.setOnMouseDragged((event) ->{                        // When mouse clicked
+                    if(hold2 == 0){
+                        gcTemp.lineTo(event.getX(), event.getY());              // Follow mouse
+                        gcTemp.stroke();
+                        gcTemp.closePath();
+                        gcTemp.beginPath();
+                        gcTemp.moveTo(event.getX(), event.getY());
+                    }
+                });
+
+                canTemp.setOnMouseReleased((event) ->{                       // When mouse clicked
+                    if(hold2 == 0){
+                        gcTemp.lineTo(event.getX(), event.getY());              // End Path
+                        gcTemp.stroke();
+                        gcTemp.closePath();
+                        curveBtn.setSelected(false);                        // Untoggle button
+
+                        if(PaintFX.getSelec() == 0){
+                            PaintFX.redoClear();
                             if(PaintFX.getChange() == 0){
                                 tabPane.getTabs().get(0).setText(tabPane.getTabs().get(0).getText() + "*");
                                 PaintFX.setChange(1);
                             }
-                            hold2 = 1;
+                            PaintFX.canvasPush(canTemp);
                         }
-                    });
-                }
-                else if(PaintFX.getSelec() == 1){
-                    gc1.beginPath();                                            // Being Curve Path
-                    if(dropBtn.isSelected()){                                   // Get Color
-                        gc1.setStroke(PaintFX.getColor());
-                    }
-                    else{
-                        gc1.setStroke(colorPicker.getValue());                  // Set Curve Color to selected value
-                    }
-                    int lineWidth = Integer.parseInt(widthText.getText());      // Convert width text to integer
-                    if(lineWidth <= 0){                                         // If invalid value,
-                        lineWidth = 1;                                          // Set to width = 1
-                        widthText.setText("1");
-                    }
-                    gc1.setLineWidth(lineWidth);                                // Set curve to desired width
-
-                    canvas1.setOnMouseClicked((event) ->{                       // When mouse clicked
-                        if(hold2 == 0){
-                            gc1.beginPath();                                    // Create Path
-                            gc1.moveTo(event.getX(), event.getY());
-                            gc1.stroke();
-                        }
-                    });
-
-                    canvas1.setOnMouseDragged((event) ->{                       // When mouse clicked
-                        if(hold2 == 0){
-                            gc1.lineTo(event.getX(), event.getY());             // Follow mouse
-                            gc1.stroke();
-                            gc1.closePath();
-                            gc1.beginPath();
-                            gc1.moveTo(event.getX(), event.getY());
-                        }
-                    });
-
-                    canvas1.setOnMouseReleased((event) ->{                      // When mouse clicked
-                        if(hold2 == 0){
-                            gc1.lineTo(event.getX(), event.getY());             // End Path
-                            gc1.stroke();
-                            gc1.closePath();
-                            curveBtn.setSelected(false);                        // Untoggle button
+                        else if(PaintFX.getSelec() == 1){
+                            PaintFX.redo1Clear();
                             if(PaintFX.getChange1() == 0){
                                 tabPane.getTabs().get(1).setText(tabPane.getTabs().get(1).getText() + "*");
                                 PaintFX.setChange1(1);
                             }
-                            hold2 = 1;
+                            PaintFX.canvas1Push(canTemp);
                         }
-                    });
-                }
-                else if(PaintFX.getSelec() == 2){
-                    gc2.beginPath();                                            // Being Curve Path
-                    if(dropBtn.isSelected()){                                   // Get Color
-                        gc2.setStroke(PaintFX.getColor());
-                    }
-                    else{
-                        gc2.setStroke(colorPicker.getValue());                  // Set Curve Color to selected value
-                    }
-                    int lineWidth = Integer.parseInt(widthText.getText());      // Convert width text to integer
-                    if(lineWidth <= 0){                                         // If invalid value,
-                        lineWidth = 1;                                          // Set to width = 1
-                        widthText.setText("1");
-                    }
-                    gc2.setLineWidth(lineWidth);                                // Set curve to desired width
-
-                    canvas2.setOnMouseClicked((event) ->{                       // When mouse clicked
-                        if(hold2 == 0){
-                            gc2.beginPath();                                    // Create Path
-                            gc2.moveTo(event.getX(), event.getY());
-                            gc2.stroke();
-                        }
-                    });
-
-                    canvas2.setOnMouseDragged((event) ->{                       // When mouse clicked
-                        if(hold2 == 0){
-                            gc2.lineTo(event.getX(), event.getY());             // Follow mouse
-                            gc2.stroke();
-                            gc2.closePath();
-                            gc2.beginPath();
-                            gc2.moveTo(event.getX(), event.getY());
-                        }
-                    });
-
-                    canvas2.setOnMouseReleased((event) ->{                      // When mouse clicked
-                        if(hold2 == 0){
-                            gc2.lineTo(event.getX(), event.getY());             // End Path
-                            gc2.stroke();
-                            gc2.closePath();
-                            curveBtn.setSelected(false);                        // Untoggle button
+                        else if(PaintFX.getSelec() == 2){
+                            PaintFX.redo2Clear();
                             if(PaintFX.getChange2() == 0){
                                 tabPane.getTabs().get(2).setText(tabPane.getTabs().get(2).getText() + "*");
                                 PaintFX.setChange2(1);
                             }
-                            hold2 = 1;
+                            PaintFX.canvas2Push(canTemp);
                         }
-                    });
-                }
-                else{
-                    System.out.println("Open Error 2");
-                }
-                hold2 = 0;
+                        
+                        hold2 = 1;
+                    }
+                });
             }
 }

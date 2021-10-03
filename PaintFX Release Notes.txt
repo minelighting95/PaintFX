@@ -1,6 +1,31 @@
 PaintFX Release Notes:
 
-Release Version 1.2.1 - 9//2021
+Release Version 1.3.0 - 10/3/2021
+
+	New Features:
+		-Added Undo/Redo Feature
+		-Improved Blank Canvas
+		-Added Eraser Tool
+			-Can Decide whether to erase with white or transparency
+		-Added Rounded Rectangle Shape
+		-Added Regular Polygon Shape with user entered number of sides
+		-Added Live Draw to Shapes
+		-Added Ability to Select and Move a Piece of the Image
+		
+	Known Issues:
+		-When saving as a JPG or BMP, any transparent pixels will save as white
+			-Related to the JDK 8 JPG bug
+		-Zoom wrongly alters drawn content
+		-Tab Name defaults to original image name instead of new
+		
+	Next to be Implemented:
+		-Update Help File
+		-Pull Help screen text from a text file
+		
+	GitHub Link:
+		https://github.com/minelighting95/PaintFX
+
+Release Version 1.2.1 - 9/29/2021
 
 	New Features:
 		-Fixed smart-save save all
