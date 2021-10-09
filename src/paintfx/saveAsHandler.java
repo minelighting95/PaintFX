@@ -17,13 +17,24 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 
+/**
+ * Event Handler to Control Save As
+ * 
+ * @author Alex Appel
+ */
 public class saveAsHandler implements EventHandler<ActionEvent>{
     
-    public StackPane coolCrab;
-    public Stage primaryStage;
-    public int change;
-    public TabPane tabPane;
+    private StackPane coolCrab;
+    private Stage primaryStage;
+    private int change;
+    private TabPane tabPane;
     
+/**
+     * Event Handler to Control Save As
+     * @param coolCrab Main Program StackPane
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     */
     public saveAsHandler(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
         
         this.coolCrab = coolCrab;

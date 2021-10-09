@@ -16,12 +16,23 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 
+/**
+ * Event Handler to Control Saving
+ * 
+ * @author Alex Appel
+ */
 public class saveHandler implements EventHandler<ActionEvent>{
     
-    public StackPane coolCrab;
-    public Stage primaryStage;
-    public TabPane tabPane;
+    private StackPane coolCrab;
+    private Stage primaryStage;
+    private TabPane tabPane;
     
+    /**
+     * Event Handler to Control Saving
+     * @param coolCrab Main Program StackPane
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     */
     public saveHandler(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
         
         this.coolCrab = coolCrab;
@@ -30,6 +41,12 @@ public class saveHandler implements EventHandler<ActionEvent>{
         
     }
     
+    /**
+     * Function to Save Selected Tab
+     * @param coolCrab Main Program StackPane
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     */
     public static void save(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
         if(PaintFX.getSelec() == 0){
             PaintFX.redoClear();
@@ -120,6 +137,12 @@ public class saveHandler implements EventHandler<ActionEvent>{
         }
     }
     
+    /**
+     * Function to Save All Tabs when PaintFX is Exited
+     * @param coolCrab Main Program StackPane
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     */
     public static void finalSave(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
         if(PaintFX.getChange() == 1){
             PaintFX.redoClear();
@@ -204,6 +227,58 @@ public class saveHandler implements EventHandler<ActionEvent>{
                     ImageIO.write(bufRGB, fileExt, saveFile);                   // Save RGB image
                 }
             } catch (Exception s) {}
+        }
+    }
+    
+    /**
+     * Function to Auto Save
+     * @param coolCrab Main Program StackPane
+     * @param primaryStage Main Program Stage
+     */
+    public static void autoSave(StackPane coolCrab, Stage primaryStage){
+        if(PaintFX.getSelec() == 0){
+            Bounds bnd = PaintFX.coolPeek().getBoundsInParent();                              // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)PaintFX.canvasPeek().getWidth(), (int)PaintFX.canvasPeek().getHeight());
+            SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
+            sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
+            
+            try {
+                File saveFile = new File("Temp.png");                // Grab original user file
+                sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
+                coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
+                ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", saveFile);
+            } catch (Exception s) {s.printStackTrace();}
+        }
+        else if(PaintFX.getSelec() == 1){
+            PaintFX.redo1Clear();
+            Bounds bnd = PaintFX.cool1Peek().getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)PaintFX.canvas1Peek().getWidth(), (int)PaintFX.canvas1Peek().getHeight());
+            SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
+            sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
+            
+            try {
+                File saveFile = new File("Temp1.png");                // Grab original user file
+                sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
+                coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
+                ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", saveFile);
+            } catch (Exception s) {System.out.println("Auto Save Error 2");}
+        }
+        else if(PaintFX.getSelec() == 2){
+            PaintFX.redo2Clear();
+            Bounds bnd = PaintFX.cool2Peek().getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            WritableImage wim = new WritableImage((int)PaintFX.canvas2Peek().getWidth(), (int)PaintFX.canvas2Peek().getHeight());
+            SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
+            sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
+            
+            try {
+                File saveFile = new File("Temp2.png");                // Grab original user file
+                sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
+                coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
+                ImageIO.write(SwingFXUtils.fromFXImage(wim, null), "png", saveFile);
+            } catch (Exception s) {System.out.println("Auto Save Error 3");}
+        }
+        else{
+            System.out.println("Save Error Auto");
         }
     }
     

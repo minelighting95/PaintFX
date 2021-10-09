@@ -1,8 +1,16 @@
 package PaintFX;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
 import java.util.Stack;
+import java.util.Timer;
+import java.util.TimerTask;
 import static javafx.application.Application.launch;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -20,6 +28,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -45,10 +54,16 @@ import javafx.stage.Stage;
 /*   Purpose:                                                           */
 /*   Create a Microsoft Paint-like JavaFX program.                      */
 /*                                                                      */
-/*   Version: 1.3.0                                                     */
+/*   Version: 1.4.0                                                     */
 /*   Notes: See PaintFX_Release_Notes.txt                               */
 /*                                                                      */
 /* ******************************************************************** */
+
+/**
+ * Main Control Class for PaintFX
+ * @author Alex Appel
+ */
+
 
 public class PaintFX extends Application {
 
@@ -102,6 +117,11 @@ public class PaintFX extends Application {
     volatile private static Stack<ImageView> recoolStack;
     volatile private static Stack<ImageView> recool1Stack;
     volatile private static Stack<ImageView> recool2Stack;
+    volatile private static int saveTime = 15;
+    volatile private static int interval = saveTime;
+    volatile private static Timer timer;
+    volatile private static boolean save;
+    volatile private static String saveName;
     
     public static Image getImage(){return crab;}                                // Create Get and Set Methods
     public static void setImage(Image c){crab = c;}
@@ -196,6 +216,16 @@ public class PaintFX extends Application {
     public static void recool2Push(ImageView g){recool2Stack.push(g);}
     public static void recool2Pop(){recool2Stack.pop();}
     public static void recool2Clear(){recool2Stack.clear();}
+    
+    public static void setSave(boolean s){save = s;}
+    public static boolean getSave(){return save;}
+    
+    public static String getSaveName(){return saveName;}
+    
+    public static void setSaveTime(int s){
+        saveTime = s;
+        interval = s;
+    }
     
     public static void setVariables(double wtemp, double htemp){
         w = wtemp;
@@ -391,12 +421,14 @@ public class PaintFX extends Application {
         VBox vBox = new VBox(menuBar);                                          // Create vBox for menubar
         MenuItem menuOpen = new MenuItem("Open...");                            // Create "Open" item
         MenuItem menuSave = new MenuItem("Save");                               // Create "Save" item
+        MenuItem menuAuto = new MenuItem("Auto Save Settings");                 // Create "Save" item
         MenuItem menuSaveAs = new MenuItem("Save As...");                       // Create "Save As..." item
         MenuItem menuExit = new MenuItem("Exit");                               // Create "Exit" item
                                                                                 // Create Key Commands
         menuOpen.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
         menuSave.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
         menuSaveAs.setAccelerator(new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN));
+        menuAuto.setAccelerator(new KeyCodeCombination(KeyCode.P, KeyCombination.CONTROL_DOWN));
         menuExit.setAccelerator(new KeyCodeCombination(KeyCode.X, KeyCombination.CONTROL_DOWN));
         
         MenuItem menuUndo = new MenuItem("Undo");                        // Create "Snap to Fit" item
@@ -406,7 +438,7 @@ public class PaintFX extends Application {
         MenuItem menuZoomIn = new MenuItem("Zoom In");                          // Create "Zoom In" item
         MenuItem menuZoomOut = new MenuItem("Zoom Out");                        // Create "Zoom Out" item
         MenuItem menuTools = new MenuItem("Toggle Tools");                      // Create "Toggle Tools" item
-        MenuItem menuMove = new MenuItem("Cut and Paste");                      // Create "Toggle Tools" item
+        MenuItem menuMove = new MenuItem("Cut and Move");                      // Create "Toggle Tools" item
         MenuItem menuClear = new MenuItem("Clear Canvas");                      // Create "Clear Canvas" item
                                                                                 // Create Key Commands
         menuUndo.setAccelerator(new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN));
@@ -425,7 +457,7 @@ public class PaintFX extends Application {
         menuHelp.setAccelerator(new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN));
         menuAbout.setAccelerator(new KeyCodeCombination(KeyCode.B, KeyCombination.CONTROL_DOWN));
         
-        menu.getItems().addAll(menuOpen, menuSave, menuSaveAs, menuExit);       // Add items to "File"
+        menu.getItems().addAll(menuOpen, menuSave, menuSaveAs, menuAuto, menuExit);       // Add items to "File"
         menu3.getItems().addAll(menuUndo, menuRedo, menuSnap,
                 menuCanvas, menuZoomIn, menuZoomOut);                           // Add items to "Edit"
         menu2.getItems().addAll(menuTools, menuMove, menuClear);                          // Add items to "Draw"
@@ -497,8 +529,12 @@ public class PaintFX extends Application {
         VBox tabBox = new VBox(tabPane);
         
         ColorPicker colorPicker = new ColorPicker(Color.BLACK);                 // Create a color picker
+        Tooltip.install(colorPicker, new Tooltip(
+                "Select Edge Color"));
         HBox hColor = new HBox(colorPicker);
         ColorPicker fillPick = new ColorPicker();                               // Create a color picker
+        Tooltip.install(fillPick, new Tooltip(
+                "Select Fill Color"));
         HBox hFill = new HBox(fillPick);
         
         GridPane gP = new GridPane();                                           // Create sidebar grid
@@ -509,78 +545,108 @@ public class PaintFX extends Application {
         ToggleGroup toggleGroup = new ToggleGroup();                            // Create ToggleGroup
         
         CheckBox fillBox = new CheckBox("Fill Shape");                          // Create CheckBox
+        Tooltip.install(fillBox, new Tooltip(
+                "Select to add Fill to Shape"));
         CheckBox eraseBox = new CheckBox("Transparent Erase");                          // Create CheckBox
+        Tooltip.install(eraseBox, new Tooltip(
+                "Select to Switch from White Erase to Transparent Erase"));
         
         lineBtn = new ToggleButton("Line");                        // Create Line toggle button
         HBox hLine = new HBox(lineBtn);
         Image lineImg = new Image("line.png");
         ImageView lineView = new ImageView(lineImg);
         lineBtn.setGraphic(lineView);
+        Tooltip.install(lineBtn, new Tooltip(
+                "Draws a Straight Line between Two Points"));
         
         curveBtn = new ToggleButton("Curve");                      // Create Curve Toggle Button
         HBox hCurve = new HBox(curveBtn);
         Image curveImg = new Image("curve.png");
         ImageView curveView = new ImageView(curveImg);
         curveBtn.setGraphic(curveView);
+        Tooltip.install(curveBtn, new Tooltip(
+                "Draws a Curve following the Mouse"));
         
         rectBtn = new ToggleButton("Rectangle");                   // Create Rectangle Toggle Button
         HBox hRect = new HBox(rectBtn);
         Image rectImg = new Image("rectangle.png");
         ImageView rectView = new ImageView(rectImg);
         rectBtn.setGraphic(rectView);
+        Tooltip.install(rectBtn, new Tooltip(
+                "Draws a Rectangle between Two Points"));
         
         squBtn = new ToggleButton("Square");                       // Create Square Toggle Button
         HBox hSqu = new HBox(squBtn);
         Image squImg = new Image("square.png");
         ImageView squView = new ImageView(squImg);
         squBtn.setGraphic(squView);
+        Tooltip.install(squBtn, new Tooltip(
+                "Draws a Square between Two Points"));
         
         ovalBtn = new ToggleButton("Ellipse");                     // Create Ellipse Toggle Button
         HBox hOval = new HBox(ovalBtn);
         Image ovalImg = new Image("oval.png");
         ImageView ovalView = new ImageView(ovalImg);
         ovalBtn.setGraphic(ovalView);
+        Tooltip.install(ovalBtn, new Tooltip(
+                "Draws an Ellipse between Two Points"));
         
         cirBtn = new ToggleButton("Circle");                       // Create Circle Toggle Button
         HBox hCir = new HBox(cirBtn);
         Image cirImg = new Image("circle.png");
         ImageView cirView = new ImageView(cirImg);
         cirBtn.setGraphic(cirView);
+        Tooltip.install(cirBtn, new Tooltip(
+                "Draws a Circle between Two Points"));
         
         textBtn = new ToggleButton("Text");                        // Create Text Toggle Button
         HBox hText = new HBox(textBtn);
+        Tooltip.install(textBtn, new Tooltip(
+                "Places above Text where the Mouse Button is Released"));
         
         dropBtn = new ToggleButton("Color Dropper");               // Create Main Dropper toggle button
         HBox hDrop = new HBox(dropBtn);
         Image dropImg = new Image("dropper.png");
         ImageView dropView = new ImageView(dropImg);
         dropBtn.setGraphic(dropView);
+        Tooltip.install(dropBtn, new Tooltip(
+                "Selects Edge Color from Selected Color on the Canvas"));
         
         dropBtn1 = new ToggleButton("Color Dropper");              // Create Fill Dropper toggle button
         HBox hDrop1 = new HBox(dropBtn1);
         Image dropImg1 = new Image("dropper1.png");
         ImageView dropView1 = new ImageView(dropImg1);
         dropBtn1.setGraphic(dropView1);
+        Tooltip.install(dropBtn1, new Tooltip(
+                "Selects Fill Color from Selected Color on the Canvas"));
         
         eraserBtn = new ToggleButton("Eraser");              // Create Fill Dropper toggle button
         HBox hEraser = new HBox(eraserBtn);
         Image eraserImg = new Image("eraser.png");
         ImageView eraserView = new ImageView(eraserImg);
         eraserBtn.setGraphic(eraserView);
+        Tooltip.install(eraserBtn, new Tooltip(
+                "Erases Content on Canvas with either White or Transparency"));
         
         polyBtn = new ToggleButton("Polygon");                                  // Create Polygon Toggle Button
         HBox hPoly = new HBox(polyBtn);
         Image polyImg = new Image("polygon.png");
         ImageView polyView = new ImageView(polyImg);
         polyBtn.setGraphic(polyView);
+        Tooltip.install(polyBtn, new Tooltip(
+                "Draws a Polygon of Entered Sides between Two Points"));
         
         rRectBtn = new ToggleButton("Rounded Rectangle");              // Create Fill Dropper toggle button
         HBox hRRect = new HBox(rRectBtn);
         Image rRectImg = new Image("rRectangle.png");
         ImageView rRectView = new ImageView(rRectImg);
         rRectBtn.setGraphic(rRectView);
+        Tooltip.install(rRectBtn, new Tooltip(
+                "Draws a Rounded Rectangle between Two Points"));
         
         Button canvasBtn = new Button("Set Size");                              // Create Resize Button
+        Tooltip.install(canvasBtn, new Tooltip(
+                "Set Canvas to Specified Size"));
         HBox hCanvas = new HBox(canvasBtn);
         
         lineBtn.setToggleGroup(toggleGroup);                                    // Add Toggle Buttons to Group
@@ -594,7 +660,7 @@ public class PaintFX extends Application {
         rRectBtn.setToggleGroup(toggleGroup);
         polyBtn.setToggleGroup(toggleGroup);
         
-        Label widLabel = new Label("Enter Width:");                             // Create width label
+        Label widLabel = new Label("Enter Width or Font Size:");                             // Create width label
         Label sideLabel = new Label("Enter Number of Sides:");                             // Create width label
         Label shapeLabel = new Label("Choose Shape:");                          // Create height label
         Label colorLabel = new Label("Choose Color:");                          // Create color label
@@ -603,12 +669,22 @@ public class PaintFX extends Application {
         Label canHeight = new Label("Enter Canvas Height:");                    // Create can height label
 
         TextField widthText = new TextField();                                  // Create a width text field
+        Tooltip.install(widthText, new Tooltip(
+                "Enter Width or Font Size"));
         widthText.setText("1");                                                 // Set default value to 1
         TextField pointText = new TextField();                                  // Create a width text field
+        Tooltip.install(pointText, new Tooltip(
+                "Enter Number of Points"));
         pointText.setText("3");                                                 // Set default value to 1
         TextField enteredText = new TextField();                                // Create a user text field
+        Tooltip.install(enteredText, new Tooltip(
+                "Text to be Placed Onscreen"));
         TextField canW = new TextField();                                       // Create can width text field
+        Tooltip.install(canW, new Tooltip(
+                "Enter Canvas Width"));
         TextField canH = new TextField();                                       // Create can height text field
+        Tooltip.install(canH, new Tooltip(
+                "Enter Canvas Height"));
         
         gP.add(colorLabel, 0, 0);                                               // Assemble sidebar tool grid
         gP.add(hColor, 0, 1);
@@ -643,7 +719,7 @@ public class PaintFX extends Application {
                
         coolCrab.getChildren().addAll(cool, canvas);                            // Add canvas and image to initial screen
         
-        sp.setContent(coolCrab);                                                // Plae in scrollpane
+        sp.setContent(coolCrab);                                                // Place in scrollpane
         
         border.setCenter(tabBox);                                               // Place stack in the center of the screen
 
@@ -653,6 +729,52 @@ public class PaintFX extends Application {
         
         primaryStage.setWidth(w+200);                                           // Set window to slightly larger than image
         primaryStage.setHeight(h+200);
+        
+        try {
+            File time = new File("save.tfx");
+            Scanner myReader = new Scanner(time);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                setSaveTime(Integer.parseInt(data));
+                saveName = data;
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            try{
+                File time = new File("save.tfx");
+                FileWriter myWriter = new FileWriter(time);
+                myWriter.write("15");
+                saveName = "15";
+                myWriter.close();
+            } catch (IOException a) {
+                System.out.println("File Error");
+                e.printStackTrace();
+            }
+        }
+        
+        timer = new java.util.Timer();
+        timer.schedule(new TimerTask() {
+            public void run() {
+                Platform.runLater(new Runnable() {
+                    public void run() {
+                        if(interval > 0)
+                        {
+                            if(save){
+                                primaryStage.setTitle("PaintFX - " + interval + "s");
+                            }
+                            else{
+                                primaryStage.setTitle("PaintFX");
+                            }                                       // Set Title and Logo
+                            interval--;
+                        }
+                        else{
+                            saveHandler.autoSave(coolCrab, primaryStage);
+                            interval = saveTime;
+                        }
+                    }
+                });
+            }
+        }, 0, 1000);
                                                                                 // Create Tab Switch
         tabPane.getSelectionModel().selectedItemProperty().addListener((obs,ov,nv)->{
             
@@ -947,7 +1069,7 @@ public class PaintFX extends Application {
         });
         
         menuHelp.setOnAction(new helpHandler());                                // If help button is pushed
-        
         menuAbout.setOnAction(new aboutHandler());                              // If about button is pushed
+        menuAuto.setOnAction(new autoHandler());                              // If about button is pushed
     }
 }

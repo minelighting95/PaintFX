@@ -15,27 +15,47 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+/**
+ * Event Handler to Place Text Onscreen
+ * 
+ * @author Alex Appel
+ */
 public class textHandler implements EventHandler<ActionEvent> {
 
-    public StackPane coolCrab;
-    public ColorPicker colorPicker;
-    public TextField widthText;
-    public ToggleButton lineBtn;
-    public Stage primaryStage;
-    public ToggleButton dropBtn;
+    private StackPane coolCrab;
+    private ColorPicker colorPicker;
+    private TextField widthText;
+    private ToggleButton lineBtn;
+    private Stage primaryStage;
+    private ToggleButton dropBtn;
     double x1;
     double x2;
     double y1;
     double y2;
-    public TabPane tabPane;
-    public TextField enteredText;
-    public static int hold;
-    public WritableImage image;
+    private TabPane tabPane;
+    private TextField enteredText;
+    private static int hold;
+    private WritableImage image;
     
+    /**
+     * Function to set phase of TextHandler (Normally 1)
+     * @param h Hold Value (h = 1 will cause this handler to end)
+     */
     public static void setHold(int h){
         hold = h;
     }
     
+    /**
+     * Event Handler to Place Text on Screen
+     * @param coolCrab Main Program StackPane
+     * @param colorPicker Edge Color Picker
+     * @param widthText Toolbar Width Textbox
+     * @param lineBtn Text Handler Button
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     * @param dropBtn Edge Color Dropper Button
+     * @param enteredText User Entered Textbox
+     */
     public textHandler(StackPane coolCrab, ColorPicker colorPicker, TextField widthText, ToggleButton lineBtn, Stage primaryStage, TabPane tabPane, ToggleButton dropBtn, TextField enteredText){
 
         this.coolCrab = coolCrab;

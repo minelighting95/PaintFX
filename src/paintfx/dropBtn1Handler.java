@@ -10,10 +10,19 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+/**
+ * Event Handler to Control Fill Color Dropper
+ * 
+ * @author Alex Appel
+ */
 public class dropBtn1Handler implements EventHandler<ActionEvent> {
 
-    public StackPane coolCrab;
+    private StackPane coolCrab;
     
+    /**
+     * Event Handler to Control Fill Color Dropper
+     * @param coolCrab Main Program StackPane
+     */
     public dropBtn1Handler(StackPane coolCrab){
         
         this.coolCrab = coolCrab;

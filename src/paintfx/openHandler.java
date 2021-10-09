@@ -25,28 +25,33 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Event Handler to Open a File in PaintFX
+ * 
+ * @author Alex Appel
+ */
 public class openHandler implements EventHandler<ActionEvent> {
 
-    public Stage primaryStage;
-    public FileChooser fileChooser;
-    public ImageView cool;
-    public ImageView cool1;
-    public ImageView cool2;
-    public BorderPane border;
-    public Canvas canvas;
-    public Canvas canvas1;
-    public Canvas canvas2;
-    public double w;
-    public double h;
-    public VBox vBox;
-    public GraphicsContext gc;
-    public GraphicsContext gc1;
-    public GraphicsContext gc2;
-    public StackPane coolCrab;
-    public ScrollPane sp;
-    public TabPane tabPane;
+    private Stage primaryStage;
+    private FileChooser fileChooser;
+    private ImageView cool;
+    private ImageView cool1;
+    private ImageView cool2;
+    private BorderPane border;
+    private Canvas canvas;
+    private Canvas canvas1;
+    private Canvas canvas2;
+    private double w;
+    private double h;
+    private VBox vBox;
+    private GraphicsContext gc;
+    private GraphicsContext gc1;
+    private GraphicsContext gc2;
+    private StackPane coolCrab;
+    private ScrollPane sp;
+    private TabPane tabPane;
     
-    public void open(){
+    private void open(){
         try{                                                                    // Attempt...
             fileChooser.setTitle("Open Picture...");                            // Named Open Picture
             fileChooser.getExtensionFilters().addAll(                           // Add image filters
@@ -161,6 +166,25 @@ public class openHandler implements EventHandler<ActionEvent> {
         catch(Exception f){}                                                    // If invalid image or closed explorer
     }
     
+    /**
+     * Event Handler to open a new Image
+     * @param primaryStage Main Program Stage
+     * @param fileChooser Program File Chooser
+     * @param cool Tab 1 Image
+     * @param cool1 Tab 2 Image
+     * @param cool2 Tab 3 Image
+     * @param border Main Program BorderPane
+     * @param canvas Tab 1 Canvas
+     * @param canvas1 Tab 2 Canvas
+     * @param canvas2 Tab 3 Canvas
+     * @param vBox Main Program VBox
+     * @param gc Tab 1 GraphicsContext
+     * @param gc1 Tab 2 GraphicsContext
+     * @param gc2 Tab 3 GraphicsContext
+     * @param coolCrab Main Program StackPane
+     * @param sp Main Program ScrollPane
+     * @param tabPane Main Program TabPane
+     */
     public openHandler(Stage primaryStage, FileChooser fileChooser, ImageView cool, ImageView cool1, ImageView cool2, BorderPane border, Canvas canvas,
             Canvas canvas1, Canvas canvas2, VBox vBox, GraphicsContext gc, GraphicsContext gc1, GraphicsContext gc2, StackPane coolCrab,
             ScrollPane sp, TabPane tabPane){

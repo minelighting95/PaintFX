@@ -14,21 +14,40 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * Event Handler to Draw a Curve Onscreen
+ * 
+ * @author Alex Appel
+ */
 public class curveHandler implements EventHandler<ActionEvent> {
 
-    public StackPane coolCrab;
-    public ColorPicker colorPicker;
-    public TextField widthText;
-    public ToggleButton curveBtn;
-    public Stage primaryStage;
+    private StackPane coolCrab;
+    private ColorPicker colorPicker;
+    private TextField widthText;
+    private ToggleButton curveBtn;
+    private Stage primaryStage;
     static int hold2 = 0;
-    public TabPane tabPane;
-    public ToggleButton dropBtn;
+    private TabPane tabPane;
+    private ToggleButton dropBtn;
     
+    /**
+     * Function to set phase of curveHandler (Normally 1)
+     * @param h Hold Value (h = 1 will cause this handler to end)
+     */
     public static void setHold(int h){
         hold2 = h;
     }
     
+    /**
+     * Event Handler to Place a Curve on Screen
+     * @param coolCrab Main Program StackPane
+     * @param colorPicker Edge Color Picker
+     * @param widthText Toolbar Width Textbox
+     * @param curveBtn Curve Handler Button
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     * @param dropBtn Edge Color Dropper Button
+     */
     public curveHandler(StackPane coolCrab, ColorPicker colorPicker, TextField widthText, ToggleButton curveBtn, Stage primaryStage, TabPane tabPane, ToggleButton dropBtn){
 
         this.coolCrab = coolCrab;

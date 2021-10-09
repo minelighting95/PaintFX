@@ -9,7 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -19,12 +18,23 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Event Handler to Exit PaintFX
+ * 
+ * @author Alex Appel
+ */
 public class exitHandler implements EventHandler<WindowEvent> {
 
-    public StackPane coolCrab;
-    public Stage primaryStage;
-    public TabPane tabPane;
+    private StackPane coolCrab;
+    private Stage primaryStage;
+    private TabPane tabPane;
     
+    /**
+     * Event Handler to Exit PaintFX
+     * @param coolCrab Main Program StackPane
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     */
     public exitHandler(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
         
         this.coolCrab = coolCrab;
@@ -33,6 +43,12 @@ public class exitHandler implements EventHandler<WindowEvent> {
         
     }
     
+    /**
+     * Function to Exit PaintFX
+     * @param coolCrab Main Program StackPane
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     */
     public static void exit(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
         if((PaintFX.getChange() == 1) || (PaintFX.getChange1() == 1) || (PaintFX.getChange2() == 1)){
                     Stage saveWarnWindow = new Stage();                         // Create new stage

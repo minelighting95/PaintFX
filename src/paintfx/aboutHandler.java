@@ -15,6 +15,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+/**
+ * Event Handler to Control About Window
+ * 
+ * @author Alex Appel
+ */
 public class aboutHandler implements EventHandler<ActionEvent> {
 
     
@@ -29,7 +34,7 @@ public class aboutHandler implements EventHandler<ActionEvent> {
             about.setHgap(10);                                                  // Set the gaps between grid elements to 10
             about.setVgap(10);
             about.setPadding(new Insets(25, 25, 25, 25));                       // Set border padding to 25
-            
+
             Image logo = new Image("paintfxlogo.png");                          // Open logo
             ImageView logoIm = new ImageView();                                 // Create new image view
             logoIm.setImage(logo);                                              // Set Image
@@ -39,8 +44,8 @@ public class aboutHandler implements EventHandler<ActionEvent> {
             
             about.add(logoIm, 0, 1);                                            // Add Image to left box
             
-            Text info = new Text("PaintFX v1.3.0\n"                             // Create about text
-                    + "Sept. 18, 2021\n\n"
+            Text info = new Text("PaintFX v1.4.0\n"                             // Create about text
+                    + "Oct. 8, 2021\n\n"
                     + "Programmed by Alex Appel\n"
                     + "CS 250 Paint Project\n");                               
             info.setFont(new Font("Arial", 18));                                // Set Font and Size

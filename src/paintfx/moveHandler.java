@@ -15,10 +15,15 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * Event Handler to Move Part of the Onscreen Image
+ * 
+ * @author Alex Appel
+ */
 public class moveHandler implements EventHandler<ActionEvent> {
 
-    public StackPane coolCrab;
-    public Stage primaryStage;
+    private StackPane coolCrab;
+    private Stage primaryStage;
     double x1;
     double x2;
     double y1;
@@ -26,19 +31,30 @@ public class moveHandler implements EventHandler<ActionEvent> {
     double width;
     double height;
     static int hold = 0;
-    public TabPane tabPane;
-    public WritableImage image;
-    public WritableImage cut;
-    public ImageView currImage;
-    public GraphicsContext gcTemp;
-    public Canvas canTemp;
-    public Bounds localbnd;
-    public CheckBox eraseBox;
+    private TabPane tabPane;
+    private WritableImage image;
+    private WritableImage cut;
+    private ImageView currImage;
+    private GraphicsContext gcTemp;
+    private Canvas canTemp;
+    private Bounds localbnd;
+    private CheckBox eraseBox;
     
+    /**
+     * Function to set phase of moveHandler (Normally 2)
+     * @param h Hold Value (h = 2 will cause this handler to end)
+     */
     public static void setHold(int h){
         hold = h;
     }
     
+    /**
+     * Event Handler to Move Part of the Onscreen Image
+     * @param coolCrab Main Program StackPane
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     * @param eraseBox Toolbar Eraser Transparency CheckBox
+     */
     public moveHandler(StackPane coolCrab, Stage primaryStage, TabPane tabPane, CheckBox eraseBox){
 
         this.coolCrab = coolCrab;

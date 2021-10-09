@@ -14,21 +14,39 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * Event Handler to Erase Pixels Onscreen
+ * 
+ * @author Alex Appel
+ */
 public class eraserHandler implements EventHandler<ActionEvent> {
 
-    public StackPane coolCrab;
-    public TextField widthText;
-    public ToggleButton curveBtn;
-    public Stage primaryStage;
+    private StackPane coolCrab;
+    private TextField widthText;
+    private ToggleButton curveBtn;
+    private Stage primaryStage;
     static int hold2 = 0;
-    public TabPane tabPane;
-    public int lineWidth;
-    public CheckBox eraseBox;
+    private TabPane tabPane;
+    private int lineWidth;
+    private CheckBox eraseBox;
     
+    /**
+     * Function to set phase of eraserHandler (Normally 2)
+     * @param h Hold Value (h = 2 will cause this handler to end)
+     */
     public static void setHold(int h){
         hold2 = h;
     }
     
+    /**
+     * Event Handler to Erase Pixels Onscreen
+     * @param coolCrab Main Program StackPAne
+     * @param widthText Toolbar Width Textbox
+     * @param curveBtn Eraser Handler Button
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     * @param eraseBox Toolbar Eraser Transparency CheckBox
+     */
     public eraserHandler(StackPane coolCrab, TextField widthText, ToggleButton curveBtn, Stage primaryStage, TabPane tabPane, CheckBox eraseBox){
 
         this.coolCrab = coolCrab;

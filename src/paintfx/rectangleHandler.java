@@ -15,29 +15,51 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * Event Handler to Draw a Rectangle Onscreen
+ * 
+ * @author Alex Appel
+ */
 public class rectangleHandler implements EventHandler<ActionEvent> {
 
-    public StackPane coolCrab;
-    public ColorPicker colorPicker;
-    public ColorPicker fillPick;
-    public TextField widthText;
-    public ToggleButton rectBtn;
-    public ToggleButton dropBtn;
-    public ToggleButton dropBtn1;
-    public Stage primaryStage;
+    private StackPane coolCrab;
+    private ColorPicker colorPicker;
+    private ColorPicker fillPick;
+    private TextField widthText;
+    private ToggleButton rectBtn;
+    private ToggleButton dropBtn;
+    private ToggleButton dropBtn1;
+    private Stage primaryStage;
     double x1;
     double x2;
     double y1;
     double y2;
     static int hold = 0;
-    public TabPane tabPane;
-    public CheckBox fillBox;
-    public WritableImage image;
+    private TabPane tabPane;
+    private CheckBox fillBox;
+    private WritableImage image;
     
+    /**
+     * Function to set phase of rectangleHandler (Normally 2)
+     * @param h Hold Value (h = 2 will cause this handler to end)
+     */
     public static void setHold(int h){
         hold = h;
     }
     
+    /**
+     * Event Handler to Place a Rectangle on Screen
+     * @param coolCrab Main Program StackPane
+     * @param colorPicker Edge Color Picker
+     * @param fillPick Fill Color Picker
+     * @param widthText Toolbar Width Textbox
+     * @param rectBtn Rectangle Handler Button
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     * @param fillBox Toolbar Fill CheckBox
+     * @param dropBtn Edge Color Dropper Button
+     * @param dropBtn1 Fill Color Dropper Button
+     */
     public rectangleHandler(StackPane coolCrab, ColorPicker colorPicker, ColorPicker fillPick, TextField widthText, ToggleButton rectBtn, Stage primaryStage, TabPane tabPane, CheckBox fillBox, ToggleButton dropBtn, ToggleButton dropBtn1){
 
         this.coolCrab = coolCrab;

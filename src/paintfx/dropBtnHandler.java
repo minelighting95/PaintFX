@@ -10,10 +10,19 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
+/**
+ * Event Handler to Control Edge Color Dropper
+ * 
+ * @author Alex Appel
+ */
 public class dropBtnHandler implements EventHandler<ActionEvent> {
 
-    public StackPane coolCrab;
+    private StackPane coolCrab;
     
+    /**
+     * Event Handler to Control Edge Color Dropper
+     * @param coolCrab Main Program StackPane
+     */
     public dropBtnHandler(StackPane coolCrab){
         
         this.coolCrab = coolCrab;

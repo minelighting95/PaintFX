@@ -14,14 +14,19 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+/**
+ * Event Handler to Draw a Line Onscreen
+ * 
+ * @author Alex Appel
+ */
 public class lineHandler implements EventHandler<ActionEvent> {
 
-    public ColorPicker colorPicker;
-    public StackPane coolCrab;
-    public TextField widthText;
-    public ToggleButton lineBtn;
-    public Stage primaryStage;
-    public ToggleButton dropBtn;
+    private ColorPicker colorPicker;
+    private StackPane coolCrab;
+    private TextField widthText;
+    private ToggleButton lineBtn;
+    private Stage primaryStage;
+    private ToggleButton dropBtn;
     double x1;
     double x2;
     double x3;
@@ -29,13 +34,27 @@ public class lineHandler implements EventHandler<ActionEvent> {
     double y2;
     double y3;
     static int hold = 0;
-    public TabPane tabPane;
-    public WritableImage image;
+    private TabPane tabPane;
+    private WritableImage image;
     
+    /**
+     * Function to set phase of lineHandler (Normally 2)
+     * @param h Hold Value (h = 2 will cause this handler to end)
+     */
     public static void setHold(int h){
         hold = h;
     }
     
+    /**
+     * Event Handler to Place a Line on Screen
+     * @param coolCrab Main Program StackPane
+     * @param colorPicker Edge Color Picker
+     * @param widthText Toolbar Width Textbox
+     * @param lineBtn Line Handler Button
+     * @param primaryStage Main Program Stage
+     * @param tabPane Main Program TabPane
+     * @param dropBtn Edge Color Dropper Button
+     */
     public lineHandler(StackPane coolCrab, ColorPicker colorPicker, TextField widthText, ToggleButton lineBtn, Stage primaryStage, TabPane tabPane, ToggleButton dropBtn){
 
         this.coolCrab = coolCrab;
