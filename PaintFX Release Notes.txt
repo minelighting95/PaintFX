@@ -1,5 +1,37 @@
 PaintFX Release Notes:
 
+Release Version 1.5.0 - 10/18/2021
+
+	New Features:
+		-Fixed Zoom Issue
+		-Fixed ScrollPane Cropping Issue
+		-Fixed Tab Naming Issue
+		-Fixed Cut and Move Layering Issue
+		-Fixed Canvas Resize Feature
+		-Fixed Saving After Save As Issue
+		-Fixed Canvas Larger Than Image Move/Copy Issue
+		-Cleaned Help Screen Text
+		-Cleaned and Updated Commenting
+		-Added Copy and Move Feature
+		-Added Logging Feature on Thread to show if a Save, Open, Undo/Redo, or Tool Selection was Made
+		-Added Color Inversion Feature
+		-Updated Javadoc
+		-Updated Tool Icons
+		
+	Known Issues:
+		-When saving as a JPG or BMP, any transparent pixels will save as white
+			-Related to the JDK 8 JPG bug
+		
+	Next to be Implemented:
+		-Clean Code Base
+		-Clean Move/Copy Functions
+		-Clean Eraser
+		-Clean ScrollPane
+		
+	GitHub Link:
+		https://github.com/minelighting95/PaintFX
+
+
 Release Version 1.4.0 - 10/8/2021
 
 	New Features:

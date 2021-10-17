@@ -13,7 +13,6 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Stage;
 
 /**
  * Event Handler to Place Text Onscreen
@@ -26,7 +25,6 @@ public class textHandler implements EventHandler<ActionEvent> {
     private ColorPicker colorPicker;
     private TextField widthText;
     private ToggleButton lineBtn;
-    private Stage primaryStage;
     private ToggleButton dropBtn;
     double x1;
     double x2;
@@ -38,7 +36,7 @@ public class textHandler implements EventHandler<ActionEvent> {
     private WritableImage image;
     
     /**
-     * Function to set phase of TextHandler (Normally 1)
+     * Set phase of TextHandler (Normally 1)
      * @param h Hold Value (h = 1 will cause this handler to end)
      */
     public static void setHold(int h){
@@ -51,18 +49,16 @@ public class textHandler implements EventHandler<ActionEvent> {
      * @param colorPicker Edge Color Picker
      * @param widthText Toolbar Width Textbox
      * @param lineBtn Text Handler Button
-     * @param primaryStage Main Program Stage
      * @param tabPane Main Program TabPane
      * @param dropBtn Edge Color Dropper Button
      * @param enteredText User Entered Textbox
      */
-    public textHandler(StackPane coolCrab, ColorPicker colorPicker, TextField widthText, ToggleButton lineBtn, Stage primaryStage, TabPane tabPane, ToggleButton dropBtn, TextField enteredText){
+    public textHandler(StackPane coolCrab, ColorPicker colorPicker, TextField widthText, ToggleButton lineBtn, TabPane tabPane, ToggleButton dropBtn, TextField enteredText){
 
         this.coolCrab = coolCrab;
         this.colorPicker = colorPicker;
         this.widthText = widthText;
         this.lineBtn = lineBtn;
-        this.primaryStage = primaryStage;
         this.tabPane = tabPane;
         this.dropBtn = dropBtn;
         this.enteredText = enteredText;
@@ -72,8 +68,9 @@ public class textHandler implements EventHandler<ActionEvent> {
     @Override
     public void handle(ActionEvent a) {
           
-        hold = 0;
-        curveHandler.setHold(1);
+        hold = 0;                                                               // Set Hold
+        PaintFX.logItem("Text", 1);                                             // Log Save
+        curveHandler.setHold(1);                                                // Set Holds for tools
         rectangleHandler.setHold(2);
         squareHandler.setHold(2);
         ovalHandler.setHold(2);
@@ -81,15 +78,17 @@ public class textHandler implements EventHandler<ActionEvent> {
         eraserHandler.setHold(2);
         rRectangleHandler.setHold(2);
         polygonHandler.setHold(2);
+        moveHandler.setHold(2);
+        copyHandler.setHold(2);
         
-        Canvas canTemp = new Canvas(PaintFX.getW(), PaintFX.getH());                                       // Create Canvas
+        Canvas canTemp = new Canvas(PaintFX.getW(), PaintFX.getH());            // Create New Canvas and Graphics Context
         GraphicsContext gcTemp = canTemp.getGraphicsContext2D();
 
-        SnapshotParameters params = new SnapshotParameters();
+        SnapshotParameters params = new SnapshotParameters();                   // Create Snapshot parameters
         params.setFill(Color.TRANSPARENT);
 
-        if(PaintFX.getSelec() == 0){
-            image = PaintFX.canvasPeek().snapshot(params, null);
+        if(PaintFX.getSelec() == 0){                                            // For Selected tab
+            image = PaintFX.canvasPeek().snapshot(params, null);                // Take snapshot and draw on new canvas
             gcTemp.drawImage(image, 0, 0);
         }
         else if(PaintFX.getSelec() == 1){
@@ -101,11 +100,11 @@ public class textHandler implements EventHandler<ActionEvent> {
             gcTemp.drawImage(image, 0, 0);
         }
 
-        coolCrab.getChildren().remove(1);
+        coolCrab.getChildren().remove(1);                                       // Display new canvas
         coolCrab.getChildren().add(1, canTemp);
         
-        canTemp.setOnMouseClicked((event) ->{
-            if(hold == 0){
+        canTemp.setOnMouseClicked((event) ->{                                   // When mouse is clicked
+            if(hold == 0 && lineBtn.isSelected()){                              // Clear previous live draw
                 gcTemp.clearRect(canTemp.getLayoutBounds().getMinX(), canTemp.getLayoutBounds().getMinY(), canTemp.getWidth(), canTemp.getHeight());
                 gcTemp.drawImage(image, 0, 0);
                 x1 = event.getX();                                              // Record Coordinates
@@ -115,7 +114,7 @@ public class textHandler implements EventHandler<ActionEvent> {
                     gcTemp.setStroke(PaintFX.getColor());
                 }
                 else{
-                    gcTemp.setStroke(colorPicker.getValue());                       // Set Text Color to selected value
+                    gcTemp.setStroke(colorPicker.getValue());                   // Set Text Color to selected value
                 }
 
                 int lineWidth = Integer.parseInt(widthText.getText());          // Convert width text to integer
@@ -125,12 +124,12 @@ public class textHandler implements EventHandler<ActionEvent> {
                 }
                 gcTemp.setLineWidth(1);
                 gcTemp.setFont(new Font("Ariel", lineWidth));
-                gcTemp.strokeText(enteredText.getText(), x1, y1);                   // Create text at user selected point
+                gcTemp.strokeText(enteredText.getText(), x1, y1);               // Create live draw text at user selected point
             }
         });
         
         canTemp.setOnMouseDragged((event) ->{
-            if(hold == 0){
+            if(hold == 0 && lineBtn.isSelected()){                              // If mouse dragged, clear previous live draw
                 gcTemp.clearRect(canTemp.getLayoutBounds().getMinX(), canTemp.getLayoutBounds().getMinY(), canTemp.getWidth(), canTemp.getHeight());
                 gcTemp.drawImage(image, 0, 0);
                 x1 = event.getX();                                              // Record Coordinates
@@ -140,7 +139,7 @@ public class textHandler implements EventHandler<ActionEvent> {
                     gcTemp.setStroke(PaintFX.getColor());
                 }
                 else{
-                    gcTemp.setStroke(colorPicker.getValue());                       // Set Text Color to selected value
+                    gcTemp.setStroke(colorPicker.getValue());                   // Set Text Color to selected value
                 }
 
                 int lineWidth = Integer.parseInt(widthText.getText());          // Convert width text to integer
@@ -150,12 +149,12 @@ public class textHandler implements EventHandler<ActionEvent> {
                 }
                 gcTemp.setLineWidth(1);
                 gcTemp.setFont(new Font("Ariel", lineWidth));
-                gcTemp.strokeText(enteredText.getText(), x1, y1);                   // Create text at user selected point
+                gcTemp.strokeText(enteredText.getText(), x1, y1);               // Create text at user selected point
             }
         });
                 
-        canTemp.setOnMouseReleased((event) ->{                                // When mouse clicked
-            if(hold == 0){
+        canTemp.setOnMouseReleased((event) ->{                                  // When mouse released
+            if(hold == 0 && lineBtn.isSelected()){                              // Clear live draw
                 gcTemp.clearRect(canTemp.getLayoutBounds().getMinX(), canTemp.getLayoutBounds().getMinY(), canTemp.getWidth(), canTemp.getHeight());
                 gcTemp.drawImage(image, 0, 0);
                 x1 = event.getX();                                              // Record Coordinates
@@ -165,7 +164,7 @@ public class textHandler implements EventHandler<ActionEvent> {
                     gcTemp.setStroke(PaintFX.getColor());
                 }
                 else{
-                    gcTemp.setStroke(colorPicker.getValue());                       // Set Text Color to selected value
+                    gcTemp.setStroke(colorPicker.getValue());                   // Set Text Color to selected value
                 }
 
                 int lineWidth = Integer.parseInt(widthText.getText());          // Convert width text to integer
@@ -175,26 +174,30 @@ public class textHandler implements EventHandler<ActionEvent> {
                 }
                 gcTemp.setLineWidth(1);
                 gcTemp.setFont(new Font("Ariel", lineWidth));
-                gcTemp.strokeText(enteredText.getText(), x1, y1);                   // Create text at user selected point
+                gcTemp.strokeText(enteredText.getText(), x1, y1);               // Create text at user selected point
                 lineBtn.setSelected(false);                                     // Untoggle button
-                if(PaintFX.getSelec() == 0){
-                    PaintFX.redoClear();
-                    if(PaintFX.getChange() == 0){
+                
+                if(PaintFX.getSelec() == 0){                                    // On selected tab,
+                    PaintFX.redoClear();                                        // Clear Redo
+                    PaintFX.recool1Clear();
+                    if(PaintFX.getChange() == 0){                               // Update change and tab
                         tabPane.getTabs().get(0).setText(tabPane.getTabs().get(0).getText() + "*");
                         PaintFX.setChange(1);
                     }
-                    PaintFX.canvasPush(canTemp);
+                    PaintFX.canvasPush(canTemp);                                // Push new canvas
                 }
-                else if(PaintFX.getSelec() == 1){
+                else if(PaintFX.getSelec() == 1){                               // See above case
                     PaintFX.redo1Clear();
+                    PaintFX.recool1Clear();
                     if(PaintFX.getChange1() == 0){
                         tabPane.getTabs().get(1).setText(tabPane.getTabs().get(1).getText() + "*");
                         PaintFX.setChange1(1);
                     }
                     PaintFX.canvas1Push(canTemp);
                 }
-                else if(PaintFX.getSelec() == 2){
+                else if(PaintFX.getSelec() == 2){                               // See above case
                     PaintFX.redo2Clear();
+                    PaintFX.recool2Clear();
                     if(PaintFX.getChange2() == 0){
                         tabPane.getTabs().get(2).setText(tabPane.getTabs().get(2).getText() + "*");
                         PaintFX.setChange2(1);

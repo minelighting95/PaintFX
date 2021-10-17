@@ -26,30 +26,26 @@ import javafx.stage.WindowEvent;
 public class exitHandler implements EventHandler<WindowEvent> {
 
     private StackPane coolCrab;
-    private Stage primaryStage;
     private TabPane tabPane;
     
     /**
      * Event Handler to Exit PaintFX
      * @param coolCrab Main Program StackPane
-     * @param primaryStage Main Program Stage
      * @param tabPane Main Program TabPane
      */
-    public exitHandler(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
+    public exitHandler(StackPane coolCrab, TabPane tabPane){
         
         this.coolCrab = coolCrab;
-        this.primaryStage = primaryStage;
         this.tabPane = tabPane;
         
     }
     
     /**
-     * Function to Exit PaintFX
+     * Exit PaintFX
      * @param coolCrab Main Program StackPane
-     * @param primaryStage Main Program Stage
      * @param tabPane Main Program TabPane
      */
-    public static void exit(StackPane coolCrab, Stage primaryStage, TabPane tabPane){
+    public static void exit(StackPane coolCrab, TabPane tabPane){
         if((PaintFX.getChange() == 1) || (PaintFX.getChange1() == 1) || (PaintFX.getChange2() == 1)){
                     Stage saveWarnWindow = new Stage();                         // Create new stage
                     saveWarnWindow.setTitle("Warning!");                        // Set Title and Logo
@@ -90,12 +86,12 @@ public class exitHandler implements EventHandler<WindowEvent> {
 
                         @Override
                         public void handle(ActionEvent a) {
-                            saveHandler.finalSave(coolCrab, primaryStage, tabPane);
+                            saveHandler.finalSave(coolCrab, tabPane);
                             saveWarnWindow.close();                             // Exit window
                             System.exit(0);                                     // Exit
                         }
                     });
-                    noBtn.setOnAction(new EventHandler<ActionEvent>() {        // When close button pressed
+                    noBtn.setOnAction(new EventHandler<ActionEvent>() {         // When close button pressed
 
                         @Override
                         public void handle(ActionEvent a) {
@@ -120,7 +116,7 @@ public class exitHandler implements EventHandler<WindowEvent> {
     public void handle(WindowEvent e){
         
                 e.consume();                                                    // Halt Operations
-                exit(coolCrab, primaryStage, tabPane);
+                exit(coolCrab, tabPane);
     }
     
 }

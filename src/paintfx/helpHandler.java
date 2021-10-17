@@ -42,21 +42,21 @@ public class helpHandler implements EventHandler<ActionEvent>{
             help.add(helpVar, 0, 0);                                            // Add label to top
             
             Text info = new Text(                                               // Help File
-                " - Open an Image: To open an image, select File->Open... or CTRL-O, and select your image from the File Explorer Window.\n" +
+                "Opening an Image:\n" +
+                "   To open an image, select File->Open... or CTRL-O, and select your image from the File Explorer Window.\n" +
                 "   Supported formats are: PNG, JPG, BMP, and GIF.\n" +
                 "\n" +
+                "Saving an Image:\n" +
                 " - Save an Image: To save the current image with changes to the original location, choose File->Save or CTRL-S.\n" + 
                 "   Note: This will override the original image. Supported Save formats are: PNG, JPG, and BMP.\n" +
                 "\n" +
-                " - Save an Image as: To save the current image as a different format and/or change the name, choose File->Save as... or CTRL-A.\n" +
+                " - Save an Image As: To save the current image as a different format and/or change the name, choose File->Save as... or CTRL-A.\n" +
                 "   This will then put the new image in the window. Supported Save formats are: PNG, JPG, and BMP.\n" +
                 "\n" +
-                " - Exit the Program: To exit the program, click the red X in the top right corner, CTRL-X, or press File->Exit.\n" +
+                " - Auto Save: Images will Auto Save based on a user chosen time.\n" +
+                "   To Change Auto Save Settings, Press File->Auto Save Settings, or CTRL-P.\n" +
                 "\n" +
-                " - To clear the current canvas: Press Draw->Clear Canvas or CTRL-C.\n" +
-                "\n" +
-                " - To snap a large image to fit the window: Press Edit->Snap to Fit or CTRL-F. This will clear the current canvas.\n" +
-                "\n" +
+                "Using Drawing Tools:\n" +
                 " - To Show Drawing Tools: Press Draw->Toggle Tools or CTRL-T.\n" +
                 "\n" +
                 " - In order to draw a shape, once tools are visible, Choose a Color, Enter a Width, and Select the shape.\n" +
@@ -66,21 +66,38 @@ public class helpHandler implements EventHandler<ActionEvent>{
                 "\n" +
                 " - To write text, enter your desired text in the box and press the text button. Width will adjust font size\n" +
                 "\n" +
+                " - To Select a Color on the canvas to draw with, select the color dropper from below either the Edge or Fill Color Dialog\n" +
+                "   Then, click on the selection you want to pick the color from. Untoggle the button to stop using this color.\n" +
+                "\n" +
+                " - To Cut and Move part of an Image, Select Draw->Cut and Move, or press CTRL-M.\n" +
+                "   Drag the rectangle over the part of the image you want to move, then drag the Cut section to the desired location.\n" +
+                "   Note: This will alter the location of items currently on the canvas.\n" +
+                "\n" +
+                " - To Copy and Paste part of an Image, Select Draw->Copy and Paste, or press CTRL-V.\n" +
+                "   Drag the rectangle over the part of the image you want to copy, then drag the copied section to the desired location.\n" +
+                "   Note: This will alter the location of items currently on the canvas.\n" +
+                "\n" +
+                " - To invert all colors on screen, Select Draw->Invert Colors, or press CTRL-I.\n" +
+                "\n" +
+                "Using Canvas Tools:\n" +
+                " - To clear the current canvas: Press Draw->Clear Canvas or CTRL-C.\n" +
+                "\n" +
+                " - To snap a large image to fit the window: Press Edit->Snap to Fit or CTRL-F. This will clear the current canvas.\n" +
+                "\n" +
                 " - To manually resize the canvas, toggle the option under Edit and enter a size.\n" +
                 "\n" +
                 " - To zoom in or out, use the buttons under Edit or CTRL-Plus or Minus.\n" +
                 "\n" +
-                " - To Cut and Move part of an Image, Select Draw->Cut and Move, or press CTRL-M.\n" +
-                "   Drag the rectangle over the part of the image you want to move, then drag the Cut section to the desired location.\n" +
-                "\n" +
-                " - To Select a Color on the canvas to draw with, select the color dropper from below either the Edge or Fill Color Dialog\n" +
-                "   Then, click on the selection you want to pick the color from. Untoggle the button to stop using this color.\n" +
-                "\n" +
+                "Using Undo and Redo:\n" +
                 " - To Undo an action, select Edit->Undo, or press CTRL-Z.\n" + 
                 "\n" +
-                " - To Redo an action, select Edit->Redo, or press CTRL-Y. Note: If an action is performed after Undoing an action, Redo will be reset.\n" +
+                " - To Redo an action, select Edit->Redo, or press CTRL-Y.\n" +
+                "   Note: If an action is performed after Undoing an action, Redo will be reset.\n" +
                 "\n" +
-                " - To Change Auto Save Settings, Press File->Auto Save Settings, or CTRL-P.\n");
+                "Exiting the Program:\n" +
+                "   To exit the program, click the red X in the top right corner, CTRL-X, or press File->Exit.\n" +
+                "\n");
+                
             info.setFont(new Font("Arial", 18));                                // Set Font and Size
             info.setTextAlignment(TextAlignment.LEFT);                          // Align left
             spHelp.setContent(info);                                            // Display Text in scroll pane

@@ -28,65 +28,65 @@ public class autoHandler implements EventHandler<ActionEvent> {
     
     public void handle(ActionEvent e){
         
-            Stage autoWindow = new Stage();                                    // Create new stage
-            autoWindow.setTitle("Auto Save Settings");                 // Set Title and Logo
+            Stage autoWindow = new Stage();                                     // Create new stage
+            autoWindow.setTitle("Auto Save Settings");                          // Set Title and Logo
             autoWindow.getIcons().add(new Image(PaintFX.class.getResourceAsStream("logosmall.png")));
             
-            GridPane auto = new GridPane();                                    // Create grid
-            auto.setAlignment(Pos.CENTER);                                     // Center the grid
-            auto.setHgap(10);                                                  // Set the gaps between grid elements to 10
+            GridPane auto = new GridPane();                                     // Create grid
+            auto.setAlignment(Pos.CENTER);                                      // Center the grid
+            auto.setHgap(10);                                                   // Set the gaps between grid elements to 10
             auto.setVgap(10);
-            auto.setPadding(new Insets(25, 25, 25, 25));                       // Set border padding to 25
+            auto.setPadding(new Insets(25, 25, 25, 25));                        // Set border padding to 25
             
-            Label ansTell = new Label("Auto Save Time (s): ");                         // Create new label "X*Y="
-            auto.add(ansTell, 1, 1);                                    // Add text in bottom left box
+            Label ansTell = new Label("Auto Save Time (s): ");                  // Create new label "Auto Save Time (s): "
+            auto.add(ansTell, 1, 1);                                            // Add text
             
-            Label visTell = new Label("Timer Visible: ");                         // Create new label "X*Y="
-            auto.add(visTell, 1, 2);                                    // Add text in bottom left box
+            Label visTell = new Label("Timer Visible: ");                       // Create new label "Timer Visible: "
+            auto.add(visTell, 1, 2);                                            // Add text
             
-            TextField saver = new TextField();                          // Create new text field (Y)
-            auto.add(saver, 2, 1);                                      // Add field to middle box
-            saver.setMaxWidth(50);
-            saver.setText(PaintFX.getSaveName());
+            TextField saver = new TextField();                                  // Create new text field (Time)
+            auto.add(saver, 2, 1);                                              // Add field
+            saver.setMaxWidth(50);                                              // Set width to 50
+            saver.setText(PaintFX.getSaveName());                               // Set Text to Current Auto Save Time
             
-            ver = new CheckBox();
-            auto.add(ver, 3, 2);
-            ver.setSelected(PaintFX.getSave());
+            ver = new CheckBox();                                               // Create visible checkbox
+            auto.add(ver, 3, 2);                                                // Add to window
+            ver.setSelected(PaintFX.getSave());                                 // If save is visible, set
             
-            Scene autoScene = new Scene(auto, 300, 170);                      // Create a 640 by 480 window
-            autoWindow.setScene(autoScene);                                   // Place the scene on the main stage
-            autoWindow.show();                                                 // Show main stage
+            Scene autoScene = new Scene(auto, 300, 170);                        // Create a 300 by 170 window
+            autoWindow.setScene(autoScene);                                     // Place the scene on the main stage
+            autoWindow.show();                                                  // Show main stage
             
-            Button Sbtn = new Button("Set");                                     // Create a button saying "Close"
-            HBox hSet = new HBox(10);                                          // Create a horizontal box for button
-            hSet.setAlignment(Pos.CENTER);                                     // Align horizontal box to bottom center
+            Button Sbtn = new Button("Set");                                    // Create a button saying "Set"
+            HBox hSet = new HBox(10);                                           // Create a horizontal box for button
+            hSet.setAlignment(Pos.CENTER);                                      // Align horizontal box to bottom center
             hSet.getChildren().add(Sbtn);                                       // Place the button in the horizontal box
-            auto.add(hSet, 3, 1);                                             // Place the horizontal box on the bottom right grid box
+            auto.add(hSet, 3, 1);                                               // Place the horizontal box on the bottom right grid box
             
             Button btn = new Button("Close");                                   // Create a button saying "Close"
             HBox hbBtn = new HBox(10);                                          // Create a horizontal box for button
             hbBtn.setAlignment(Pos.CENTER);                                     // Align horizontal box to bottom center
             hbBtn.getChildren().add(btn);                                       // Place the button in the horizontal box
-            auto.add(hbBtn, 2, 3);                                             // Place the horizontal box on the bottom right grid box
+            auto.add(hbBtn, 2, 3);                                              // Place the horizontal box on the bottom right grid box
 
-            Sbtn.setOnAction(new EventHandler<ActionEvent>() {                   // When close button pressed
+            Sbtn.setOnAction(new EventHandler<ActionEvent>() {                  // When set button pressed
 
                 @Override
                 public void handle(ActionEvent a) {
-                    String xVal = saver.getText();                      // Pulls typed x text
-                    int x = Integer.parseInt(xVal);                     // Convert x and y to Ints
-                    if(x <= 0){
+                    String xVal = saver.getText();                              // Pulls typed time text
+                    int x = Integer.parseInt(xVal);                             // Convert time text to Int
+                    if(x <= 0){                                                 // If below min, set to min
                         x = 10;
                         saver.setText("10");
                     }
-                    try{
-                        File time = new File("save.tfx");
-                        if (time.delete()) {} else {System.out.println("1");}
-                        if (time.createNewFile()) {} else {System.out.println("2");}
-                        FileWriter myWriter = new FileWriter(time);
-                        myWriter.write(saver.getText());
+                    try{                                                        // Write time to file
+                        File time = new File("save.tfx");                       // Make file
+                        if (time.delete()) {} else {System.out.println("Del");} // File Conditions
+                        if (time.createNewFile()) {} else {System.out.println("Create");}
+                        FileWriter myWriter = new FileWriter(time);             // Create file writer
+                        myWriter.write(saver.getText());                        // Write File
                         myWriter.close();
-                        PaintFX.setSaveTime(x);                                       // Exit window
+                        PaintFX.setSaveTime(x);                                 // Set Save Time
                     } catch (IOException e) {
                         System.out.println("Auto File Error");
                         e.printStackTrace();
@@ -98,15 +98,15 @@ public class autoHandler implements EventHandler<ActionEvent> {
 
                 @Override
                 public void handle(ActionEvent a) {
-                    autoWindow.close();                                        // Exit window
+                    autoWindow.close();                                         // Exit window
                 }
             });
             
-            ver.setOnAction(new EventHandler<ActionEvent>() {                   // When close button pressed
+            ver.setOnAction(new EventHandler<ActionEvent>() {                   // When check box changed
 
                 @Override
                 public void handle(ActionEvent a) {
-                    if(ver.isSelected()){PaintFX.setSave(true);}
+                    if(ver.isSelected()){PaintFX.setSave(true);}                // Change save timer visibility
                     else{
                         PaintFX.setSave(false);
                     }

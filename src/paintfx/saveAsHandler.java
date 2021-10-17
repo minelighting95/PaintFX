@@ -26,7 +26,6 @@ public class saveAsHandler implements EventHandler<ActionEvent>{
     
     private StackPane coolCrab;
     private Stage primaryStage;
-    private int change;
     private TabPane tabPane;
     
 /**
@@ -45,9 +44,12 @@ public class saveAsHandler implements EventHandler<ActionEvent>{
     
     @Override
     public void handle(ActionEvent e){
+        coolCrab.setScaleX(1);                                                  // Unzoom
+        coolCrab.setScaleY(1);
         if(PaintFX.getSelec() == 0){
-            PaintFX.redoClear();
-            Bounds bnd = PaintFX.coolPeek().getBoundsInParent();                              // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            PaintFX.redoClear();                                                // Clear Redos
+            PaintFX.recoolClear();
+            Bounds bnd = PaintFX.canvasPeek().getBoundsInParent();              // Aquire bounds of image with respect to parent
             WritableImage wim = new WritableImage((int)PaintFX.canvasPeek().getWidth(), (int)PaintFX.canvasPeek().getHeight());
             SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
             sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
@@ -64,7 +66,8 @@ public class saveAsHandler implements EventHandler<ActionEvent>{
             try {
                 File saveFile = saveChooser.showSaveDialog(primaryStage);       // Grab user selected file and path
                 String file = saveFile.toURI().toString();                      // Grab file extension
-                PaintFX.setFileName(file.substring(6));
+                PaintFX.setFileName(file.substring(6));                         // Set Names
+                PaintFX.setName(saveFile.getName());
                 tabPane.getTabs().get(0).setText(saveFile.getName());
                 String fileExt = file.substring(file.length()-3);
                 if(fileExt.equals("png")){                                      // If the image is a PNG
@@ -82,11 +85,13 @@ public class saveAsHandler implements EventHandler<ActionEvent>{
                 }
                 PaintFX.setChange(0);
                 tabPane.getTabs().get(0).setText(saveFile.getName());           // Set Tab Name
+                PaintFX.logItem("Save As", 0);                                  // Log Save
             } catch (Exception s) {}
         }
         else if(PaintFX.getSelec() == 1){
-            PaintFX.redo1Clear();
-            Bounds bnd = PaintFX.cool1Peek().getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            PaintFX.redo1Clear();                                               // Clear redos
+            PaintFX.recool1Clear();
+            Bounds bnd = PaintFX.canvas1Peek().getBoundsInParent();             // Aquire bounds of image with respect to parent
             WritableImage wim = new WritableImage((int)PaintFX.canvas1Peek().getWidth(), (int)PaintFX.canvas1Peek().getHeight());
             SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
             sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
@@ -103,8 +108,9 @@ public class saveAsHandler implements EventHandler<ActionEvent>{
             try {
                 File saveFile = saveChooser.showSaveDialog(primaryStage);       // Grab user selected file and path
                 String file = saveFile.toURI().toString();                      // Grab file extension
-                PaintFX.setFileName(file.substring(6));
-                tabPane.getTabs().get(1).setText(saveFile.getName());
+                PaintFX.setFileName1(file.substring(6));                        // Set names
+                PaintFX.setName(saveFile.getName());
+                tabPane.getTabs().get(1).setText(saveFile.getName());           // Set tab names
                 String fileExt = file.substring(file.length()-3);
                 if(fileExt.equals("png")){                                      // If the image is a PNG
                     sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
@@ -121,11 +127,13 @@ public class saveAsHandler implements EventHandler<ActionEvent>{
                 }
                 PaintFX.setChange1(0);
                 tabPane.getTabs().get(1).setText(saveFile.getName());           // Set Tab Name
+                PaintFX.logItem("Save As", 0);                                  // Log Save
             } catch (Exception s) {}
         }
-        else if(PaintFX.getSelec() == 2){
-            PaintFX.redo2Clear();
-            Bounds bnd = PaintFX.cool2Peek().getBoundsInParent();                             // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+        else if(PaintFX.getSelec() == 2){   
+            PaintFX.redo2Clear();                                               // Clear redos
+            PaintFX.recool2Clear();
+            Bounds bnd = PaintFX.canvas2Peek().getBoundsInParent();             // Aquire bounds of image with respect to parent
             WritableImage wim = new WritableImage((int)PaintFX.canvas2Peek().getWidth(), (int)PaintFX.canvas2Peek().getHeight());
             SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
             sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
@@ -142,8 +150,9 @@ public class saveAsHandler implements EventHandler<ActionEvent>{
             try {
                 File saveFile = saveChooser.showSaveDialog(primaryStage);       // Grab user selected file and path
                 String file = saveFile.toURI().toString();                      // Grab file extension
-                PaintFX.setFileName(file.substring(6));
-                tabPane.getTabs().get(2).setText(saveFile.getName());
+                PaintFX.setFileName2(file.substring(6));                        // Set names
+                PaintFX.setName(saveFile.getName());
+                tabPane.getTabs().get(2).setText(saveFile.getName());           // Set Tab name
                 String fileExt = file.substring(file.length()-3);
                 if(fileExt.equals("png")){                                      // If the image is a PNG
                     sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
@@ -160,11 +169,14 @@ public class saveAsHandler implements EventHandler<ActionEvent>{
                 }
                 PaintFX.setChange2(0);
                 tabPane.getTabs().get(2).setText(saveFile.getName());           // Set Tab Name
+                PaintFX.logItem("Save As", 0);                                  // Log Save
             } catch (Exception s) {}
         }
         else{
             System.out.println("Save As Error 0");
         }
+        coolCrab.setScaleX(PaintFX.getScaleX());                                // Reset zoom
+        coolCrab.setScaleY(PaintFX.getScaleY());
         
     }
     

@@ -33,18 +33,18 @@ public class dropBtnHandler implements EventHandler<ActionEvent> {
     public void handle(ActionEvent e){
         
         if(PaintFX.getSelec() == 0){                                                     
-            PaintFX.canvasPeek().setOnMouseClicked((event) ->{                            // When mouse clicked
-                Bounds bnd = PaintFX.coolPeek().getBoundsInParent();                      // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            PaintFX.canvasPeek().setOnMouseClicked((event) ->{                  // When mouse clicked
+                Bounds bnd = PaintFX.coolPeek().getBoundsInParent();            // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
                 WritableImage wim = new WritableImage((int)PaintFX.canvasPeek().getWidth(), (int)PaintFX.canvasPeek().getHeight());
-                SnapshotParameters sP = new SnapshotParameters();           // Set the snapshot viewport and set to coordinates of image
+                SnapshotParameters sP = new SnapshotParameters();               // Set the snapshot viewport and set to coordinates of image
                 sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
-                sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
-                coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
+                sP.setFill(Color.TRANSPARENT);                                  // Make backgroud transparent
+                coolCrab.snapshot(sP, wim);                                     // Take snapshot and save image
 
-                double x = event.getX();                                    // Record Coordinates
+                double x = event.getX();                                        // Record Coordinates
                 double y = event.getY();
                 if((wim.getPixelReader().getColor((int)x, (int)y)) == Color.TRANSPARENT){
-                    PixelReader r = PaintFX.getImage().getPixelReader();                  // If canvas transparent, grab image color
+                    PixelReader r = PaintFX.getImage().getPixelReader();        // If canvas transparent, grab image color
                     PaintFX.setColor(r.getColor((int)x, (int)y));
                 }
                 else{
@@ -53,18 +53,18 @@ public class dropBtnHandler implements EventHandler<ActionEvent> {
             });
         }
         else if(PaintFX.getSelec() == 1){                                                
-            PaintFX.canvas1Peek().setOnMouseClicked((event) ->{                           // When mouse clicked
-                Bounds bnd = PaintFX.cool1Peek().getBoundsInParent();                     // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            PaintFX.canvas1Peek().setOnMouseClicked((event) ->{                 // When mouse clicked
+                Bounds bnd = PaintFX.cool1Peek().getBoundsInParent();           // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
                 WritableImage wim = new WritableImage((int)PaintFX.canvas1Peek().getWidth(), (int)PaintFX.canvas1Peek().getHeight());
-                SnapshotParameters sP = new SnapshotParameters();                   // Set the snapshot viewport and set to coordinates of image
+                SnapshotParameters sP = new SnapshotParameters();               // Set the snapshot viewport and set to coordinates of image
                 sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
-                sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
-                coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
+                sP.setFill(Color.TRANSPARENT);                                  // Make backgroud transparent
+                coolCrab.snapshot(sP, wim);                                     // Take snapshot and save image
 
-                double x = event.getX();                                    // Record Coordinates
+                double x = event.getX();                                        // Record Coordinates
                 double y = event.getY();
                 if((wim.getPixelReader().getColor((int)x, (int)y)) == Color.TRANSPARENT){
-                    PixelReader r = PaintFX.getImage1().getPixelReader();                 // If canvas transparent, grab image color
+                    PixelReader r = PaintFX.getImage1().getPixelReader();       // If canvas transparent, grab image color
                     PaintFX.setColor(r.getColor((int)x, (int)y));
                 }
                 else{
@@ -73,18 +73,18 @@ public class dropBtnHandler implements EventHandler<ActionEvent> {
             });
         }
         else if(PaintFX.getSelec() == 2){                                                
-            PaintFX.canvas2Peek().setOnMouseClicked((event) ->{                           // When mouse clicked
-                Bounds bnd = PaintFX.cool2Peek().getBoundsInParent();                     // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
+            PaintFX.canvas2Peek().setOnMouseClicked((event) ->{                 // When mouse clicked
+                Bounds bnd = PaintFX.cool2Peek().getBoundsInParent();           // Aquire bounds of image with respect to parent and make writeable image the size of the canvas
                 WritableImage wim = new WritableImage((int)PaintFX.canvas2Peek().getWidth(), (int)PaintFX.canvas2Peek().getHeight());
-                SnapshotParameters sP = new SnapshotParameters();           // Set the snapshot viewport and set to coordinates of image
+                SnapshotParameters sP = new SnapshotParameters();               // Set the snapshot viewport and set to coordinates of image
                 sP.setViewport(new Rectangle2D(bnd.getMinX(), bnd.getMinY(), bnd.getMaxX(), bnd.getMaxY()));
-                sP.setFill(Color.TRANSPARENT);                              // Make backgroud transparent
-                coolCrab.snapshot(sP, wim);                                 // Take snapshot and save image
+                sP.setFill(Color.TRANSPARENT);                                  // Make backgroud transparent
+                coolCrab.snapshot(sP, wim);                                     // Take snapshot and save image
 
-                double x = event.getX();                                    // Record Coordinates
+                double x = event.getX();                                        // Record Coordinates
                 double y = event.getY();
                 if((wim.getPixelReader().getColor((int)x, (int)y)) == Color.TRANSPARENT){
-                    PixelReader r = PaintFX.getImage2().getPixelReader();                 // If canvas transparent, grab image color
+                    PixelReader r = PaintFX.getImage2().getPixelReader();       // If canvas transparent, grab image color
                     PaintFX.setColor(r.getColor((int)x, (int)y));
                 }
                 else{

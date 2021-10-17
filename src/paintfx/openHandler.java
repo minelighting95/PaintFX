@@ -33,7 +33,6 @@ import javafx.stage.Stage;
 public class openHandler implements EventHandler<ActionEvent> {
 
     private Stage primaryStage;
-    private FileChooser fileChooser;
     private ImageView cool;
     private ImageView cool1;
     private ImageView cool2;
@@ -53,6 +52,7 @@ public class openHandler implements EventHandler<ActionEvent> {
     
     private void open(){
         try{                                                                    // Attempt...
+            FileChooser fileChooser = new FileChooser();                        // Create file chooser
             fileChooser.setTitle("Open Picture...");                            // Named Open Picture
             fileChooser.getExtensionFilters().addAll(                           // Add image filters
                 new FileChooser.ExtensionFilter("All Supported Files", "*.jpg", "*.png", "*.bmp", "*.gif")
@@ -67,30 +67,30 @@ public class openHandler implements EventHandler<ActionEvent> {
             Image crab = new Image(selectedFile.toURI().toString());            // Open user image
             
             if(PaintFX.getSelec() == 0){
-                PaintFX.setFileName(selectedFile.toURI().toString().substring(6));            // Save file name as string
+                PaintFX.setFileName(selectedFile.toURI().toString().substring(6));// Save file name as string
                 PaintFX.setChange(0);
                 tabPane.getTabs().get(0).setText(selectedFile.getName());       // Set Tab Name
-                cool.setFitHeight(0);
+                cool.setFitHeight(0);                                           // Set Fit Dimensions
                 cool.setFitWidth(0);
                 cool.setImage(crab);                                            // Set Image
                 PaintFX.setImage(crab);
                 cool.setPreserveRatio(true);                                    // Preserve Image Ratio
             }
             else if(PaintFX.getSelec() == 1){
-                PaintFX.setFileName1(selectedFile.toURI().toString().substring(6));            // Save file name as string
+                PaintFX.setFileName1(selectedFile.toURI().toString().substring(6));// Save file name as string
                 PaintFX.setChange1(0);
                 tabPane.getTabs().get(1).setText(selectedFile.getName());       // Set Tab Name
-                cool1.setFitHeight(0);
+                cool1.setFitHeight(0);                                          // Set Fit Dimensions
                 cool1.setFitWidth(0);
                 cool1.setImage(crab);                                           // Set Image
                 PaintFX.setImage1(crab);
                 cool1.setPreserveRatio(true);                                   // Preserve Image Ratio
             }
             else if(PaintFX.getSelec() == 2){
-                PaintFX.setFileName2(selectedFile.toURI().toString().substring(6));            // Save file name as string
+                PaintFX.setFileName2(selectedFile.toURI().toString().substring(6));// Save file name as string
                 PaintFX.setChange2(0);
                 tabPane.getTabs().get(2).setText(selectedFile.getName());       // Set Tab Name
-                cool2.setFitHeight(0);
+                cool2.setFitHeight(0);                                          // Set Fit Dimensions
                 cool2.setFitWidth(0);
                 cool2.setImage(crab);                                           // Set Image
                 PaintFX.setImage2(crab);
@@ -104,7 +104,7 @@ public class openHandler implements EventHandler<ActionEvent> {
             border.setTop(vBox);                                                // Set the menu bar at the top of the screen
 
             w = crab.getWidth();                                                // Record image dimensions
-            h = crab.getHeight();                                           
+            h = crab.getHeight();     
             
             if(PaintFX.getSelec() == 0){
                 canvas.setWidth(w);                                             // Set canvas to the current dimensions
@@ -125,33 +125,36 @@ public class openHandler implements EventHandler<ActionEvent> {
                 System.out.println("Open Error 1");
             }
             
-                
+            coolCrab.setScaleX(1);                                              // Remove Zoom
+            coolCrab.setScaleY(1);
+            PaintFX.setScaleX(1);                                               // Remove Scale
+            PaintFX.setScaleY(1);
             coolCrab.getChildren().clear();                                     // Remove previous image
             
             if(PaintFX.getSelec() == 0){
-                PaintFX.canvasClear();
+                PaintFX.canvasClear();                                          // Clear Undo/Redo Stacks
                 PaintFX.redoClear();
                 PaintFX.coolClear();
                 PaintFX.recoolClear();
-                PaintFX.canvasPush(canvas);
+                PaintFX.canvasPush(canvas);                                     // Add new canvas and image
                 PaintFX.coolPush(cool);
                 coolCrab.getChildren().addAll(cool, canvas);                    // Add new image
             }
             else if(PaintFX.getSelec() == 1){
-                PaintFX.canvas1Clear();
+                PaintFX.canvas1Clear();                                         // Clear Undo/Redo Stacks
                 PaintFX.redo1Clear();
                 PaintFX.recool1Clear();
                 PaintFX.cool1Clear();
-                PaintFX.canvas1Push(canvas1);
+                PaintFX.canvas1Push(canvas1);                                   // Add new canvas and image
                 PaintFX.cool1Push(cool1);
                 coolCrab.getChildren().addAll(cool1, canvas1);                  // Add new image
             }
             else if(PaintFX.getSelec() == 2){
-                PaintFX.canvas2Clear();
+                PaintFX.canvas2Clear();                                         // Clear Undo/Redo Stacks
                 PaintFX.redo2Clear();
                 PaintFX.recool2Clear();
                 PaintFX.cool2Clear();
-                PaintFX.canvas2Push(canvas2);
+                PaintFX.canvas2Push(canvas2);                                   // Add new canvas and image
                 PaintFX.cool2Push(cool2);
                 coolCrab.getChildren().addAll(cool2, canvas2);                  // Add new image
             }
@@ -161,7 +164,8 @@ public class openHandler implements EventHandler<ActionEvent> {
             
             sp.setContent(coolCrab);                                            // Place stack on ScrollPane
 
-            PaintFX.setVariables(w, h);
+            PaintFX.setVariables(w, h);                                         // Set variables
+            PaintFX.logItem("Open", 2);
         }
         catch(Exception f){}                                                    // If invalid image or closed explorer
     }
@@ -169,7 +173,6 @@ public class openHandler implements EventHandler<ActionEvent> {
     /**
      * Event Handler to open a new Image
      * @param primaryStage Main Program Stage
-     * @param fileChooser Program File Chooser
      * @param cool Tab 1 Image
      * @param cool1 Tab 2 Image
      * @param cool2 Tab 3 Image
@@ -185,12 +188,10 @@ public class openHandler implements EventHandler<ActionEvent> {
      * @param sp Main Program ScrollPane
      * @param tabPane Main Program TabPane
      */
-    public openHandler(Stage primaryStage, FileChooser fileChooser, ImageView cool, ImageView cool1, ImageView cool2, BorderPane border, Canvas canvas,
-            Canvas canvas1, Canvas canvas2, VBox vBox, GraphicsContext gc, GraphicsContext gc1, GraphicsContext gc2, StackPane coolCrab,
-            ScrollPane sp, TabPane tabPane){
+    public openHandler(Stage primaryStage, ImageView cool, ImageView cool1, ImageView cool2, BorderPane border, Canvas canvas, Canvas canvas1, 
+            Canvas canvas2, VBox vBox, GraphicsContext gc, GraphicsContext gc1, GraphicsContext gc2, StackPane coolCrab, ScrollPane sp, TabPane tabPane){
         
         this.primaryStage = primaryStage;
-        this.fileChooser = fileChooser;
         this.cool = cool;
         this.cool1 = cool1;
         this.cool2 = cool2;
@@ -251,7 +252,7 @@ public class openHandler implements EventHandler<ActionEvent> {
 
                 @Override
                 public void handle(ActionEvent a) {
-                    saveHandler.save(coolCrab, primaryStage, tabPane);
+                    saveHandler.save(coolCrab, tabPane);
                     saveWarnWindow.close();                                     // Save and Exit window
                     open();
                     }
@@ -312,7 +313,7 @@ public class openHandler implements EventHandler<ActionEvent> {
 
                 @Override
                 public void handle(ActionEvent a) {
-                    saveHandler.save(coolCrab, primaryStage, tabPane);
+                    saveHandler.save(coolCrab, tabPane);
                     saveWarnWindow.close();                                     // Save Exit window
                     open();
                     }
@@ -373,7 +374,7 @@ public class openHandler implements EventHandler<ActionEvent> {
 
                 @Override
                 public void handle(ActionEvent a) {
-                    saveHandler.save(coolCrab, primaryStage, tabPane);
+                    saveHandler.save(coolCrab, tabPane);
                     saveWarnWindow.close();                                     // Save and Exit window
                     open();
                     }

@@ -44,8 +44,8 @@ public class aboutHandler implements EventHandler<ActionEvent> {
             
             about.add(logoIm, 0, 1);                                            // Add Image to left box
             
-            Text info = new Text("PaintFX v1.4.0\n"                             // Create about text
-                    + "Oct. 8, 2021\n\n"
+            Text info = new Text("PaintFX v1.5.0\n"                             // Create about text
+                    + "Oct. 18, 2021\n\n"
                     + "Programmed by Alex Appel\n"
                     + "CS 250 Paint Project\n");                               
             info.setFont(new Font("Arial", 18));                                // Set Font and Size
