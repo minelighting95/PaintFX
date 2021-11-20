@@ -1,5 +1,26 @@
 PaintFX Release Notes:
 
+Release Version 1.6.0 - 11/19/2021
+
+	New Features:
+		-Cleaned Eraser Tool
+		-Cleaned Code Base
+		-Saving on blank image now saves to image#.png
+		
+	Known Issues:
+		-When saving as a JPG or BMP, any transparent pixels will save as white
+			-Related to the JDK 8 JPG bug
+		
+	Next to be Implemented:
+		-None
+		
+	GitHub Link:
+		https://github.com/minelighting95/PaintFX
+
+	Demo Link:
+		https://youtu.be/nT-8Ul7HfQs
+
+
 Release Version 1.5.0 - 10/18/2021
 
 	New Features:
@@ -27,6 +48,7 @@ Release Version 1.5.0 - 10/18/2021
 		-Clean Move/Copy Functions
 		-Clean Eraser
 		-Clean ScrollPane
+		-Pull Help screen text from a text file
 		
 	GitHub Link:
 		https://github.com/minelighting95/PaintFX
